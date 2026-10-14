@@ -299,7 +299,7 @@ async function initSync(){
         push();
       }
       setSync("☁️ 동기화됨");
-    }, err => { console.error(err); setSync("⚠️ 접근 권한 없음"); });
+    }, err => { console.error(err); setSync(`⚠️ 접근 권한 없음 (${user.email})`); });
   });
 }
 const won = n => Math.round(n).toLocaleString("ko-KR") + "원";
