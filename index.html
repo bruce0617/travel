@@ -98,14 +98,16 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
       <span class="chip">저가항공 + 심야 귀국</span>
       <span class="chip">수영·물놀이 중심</span>
     </div>
+    <div class="bar" style="margin-top:14px">
+      <button class="btn" id="authBtn" hidden>Google 로그인</button>
+      <span id="syncStatus" class="sync"></span>
+    </div>
   </div>
 </header>
 <nav><div class="wrap">
   <a href="#overview">요약</a><a href="#flights">항공</a><a href="#resorts">리조트</a>
   <a href="#budget">예산</a><a href="#itinerary">일정</a><a href="#checklist">체크리스트</a><a href="#notes">메모</a>
-  <span id="syncStatus" class="sync" style="margin-left:auto"></span>
-  <button class="btn ghost" id="authBtn" style="padding:4px 10px" hidden>Google 로그인</button>
-  <button class="btn ghost" id="themeBtn" style="padding:4px 10px">🌓</button>
+  <button class="btn ghost" id="themeBtn" style="margin-left:auto;padding:4px 10px">🌓</button>
 </div></nav>
 
 <main class="wrap">
