@@ -53,7 +53,7 @@ th{color:var(--muted);font-weight:500}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
 .card{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px;cursor:pointer;position:relative}
 .card:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
-.card input{position:absolute;top:14px;right:14px;accent-color:var(--accent)}
+.card input[type=radio]{position:absolute;top:14px;right:14px;accent-color:var(--accent)}
 .card h3{margin:0;font-size:1.02rem;padding-right:24px}
 .tag{font-size:.78rem;color:var(--accent);font-weight:700}
 .card ul{margin:0;padding-left:18px;font-size:.88rem}
@@ -96,10 +96,11 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
 <header>
   <div class="wrap hero">
     <h1>🌴 다낭 가족여행 플래너</h1>
-    <p>엄마·아빠·초등학생 두 딸 · 4박 5일 · 인천 출발</p>
+    <p>엄마·아빠·초등학생 두 딸 · 5박 6일 · 인천 출발</p>
     <div class="chips">
-      <span class="chip">2027.02.15(월) → 02.20(토) 새벽 귀국</span>
-      <span class="chip">저가항공 + 심야 귀국</span>
+      <span class="chip">2027.02.18(목) → 02.23(화)</span>
+      <span class="chip">✈️ 베트남항공 예약 완료</span>
+      <span class="chip">🏨 숙소 미정</span>
       <span class="chip">수영·물놀이 중심</span>
     </div>
     <div class="bar" style="margin-top:14px">
@@ -120,26 +121,28 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
   <h2>한눈에 보기</h2>
   <p class="sub">2026년 10월 조사 기준. 가격은 참고값이며 예약 시점에 다시 확인하세요.</p>
   <div class="tbl"><table>
-    <tr><th>날짜</th><td>2/15(월) 출발 ~ 2/20(토) 00:40 귀국편 (현지 4박)</td></tr>
+    <tr><th>날짜</th><td>2/18(목) 출발 ~ 2/23(화) 귀국 (현지 5박)</td></tr>
     <tr><th>날씨</th><td>낮 약 25℃ · 밤 약 20℃ · 바다 약 23℃. 우기 끝무렵이라 흐리거나 쌀쌀한 날이 섞일 수 있음 → 아이들 래시가드 필수</td></tr>
-    <tr><th>설 연휴</th><td>2027년 설 연휴는 2/5~2/8(또는 9)로 보는 자료가 많아, 2/15 출발은 연휴 성수기를 피함</td></tr>
-    <tr><th>항공</th><td>가는 편 비엣젯 07:00 / 오는 편 에어서울 00:40 (4인 약 105~160만 원 예상)</td></tr>
+    <tr><th>설 연휴</th><td>2027년 설 연휴(2/5~2/8 전후)가 끝나고 열흘 뒤라 성수기를 피함</td></tr>
+    <tr><th>항공</th><td>✅ 베트남항공 · 가는 편 2/18 인천 10:10 / 오는 편 2/23 다낭 16:15 (트립닷컴 예약)</td></tr>
+    <tr><th>숙소</th><td>⏳ 아직 미정 · <b>2/18 체크인 ~ 2/23 체크아웃, 5박</b>으로 검색</td></tr>
     <tr><th>스노클링</th><td>다낭 해변은 모래 바닥이라 물고기 보기 어려움. 참섬은 2월에 결항이 잦아 <b>손트라반도 오전 투어</b>를 날씨 보고 결정</td></tr>
   </table></div>
 </section>
 
 <section id="flights">
-  <h2>✈️ 항공편 선택</h2>
-  <p class="sub">선택하면 예산 계산에 반영됩니다. 운임은 최근(2026년 10~12월 출발) 1인 편도 참고가입니다.</p>
-  <h3 style="font-size:1rem;margin:8px 0">가는 편 · 2/15(월)</h3>
-  <div id="outbound"></div>
-  <h3 style="font-size:1rem;margin:16px 0 8px">오는 편 · 2/19(금) 밤</h3>
-  <div id="inbound"></div>
-  <div class="note">⚠️ <b>자정 넘어 출발하는 편은 날짜가 넘어갑니다.</b> 19일 밤 공항에 가는 경우 에어서울 00:40편, 이스타 00:25편은 <b>2/20(토) 출발</b>로 예약하세요. 비엣젯 23:45편은 2/19 날짜 그대로입니다.</div>
-  <div class="note">💡 저가항공은 초등학생 소아 할인이 거의 없어서 4명 모두 성인 운임으로 계산합니다. 수하물과 좌석 지정은 따로 붙습니다.</div>
-  <h3 style="font-size:1rem;margin:18px 0 6px">🔎 예약·가격 확인 바로가기</h3>
-  <p class="sub" style="margin-bottom:8px">2026년 10월 기준으로 2027년 2월 운임은 아직 안 보였어요. 예약이 열렸는지 직접 검색해 보고, 안 열렸으면 가격 알림을 걸어 두세요. <b>항공권 먼저 → 숙소는 무료 취소로</b> 잡는 순서를 권합니다.</p>
-  <div class="links" id="flightLinks"></div>
+  <h2>✈️ 항공편 · 예약 완료</h2>
+  <p class="sub">트립닷컴에서 예약한 베트남항공 왕복이에요. e티켓과 다른 부분이 있으면 칸을 직접 고치세요. 자동 저장·동기화됩니다.</p>
+  <div class="grid" id="flightCards"></div>
+  <h3 style="font-size:1rem;margin:18px 0 6px">🎫 예약 정보</h3>
+  <div class="form" id="bookingForm">
+    <label class="f">트립닷컴 예약번호<input type="text" data-k="tripNo" placeholder="예약 확인 메일에 있어요"></label>
+    <label class="f">항공사 예약번호 (PNR, 6자리)<input type="text" data-k="pnr" placeholder="e티켓의 Booking ref"></label>
+    <label class="f">위탁수하물 허용량<input type="text" data-k="bag" placeholder="예: 1인 23kg 1개"></label>
+  </div>
+  <div class="note">🔒 여권번호·카드번호는 여기 적지 마세요. 예약번호는 Google 로그인한 사람만 볼 수 있게 저장됩니다.</div>
+  <div class="links" id="flightLinks" style="margin-top:10px"></div>
+  <div class="note">💡 <b>트립닷컴 예약은 웹에 자동으로 연결할 수 없어요</b> (개인 예약을 읽어 오는 공개 기능이 없음). 대신 예약번호를 위에 적어 두고, 위 버튼으로 트립닷컴·베트남항공 예약 관리 화면을 바로 여세요. 온라인 체크인은 보통 출발 24시간 전부터 열립니다.</div>
 </section>
 
 <section id="resorts">
@@ -153,14 +156,10 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
   <h2>💰 예산 계산기</h2>
   <p class="sub">숫자를 바꾸면 바로 다시 계산됩니다. 숙박비 등 임시값은 실제 견적으로 바꿔 넣으세요.</p>
   <div class="form">
-    <label class="f">인원<input type="number" id="b_people" min="1" value="4"></label>
-    <label class="f">항공 왕복 1인 (원) <small>선택한 항공편으로 자동 입력</small><input type="number" id="b_fare" step="10000"></label>
-    <label class="f">2월 운임 할증 (%)<input type="number" id="b_surge" value="20" step="5"></label>
-    <label class="f">위탁수하물 총액 (원)<input type="number" id="b_bag" value="180000" step="10000"></label>
-    <label class="f">좌석 지정 총액 (원)<input type="number" id="b_seat" value="150000" step="10000"></label>
-    <label class="f">숙박 1박 (원) <small>임시값, 실제 가격으로 수정하세요</small><input type="number" id="b_hotel" value="300000" step="10000"></label>
-    <label class="f">숙박 일수<input type="number" id="b_nights" value="4" min="1"></label>
-    <label class="f">레이트 체크아웃 (원)<input type="number" id="b_late" value="100000" step="10000"></label>
+    <label class="f">항공권 결제 총액 (4인, 원) <small>트립닷컴 결제 금액을 넣으세요</small><input type="number" id="b_air" value="2329800" step="10000"></label>
+    <label class="f">숙박 1박 (원) <small>임시값, 실제 가격으로 수정하세요</small><input type="number" id="b_hotel" value="400000" step="10000"></label>
+    <label class="f">숙박 일수<input type="number" id="b_nights" value="5" min="1"></label>
+    <label class="f">여행 일수 (식비 계산)<input type="number" id="b_days" value="6" min="1"></label>
     <label class="f">식비 1일 가족 (원)<input type="number" id="b_food" value="150000" step="10000"></label>
     <label class="f">투어·입장료 총액 (원)<input type="number" id="b_tour" value="400000" step="10000"></label>
     <label class="f">교통 (그랩 등) 총액 (원)<input type="number" id="b_taxi" value="150000" step="10000"></label>
@@ -214,38 +213,28 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
 <script type="module">
 import { FIREBASE_CONFIG, PLAN_ID } from "./firebase-config.js";
 
-const FLIGHTS = {
-  outbound: [
-    {id:"vj879", name:"비엣젯 VJ879", time:"인천 07:00 → 다낭 09:40", fare:100000, desc:"가장 저렴 · 새벽 4시쯤 집에서 출발"},
-    {id:"7c_am", name:"제주항공 오전편", time:"인천 10:05 → 다낭 13:05", fare:110000, desc:"아이들 컨디션에 무난한 시간"},
-    {id:"ke457", name:"대한항공 KE457", time:"인천 11:10 → 다낭 14:15", fare:368000, desc:"수하물·기내식 포함 · 비쌈"}
-  ],
-  inbound: [
-    {id:"rs512", name:"에어서울 RS512", time:"다낭 00:40 → 인천 07:15 (2/20 출발)", fare:90000, desc:"가장 저렴"},
-    {id:"vj878", name:"비엣젯 VJ878", time:"다낭 23:45 → 인천 06:00 (2/19 출발)", fare:140000, desc:"자정 전 출발"},
-    {id:"ze594", name:"이스타 ZE594", time:"다낭 00:25 → 인천 06:55 (2/20 출발)", fare:110000, desc:""},
-    {id:"ke458", name:"대한항공 KE458", time:"다낭 15:45 → 인천 22:05 (2/19 출발)", fare:368000, desc:"오후 귀국 · 비쌈"}
-  ]
-};
+const DEFAULT_FLIGHTS = [
+  {label:"가는 편", airline:"베트남항공", no:"VN431", date:"2027-02-18 (목)", dep:"인천 10:10", arr:"다낭 13:10"},
+  {label:"오는 편", airline:"베트남항공", no:"", date:"2027-02-23 (화)", dep:"다낭 16:15", arr:"인천 약 22:30"}
+];
+const FLIGHT_FIELDS = [["airline","항공사"],["no","편명"],["date","날짜"],["dep","출발"],["arr","도착"]];
 const FLIGHT_LINKS = [
-  ["스카이스캐너 (2/15~2/20)", "https://www.skyscanner.co.kr/transport/flights/icn/dad/270215/270220/?adultsv2=4"],
-  ["구글 항공권", "https://www.google.com/travel/flights?hl=ko&q=Flights%20from%20ICN%20to%20DAD%20on%202027-02-15%20through%202027-02-20"],
-  ["비엣젯", "https://www.vietjetair.com/ko"],
-  ["에어서울", "https://flyairseoul.com"],
-  ["제주항공", "https://www.jejuair.net"],
-  ["이스타항공", "https://www.eastarjet.com"],
-  ["대한항공", "https://www.koreanair.com/flights/en/flights-from-seoul-to-da-nang"]
+  ["트립닷컴 (로그인 → 내 예약)", "https://kr.trip.com/"],
+  ["베트남항공 예약 관리·체크인", "https://www.vietnamairlines.com/"],
+  ["VN431 운항 현황", "https://us.trip.com/flights/status-vn431/"],
+  ["트립닷컴 e티켓 안내", "https://kr.trip.com/blog/trip-e-ticket/"],
+  ["트립닷컴 체크인 안내", "https://kr.trip.com/blog/trip-flight-check-in/"]
 ];
 // 가격은 2026년 10월 검색 기준 참고값 (날짜·객실 조건이 제각각)
 const RESORTS = [
   {id:"hyatt", name:"하얏트 리젠시 다낭", tag:"가족 종합 1순위 · 추천", pros:["논누억 해변 바로 앞","야외 수영장 5개·워터슬라이드","키즈클럽 Camp Hyatt","2베드룸 레지던스 (4인 기준, 주방)"], con:"모래 해변이라 스노클링은 어려움", rating:"4.5/5",
-    price:"일반 객실 20만 원대 초중반 · <b>2베드룸 레지던스 약 40만 원대</b> → 4박 약 160~180만 원",
+    price:"일반 객실 20만 원대 초중반 · <b>2베드룸 레지던스 약 40만 원대</b> → 5박 약 200~225만 원",
     links:[["공식 사이트","https://www.hyatt.com/hyatt-regency/en-US/danhr-hyatt-regency-danang-resort-and-spa"],["객실 비교 글","https://www.tripstore.kr/blog/%EB%8B%A4%EB%82%AD-%EA%B0%80%EC%A1%B1-%EC%97%AC%ED%96%89-%ED%95%98%EC%96%8F%ED%8A%B8-%EB%A6%AC%EC%A0%A0%EC%8B%9C-%EA%B0%9D%EC%8B%A4-%EB%B9%84%EA%B5%90"],["투어비스","https://tourvis.com/hotel/hotels/18925"]]},
   {id:"sheraton", name:"쉐라톤 그랜드 다낭", tag:"수영장 놀이 1순위", pros:["250m 인피니티 풀","어린이 풀·무료 워터파크","키즈클럽·해변 활동"], con:"시내에서 다소 멂", rating:"4.8/5",
     price:"일반 객실 약 21만 원 · 4인 패밀리룸 가격은 직접 확인 필요",
     links:[["공식 사이트 (메리어트)","https://www.marriott.com/ko/hotels/dadsi-sheraton-grand-danang-resort/"],["카약 가격 비교","https://www.kayak.co.kr/다낭-호텔-쉐라톤-그랜드-다낭-비치-리조트-스파.3602259.ksp"]]},
   {id:"ic", name:"인터컨티넨탈 선 페닌슐라", tag:"해변·고급도 1순위", pros:["손트라 700m 전용 만","스노클링 가능성 가장 높음","키즈클럽 Planet Trekkers"], con:"가장 비싸고 시내 이동 불편, 2월엔 파도 변수", rating:"4.9/5",
-    price:"약 59만 원부터 · 1베드룸 라군 빌라가 성인 2 + 아동 2 → 4박 240만 원 이상",
+    price:"약 59만 원부터 · 1베드룸 라군 빌라가 성인 2 + 아동 2 → 5박 300만 원 이상",
     links:[["공식 사이트","https://www.danang.intercontinental.com/"],["몽키트래블","https://vn.monkeytravel.com/user/product/product_info.php?product_id=1076761497"],["마이리얼트립","https://accommodation.myrealtrip.com/union/products/1192124"]]},
   {id:"naman", name:"나만 리트리트", tag:"조용한 가족 휴양", pros:["전용 수영장 빌라","현대적이고 조용함","다낭·호이안 사이"], con:"어린이 시설 규모는 작음", rating:"4.8/5",
     price:"가격 확인 필요 (풀빌라 기준으로 검색)",
@@ -256,24 +245,40 @@ const RESORTS = [
 ];
 const linkHtml = arr => arr.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join("");
 const DAYS = [
-  {d:"Day 1 · 2/15(월)", items:["07:00 인천 출발 → 09:40 다낭 도착","그랩으로 리조트 이동 (20~40분), 짐 맡기기","미케 해변 근처 점심 (쌀국수·반쎄오)","체크인 후 수영장 물놀이"]},
-  {d:"Day 2 · 2/16(화)", items:["리조트 수영장·해변 종일 휴식","키즈클럽 프로그램 확인","저녁 한강변 야경 · 한시장 구경"]},
-  {d:"Day 3 · 2/17(수)", items:["바다가 잔잔하면 손트라반도 오전 스노클링 투어","린응사 해수관음상","오후 마블마운틴 (오행산) 동굴 탐험"]},
-  {d:"Day 4 · 2/18(목)", items:["바나힐 골든브릿지·놀이공원 (정상은 쌀쌀하니 겉옷 챙기기)","또는 비 오는 날엔 리조트 휴식 + 마사지"]},
-  {d:"Day 5 · 2/19(금) → 2/20 새벽", items:["체크아웃 (레이트 체크아웃 또는 짐 맡기고 수영장)","오후 호이안 올드타운 · 등불 야경 · 소원배","21:30쯤 다낭 공항 도착 (호이안에서 40~50분)","2/20 00:40 출발 → 07:15 인천 도착"]}
+  {d:"Day 1 · 2/18(목)", items:["10:10 인천 출발 → 13:10 다낭 도착 (베트남항공)","그랩으로 리조트 이동 (20~40분) · 15시 전후 체크인","리조트 수영장에서 가볍게 물놀이","저녁 미케 해변 근처 식당"]},
+  {d:"Day 2 · 2/19(금)", items:["리조트 수영장·해변 종일 휴식","키즈클럽 프로그램 확인","저녁 한강변 야경 · 한시장 구경"]},
+  {d:"Day 3 · 2/20(토)", items:["바다가 잔잔하면 손트라반도 오전 스노클링 투어","린응사 해수관음상","🐉 21:00 용다리 불·물 쇼 (토·일 밤에만)"]},
+  {d:"Day 4 · 2/21(일)", items:["바나힐 골든브릿지·놀이공원 (정상은 쌀쌀하니 겉옷 챙기기)","비 오는 날엔 리조트 휴식 + 마사지로 교체","용다리 쇼를 어제 못 봤으면 오늘 21:00"]},
+  {d:"Day 5 · 2/22(월)", items:["오전 마블마운틴 (오행산) 동굴 탐험","오후 호이안 올드타운 · 등불 야경 · 소원배","호이안에서 저녁 후 리조트 복귀"]},
+  {d:"Day 6 · 2/23(화)", items:["조식 후 마지막 수영 · 12시 체크아웃","점심 후 13:30쯤 다낭 공항 도착 (국제선 2시간 반 전)","16:15 다낭 출발 → 인천 밤 도착"]}
 ];
 const DEFAULT_CHECKS = [
-  "여권 유효기간 6개월 이상 확인 (가족 4명)","항공권 가격 알림 설정 (스카이스캐너·구글)","항공권 예약 (심야편 날짜 확인!)",
-  "리조트 예약 · 레이트 체크아웃 문의","위탁수하물·좌석 지정 추가","여행자보험 가입","유심/eSIM 구매",
-  "그랩 앱 설치·결제수단 등록","환전 (달러 → 현지에서 동)","아이들 래시가드·아쿠아슈즈","스노클 마스크 (아이 사이즈)","상비약·선크림·모기 기피제"
+  "항공권 예약 (트립닷컴 · 베트남항공)","여권 유효기간 6개월 이상 확인 (가족 4명)","e티켓에서 영문 이름·수하물 허용량 확인",
+  "리조트 예약 (2/18~2/23, 5박, 성인 2 + 아동 2)","여행자보험 가입","유심/eSIM 구매",
+  "그랩 앱 설치·결제수단 등록","환전 (달러 → 현지에서 동)","아이들 래시가드·아쿠아슈즈","스노클 마스크 (아이 사이즈)","상비약·선크림·모기 기피제",
+  "베트남항공 온라인 체크인 (출발 24시간 전)"
 ];
+// v1(저가항공·2/15 일정) 저장본을 v2(베트남항공·2/18 일정)로 바꿈. 바뀌었으면 true
+function migrate(s){
+  if((s.v||1) >= 2) return false;
+  delete s.outbound; delete s.inbound;
+  if(s.budget){ ["b_people","b_fare","b_surge","b_bag","b_seat","b_late"].forEach(k=>delete s.budget[k]); if(s.budget.b_nights=="4") delete s.budget.b_nights; if(s.budget.b_hotel=="300000") delete s.budget.b_hotel; }
+  const old = (s.checks||[]).filter(c=>!/항공권 가격 알림|항공권 예약|위탁수하물·좌석|리조트 예약/.test(c.t));
+  s.checks = [{t:DEFAULT_CHECKS[0],done:true}, {t:DEFAULT_CHECKS[2],done:false}, {t:DEFAULT_CHECKS[3],done:false}, ...old, {t:DEFAULT_CHECKS[11],done:false}];
+  const notes = Object.values(s.dayNotes||{}).filter(x=>x && x.trim());
+  if(notes.length) s.note = (s.note ? s.note+"\n\n" : "") + "[이전 일정(2/15~) 날짜별 메모]\n" + notes.join("\n");
+  s.dayNotes = {};
+  s.v = 2;
+  return true;
+}
 
 const KEY = "danang-planner-v1", THEME_KEY = "danang-planner-theme";
-const defaults = () => ({outbound:"vj879", inbound:"rs512", resort:null, stars:{}, budget:{}, dayNotes:{}, checks:DEFAULT_CHECKS.map(t=>({t,done:false})), note:""});
+const defaults = () => ({v:2, flights:structuredClone(DEFAULT_FLIGHTS), booking:{}, resort:null, stars:{}, budget:{}, dayNotes:{},
+  checks:DEFAULT_CHECKS.map((t,i)=>({t,done:i===0})), note:""});
 let state = defaults();
 let theme = null;
 function load(){
-  try{ const s = JSON.parse(localStorage.getItem(KEY)); if(s){ delete s.theme; state = Object.assign(state, s); } }catch(e){}
+  try{ const s = JSON.parse(localStorage.getItem(KEY)); if(s){ delete s.theme; migrate(s); state = Object.assign(state, s); } }catch(e){}
   try{ theme = localStorage.getItem(THEME_KEY); }catch(e){}
 }
 function save(){
@@ -292,9 +297,11 @@ async function push(){
   catch(e){ console.error(e); setSync("⚠️ 저장 실패"); }
 }
 function applyRemote(data){
-  state = Object.assign(defaults(), JSON.parse(data));
-  try{ localStorage.setItem(KEY, data); }catch(e){}
+  const s = JSON.parse(data), migrated = migrate(s);
+  state = Object.assign(defaults(), s);
+  try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
   renderAll();
+  if(migrated) save();
 }
 async function initSync(){
   if(!FIREBASE_CONFIG){ setSync("이 기기에만 저장"); return; }
@@ -336,13 +343,17 @@ async function initSync(){
 const won = n => Math.round(n).toLocaleString("ko-KR") + "원";
 const $ = id => document.getElementById(id);
 
+const esc = s => String(s??"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
 function renderFlights(){
-  for(const dir of ["outbound","inbound"]){
-    $(dir).innerHTML = FLIGHTS[dir].map(f=>`
-      <label class="opt"><input type="radio" name="${dir}" value="${f.id}" ${state[dir]===f.id?"checked":""}>
-        <div><b>${f.name}</b>${f.time}<br><small>편도 약 ${won(f.fare)}${f.desc?" · "+f.desc:""}</small></div></label>`).join("");
-    $(dir).querySelectorAll("input").forEach(i=>i.onchange=()=>{ state[dir]=i.value; state.budget.b_fare=null; save(); syncFare(); calc(); });
-  }
+  $("flightCards").innerHTML = state.flights.map((f,i)=>`
+    <div class="card" style="cursor:default"><span class="tag">${esc(f.label)}</span>
+      ${FLIGHT_FIELDS.map(([k,t])=>`<label class="f">${t}<input type="text" data-i="${i}" data-k="${k}" value="${esc(f[k])}" placeholder="${k==="no"?"e티켓에서 확인":""}"></label>`).join("")}
+    </div>`).join("");
+  $("flightCards").querySelectorAll("input").forEach(el=>el.oninput=()=>{ state.flights[el.dataset.i][el.dataset.k]=el.value; save(); });
+  $("bookingForm").querySelectorAll("input").forEach(el=>{
+    el.value = state.booking[el.dataset.k]||"";
+    el.oninput=()=>{ state.booking[el.dataset.k]=el.value.trim(); save(); };
+  });
 }
 function renderResorts(){
   $("resortGrid").innerHTML = RESORTS.map(r=>`
@@ -361,16 +372,12 @@ function renderResorts(){
     state.stars[id] = state.stars[id]===n ? 0 : n; save(); renderResorts();
   });
 }
-const BIDS = ["b_people","b_fare","b_surge","b_bag","b_seat","b_hotel","b_nights","b_late","b_food","b_tour","b_taxi","b_etc"];
-function syncFare(){
-  const o = FLIGHTS.outbound.find(f=>f.id===state.outbound), i = FLIGHTS.inbound.find(f=>f.id===state.inbound);
-  if(state.budget.b_fare==null) $("b_fare").value = (o?o.fare:0)+(i?i.fare:0);
-}
+const BIDS = ["b_air","b_hotel","b_nights","b_days","b_food","b_tour","b_taxi","b_etc"];
 function calc(){
   const v = id => +$(id).value || 0;
-  const people=v("b_people"), air = v("b_fare")*people*(1+v("b_surge")/100) + v("b_bag") + v("b_seat");
-  const hotel = v("b_hotel")*v("b_nights") + v("b_late");
-  const local = v("b_food")*5 + v("b_tour") + v("b_taxi") + v("b_etc");
+  const air = v("b_air");
+  const hotel = v("b_hotel")*v("b_nights");
+  const local = v("b_food")*v("b_days") + v("b_tour") + v("b_taxi") + v("b_etc");
   $("t_air").textContent=won(air); $("t_hotel").textContent=won(hotel); $("t_local").textContent=won(local); $("t_all").textContent=won(air+hotel+local);
 }
 function renderBudget(){
@@ -378,7 +385,7 @@ function renderBudget(){
     if(state.budget[id]!=null) $(id).value = state.budget[id];
     $(id).oninput=()=>{ state.budget[id]=$(id).value; save(); calc(); };
   });
-  syncFare(); calc();
+  calc();
 }
 function renderDays(){
   $("days").innerHTML = DAYS.map((d,i)=>`<div class="day"><h3>${d.d}</h3><ul>${d.items.map(x=>`<li>${x}</li>`).join("")}</ul>
@@ -402,7 +409,7 @@ $("exportBtn").onclick=()=>{
 };
 $("importFile").onchange=e=>{
   const f=e.target.files[0]; if(!f) return;
-  f.text().then(t=>{ try{ const s=JSON.parse(t); delete s.theme; state=Object.assign(defaults(),s); save(); renderAll(); }catch(err){ alert("파일을 읽을 수 없습니다."); } });
+  f.text().then(t=>{ try{ const s=JSON.parse(t); delete s.theme; migrate(s); state=Object.assign(defaults(),s); save(); renderAll(); }catch(err){ alert("파일을 읽을 수 없습니다."); } });
 };
 $("resetBtn").onclick=()=>{ if(confirm("모든 선택과 메모를 초기화할까요? (동기화 중이면 모든 기기에서 초기화됩니다)")){ state=defaults(); save(); renderAll(); } };
 $("themeBtn").onclick=()=>{
