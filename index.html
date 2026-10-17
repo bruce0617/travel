@@ -124,7 +124,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
     <tr><th>날짜</th><td>2/18(목) 출발 ~ 2/23(화) 귀국 (현지 5박)</td></tr>
     <tr><th>날씨</th><td>낮 약 25℃ · 밤 약 20℃ · 바다 약 23℃. 우기 끝무렵이라 흐리거나 쌀쌀한 날이 섞일 수 있음 → 아이들 래시가드 필수</td></tr>
     <tr><th>설 연휴</th><td>2027년 설 연휴(2/5~2/8 전후)가 끝나고 열흘 뒤라 성수기를 피함</td></tr>
-    <tr><th>항공</th><td>✅ 베트남항공 · 가는 편 2/18 인천 10:10 / 오는 편 2/23 다낭 16:15 (트립닷컴 예약)</td></tr>
+    <tr><th>항공</th><td>✅ 베트남항공 · 가는 편 2/18 인천 <b>T1</b> 10:10 / 오는 편 2/23 다낭 16:15 (트립닷컴 예약)</td></tr>
     <tr><th>숙소</th><td>⏳ 아직 미정 · <b>2/18 체크인 ~ 2/23 체크아웃, 5박</b>으로 검색</td></tr>
     <tr><th>스노클링</th><td>다낭 해변은 모래 바닥이라 물고기 보기 어려움. 참섬은 2월에 결항이 잦아 <b>손트라반도 오전 투어</b>를 날씨 보고 결정</td></tr>
   </table></div>
@@ -145,7 +145,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
   <div class="note">🔒 여권번호·카드번호는 여기 적지 마세요. 예약번호는 Google 로그인한 사람만 볼 수 있게 저장됩니다.</div>
   <div class="links" id="flightLinks" style="margin-top:10px"></div>
   <h3 style="font-size:1rem;margin:18px 0 6px">🚌 공항 가는 길 · 8837 공항버스</h3>
-  <p class="sub" style="margin-bottom:8px">2/18(목) <b>06:00</b> 집 앞 탑승 추천 (여유 05:40 · 예비 06:20) · 성인 16,800원 · T1 먼저, T2는 15~20분 뒤. 새벽 버스는 만석이면 못 탈 수 있으니 <b>미리 예매</b>하세요 (출발 20분 전까지 가능).</p>
+  <p class="sub" style="margin-bottom:8px">2/18(목) <b>06:00</b> 집 앞 탑승 추천 (여유 05:40 · 예비 06:20) · 성인 16,800원 · <b>T1(제1여객터미널)에서 하차</b> (T2보다 먼저 정차). 새벽 버스는 만석이면 못 탈 수 있으니 <b>미리 예매</b>하세요 (출발 20분 전까지 가능).</p>
   <div class="links" id="busLinks"></div>
   <div class="note">💡 <b>트립닷컴 예약은 웹에 자동으로 연결할 수 없어요</b> (개인 예약을 읽어 오는 공개 기능이 없음). 대신 예약번호를 위에 적어 두고, 위 버튼으로 트립닷컴·베트남항공 예약 관리 화면을 바로 여세요. 온라인 체크인은 보통 출발 24시간 전부터 열립니다.</div>
 </section>
@@ -256,7 +256,7 @@ const RESORTS = [
 ];
 const linkHtml = arr => arr.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join("");
 const DAYS = [
-  {d:"Day 1 · 2/18(목)", items:["🚌 06:00 집 앞에서 8837 공항버스 탑승 (여유 있게 05:40 / 놓치면 06:20) · 성인 16,800원","07:30~08:00 인천공항 도착 → 체크인 (T1 먼저, T2는 15~20분 뒤 도착)","10:10 인천 출발 → 13:10 다낭 도착 (베트남항공)","그랩으로 리조트 이동 (20~40분) · 15시 전후 체크인","리조트 수영장에서 가볍게 물놀이","저녁 미케 해변 근처 식당"]},
+  {d:"Day 1 · 2/18(목)", items:["🚌 06:00 집 앞에서 8837 공항버스 탑승 (여유 있게 05:40 / 놓치면 06:20) · 성인 16,800원","07:30~07:40 인천공항 T1(제1여객터미널) 하차 → 3층 출국장 베트남항공 카운터 체크인","10:10 인천 출발 → 13:10 다낭 도착 (베트남항공)","그랩으로 리조트 이동 (20~40분) · 15시 전후 체크인","리조트 수영장에서 가볍게 물놀이","저녁 미케 해변 근처 식당"]},
   {d:"Day 2 · 2/19(금)", items:["리조트 수영장·해변 종일 휴식","키즈클럽 프로그램 확인","저녁 한강변 야경 · 한시장 구경"]},
   {d:"Day 3 · 2/20(토)", items:["바다가 잔잔하면 손트라반도 오전 스노클링 투어","린응사 해수관음상","🐉 21:00 용다리 불·물 쇼 (토·일 밤에만)"]},
   {d:"Day 4 · 2/21(일)", items:["바나힐 골든브릿지·놀이공원 (정상은 쌀쌀하니 겉옷 챙기기)","비 오는 날엔 리조트 휴식 + 마사지로 교체","용다리 쇼를 어제 못 봤으면 오늘 21:00"]},
@@ -268,7 +268,7 @@ const DEFAULT_CHECKS = [
   "리조트 예약 (2/18~2/23, 5박, 성인 2 + 아동 2)","여행자보험 가입","유심/eSIM 구매",
   "그랩 앱 설치·결제수단 등록","환전 (달러 → 현지에서 동)","아이들 래시가드·아쿠아슈즈","스노클 마스크 (아이 사이즈)","상비약·선크림·모기 기피제",
   "베트남항공 온라인 체크인 (출발 24시간 전)",
-  "e티켓에서 인천공항 터미널(T1/T2) 확인","귀국일 밤 귀가 방법 정하기 (8837 막차 22:00 이전 종료)",
+  "인천공항 터미널 확인 → T1 (제1여객터미널)","귀국일 밤 귀가 방법 정하기 (8837 막차 22:00 이전 종료)",
   "8837 공항버스 예매 (2/18 06:00, 4명 · 버스타고)"
 ];
 // v1(저가항공·2/15 일정) 저장본을 v2(베트남항공·2/18 일정)로 바꿈. 바뀌었으면 true
@@ -283,6 +283,8 @@ function migrate(s){
   const addChecks = (from, to) => { s.checks = [...(s.checks||[]), ...DEFAULT_CHECKS.slice(from, to).map(t=>({t,done:false}))]; };
   if(s.v === 2){ addChecks(12, 14); s.v = 3; changed = true; }
   if(s.v === 3){ addChecks(14, 15); s.v = 4; changed = true; }
+  // v5: 터미널이 T1으로 확인됨
+  if(s.v === 4){ for(const c of s.checks||[]) if(c.t.startsWith("e티켓에서 인천공항 터미널") || c.t === DEFAULT_CHECKS[12]){ c.t = DEFAULT_CHECKS[12]; c.done = true; } s.v = 5; changed = true; }
   if((s.v||1) >= 2) return changed;
   delete s.outbound; delete s.inbound;
   if(s.budget){ ["b_people","b_fare","b_surge","b_bag","b_seat","b_late"].forEach(k=>delete s.budget[k]); if(s.budget.b_nights=="4") delete s.budget.b_nights; if(s.budget.b_hotel=="300000") delete s.budget.b_hotel; }
@@ -297,8 +299,8 @@ function migrate(s){
 }
 
 const KEY = "danang-planner-v1", THEME_KEY = "danang-planner-theme";
-const defaults = () => ({v:4, flights:structuredClone(DEFAULT_FLIGHTS), booking:{}, resort:null, stars:{}, budget:{}, dayNotes:{},
-  checks:DEFAULT_CHECKS.map((t,i)=>({t,done:i===0})), note:""});
+const defaults = () => ({v:5, flights:structuredClone(DEFAULT_FLIGHTS), booking:{}, resort:null, stars:{}, budget:{}, dayNotes:{},
+  checks:DEFAULT_CHECKS.map((t,i)=>({t,done:i===0||i===12})), note:""});
 let state = defaults();
 let theme = null;
 function load(){
