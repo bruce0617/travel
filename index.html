@@ -116,6 +116,15 @@ textarea{min-height:70px;resize:vertical}
 .more dd{margin:0}
 .blogs{border-top:1px dashed var(--line);padding-top:8px;display:flex;flex-direction:column;gap:6px}
 .blogs > span{font-size:.82rem;color:var(--muted)}
+.hotel{border:1px solid var(--accent);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.hotel h3{margin:0;font-size:1.15rem}
+.hotel .facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.hotel .fact{background:var(--surface-2);border-radius:10px;padding:8px 10px}
+.hotel .fact span{display:block;font-size:.78rem;color:var(--muted)}
+.hotel .fact b{font-size:.95rem}
+.hotel dl{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;margin:0;font-size:.88rem}
+.hotel dt{color:var(--muted);white-space:nowrap}
+.hotel dd{margin:0}
 .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:.8rem;color:var(--muted)}
 .sync{align-self:center;white-space:nowrap;font-size:.8rem;color:var(--muted)}
 footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
@@ -129,7 +138,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
     <div class="chips">
       <span class="chip">2027.02.18(목) → 02.23(화)</span>
       <span class="chip">✈️ 베트남항공 예약 완료</span>
-      <span class="chip">🏨 숙소 미정 (4박 + 마지막 1박)</span>
+      <span class="chip">🏨 푸라마 리조트 다낭 예약 완료</span>
       <span class="chip">수영·물놀이 중심</span>
     </div>
     <div class="bar" style="margin-top:14px">
@@ -139,7 +148,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
   </div>
 </header>
 <nav><div class="wrap">
-  <a href="#glance">일정 한눈에</a><a href="#overview">요약</a><a href="#flights">항공</a><a href="#resorts">리조트</a>
+  <a href="#glance">일정 한눈에</a><a href="#overview">요약</a><a href="#flights">항공</a><a href="#resorts">숙소</a>
   <a href="#budget">예산</a><a href="#itinerary">상세 일정</a><a href="#checklist">체크리스트</a><a href="#notes">메모</a>
   <button class="btn ghost" id="themeBtn" style="margin-left:auto;padding:4px 10px">🌓</button>
 </div></nav>
@@ -148,7 +157,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
 
 <section id="glance">
   <h2>📅 한눈에 보는 일정</h2>
-  <p class="sub">2/18(목) ~ 2/23(화) · 1차 리조트 4박 + 마지막 밤 특별한 1박. 자세한 시간은 <a href="#itinerary">상세 일정</a> 페이지에 있어요.</p>
+  <p class="sub">2/18(목) ~ 2/23(화) · 푸라마 리조트 다낭 5박 (조식 포함). 자세한 시간은 <a href="#itinerary">상세 일정</a> 페이지에 있어요.</p>
   <div class="glance" id="glanceGrid"></div>
   <div class="legend"><span>🏖️ 휴양</span><span>🚌✈️ 이동</span><span>🛶🏮🌉🐉 명소</span></div>
 </section>
@@ -161,8 +170,8 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
     <tr><th>날씨</th><td>낮 약 25℃ · 밤 약 20℃ · 바다 약 23℃. 우기 끝무렵이라 흐리거나 쌀쌀한 날이 섞일 수 있음 → 아이들 래시가드 필수</td></tr>
     <tr><th>설 연휴</th><td>2027년 설 연휴(2/5~2/8 전후)가 끝나고 열흘 뒤라 성수기를 피함</td></tr>
     <tr><th>항공</th><td>✅ 베트남항공 · 가는 편 2/18 인천 <b>T1</b> 10:10 / 오는 편 2/23 다낭 16:15 (트립닷컴 예약)</td></tr>
-    <tr><th>숙소</th><td>1차: ⏳ <b>미정</b> · 4박 (2/18~2/22)<br>2차: ⏳ <b>마지막 밤 특별한 1박</b> (2/22~2/23) · 후보: 프리미어 빌리지 풀빌라, 나만 리트리트 (인터컨티넨탈은 비싸서 보류)</td></tr>
-    <tr><th>일정 원칙</th><td>숙소는 <b>1차 리조트 4박 + 마지막 밤 특별한 1박</b> (이동은 한 번만) · 외출은 하루 한 번 · 명소: <b>호이안 바구니배·등불 축제(2/19)</b>, <b>한시장·용다리 불쇼(2/20)</b>, <b>바나힐 골든브릿지(2/21)</b> · 2/22는 인터컨티넨탈로 옮겨 휴양</td></tr>
+    <tr><th>숙소</th><td>✅ <b>푸라마 리조트 다낭 · 오션 스튜디오 스위트</b> · 5박 (2/18~2/23) · 조식 포함 · 체크인 14:00 / 체크아웃 11:00 이전 · 체크인 때 보증금 51,581원 · ⚠️ 변경·취소 불가 (환불 안 됨)</td></tr>
+    <tr><th>일정 원칙</th><td>숙소는 <b>푸라마 한 곳에서 5박</b> (짐 옮기지 않기) · 외출은 하루 한 번 · 명소: <b>호이안 바구니배·등불 축제(2/19)</b>, <b>한시장·용다리 불쇼(2/20)</b>, <b>바나힐 골든브릿지(2/21)</b> · 2/22는 인터컨티넨탈로 옮겨 휴양</td></tr>
     <tr><th>스노클링</th><td>다낭 해변은 모래 바닥이라 물고기 보기 어려움. 참섬은 2월에 결항이 잦아 <b>손트라반도 오전 투어</b>를 날씨 보고 결정</td></tr>
   </table></div>
 </section>
@@ -188,13 +197,18 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
 </section>
 
 <section id="resorts">
-  <h2>🏖️ 리조트</h2>
-  <p class="sub"><b>1차 리조트(4박, 2/18~2/22)</b>는 아직 미정이에요. 카드를 눌러 선택하고 별점으로 선호도를 매겨보세요. 마지막 밤 숙소는 아래 <b>🌙 마지막 1박 후보</b>에서 골라요.</p>
-  <div class="note">👨‍👩‍👧‍👧 <b>4인 가족은 일반 객실에 못 들어갈 수 있어요.</b> 일반 객실은 보통 성인 2 + 아이 1까지라, 초등학생 둘이면 레지던스·빌라·커넥팅룸 같은 <b>가족형 객실</b>로 비교하세요. 예약 사이트에서 인원은 <b>성인 2 + 아동 2(나이 입력)</b>로 검색하세요.</div>
-  <div class="grid" id="resortGrid"></div>
-  <h3 style="font-size:1.1rem;margin:26px 0 4px">🌙 마지막 1박 후보 (2/22~2/23)</h3>
-  <p class="sub">인터컨티넨탈(1박 약 105만~200만 원+)보다 저렴하면서 특별한 숙소예요. 전용 수영장 풀빌라 위주로 골랐어요.</p>
-  <div class="grid" id="lastGrid"></div>
+  <h2>🏨 숙소 · 예약 완료</h2>
+  <p class="sub">푸라마 리조트 다낭 한 곳에서 5박 해요. 예약번호를 적어 두면 Google 로그인한 사람만 볼 수 있게 저장됩니다.</p>
+  <div class="hotel" id="hotelBox"></div>
+  <h3 style="font-size:1rem;margin:18px 0 6px">🎫 숙소 예약 정보</h3>
+  <div class="form" id="hotelForm">
+    <label class="f">예약 사이트<input type="text" data-k="hotelSite" placeholder="예: 트립닷컴, 아고다"></label>
+    <label class="f">숙소 예약번호<input type="text" data-k="hotelNo" placeholder="예약 확인 메일에 있어요"></label>
+    <label class="f">보증금 결제·환불 메모<input type="text" data-k="hotelDeposit" placeholder="예: 2/18 카드 결제, 2/23 환불 확인"></label>
+  </div>
+  <div class="note">⚠️ <b>변경·취소가 안 되는 환불 불가 상품이에요.</b> 날짜를 바꾸거나 취소하면 결제한 2,057,172원을 돌려받지 못해요. 그래서 <b>여행자보험</b>을 들 때 여행 취소 보상이 되는지 확인해 두면 좋아요.</div>
+  <div class="note">💳 <b>체크인 때 보증금 51,581원을 추가로 결제해야 해요.</b> 신용카드를 준비하세요. 이 금액은 약 100만 동으로, 미니바·추가 요금에 대비한 보증금이라 문제가 없으면 <b>체크아웃 때 돌려받거나 카드 승인이 취소</b>되는 경우가 보통이에요. 체크인할 때 환불 방법을 꼭 물어보세요.</div>
+  <div class="note">🛏️ <b>오션 스튜디오 스위트는 킹베드 1개 구조</b>라는 후기가 있어요. 4명이 편하게 자려면 <b>엑스트라 베드</b>가 필요할 수 있으니, 예약 확인서에 인원이 성인 2 + 아동 2로 들어가 있는지와 엑스트라 베드 가능 여부를 호텔에 미리 확인하세요.</div>
 </section>
 
 <section id="budget">
@@ -202,9 +216,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
   <p class="sub">숫자를 바꾸면 바로 다시 계산됩니다. 숙박비 등 임시값은 실제 견적으로 바꿔 넣으세요.</p>
   <div class="form">
     <label class="f">항공권 결제 총액 (4인, 원) <small>트립닷컴 결제 금액을 넣으세요</small><input type="number" id="b_air" value="2329800" step="10000"></label>
-    <label class="f">메인 리조트 1박 (원) <small>임시값, 실제 가격으로 수정하세요</small><input type="number" id="b_hotel" value="400000" step="10000"></label>
-    <label class="f">메인 리조트 숙박 일수<input type="number" id="b_nights" value="4" min="1"></label>
-    <label class="f">마지막 밤 1박 (원) <small>임시값, 풀빌라 기준</small><input type="number" id="b_hotel2" value="700000" step="10000"></label>
+    <label class="f">숙박 결제 총액 (원) <small>푸라마 5박 · 조식 포함</small><input type="number" id="b_stay" value="2057172" step="10000"></label>
     <label class="f">여행 일수 (식비 계산)<input type="number" id="b_days" value="6" min="1"></label>
     <label class="f">식비 1일 가족 (원)<input type="number" id="b_food" value="150000" step="10000"></label>
     <label class="f">투어·입장료 총액 (원)<input type="number" id="b_tour" value="400000" step="10000"></label>
@@ -279,99 +291,45 @@ const BUS_LINKS = [
   ["8837 시간표", "https://nowboarding.kr/airport/icn/bus/8837"],
   ["인천공항 공식 홈페이지 (터미널·주차)", "https://www.airport.kr"]
 ];
-// 가격은 2026년 10월 검색 기준 참고값 (날짜·객실 조건이 제각각)
-const RESORTS = [
-  {id:"hyatt", name:"하얏트 리젠시 다낭", tag:"가족 종합 1순위 · 추천", pros:["논누억 해변 바로 앞","야외 수영장 5개·워터슬라이드","키즈클럽 Camp Hyatt","2베드룸 레지던스 (4인 기준, 주방)"], con:"모래 해변이라 스노클링은 어려움", rating:"4.5/5",
-    price:"일반 객실 20만 원대 초중반 · <b>2베드룸 레지던스 약 40만 원대</b> → 5박 약 200~225만 원",
-    info:[["위치","마블마운틴(오행산) 바로 옆 해변 · 공항 약 15~20분 · 호이안 약 20~30분"],
-      ["가족 객실","1~3베드룸 레지던스 (주방·식탁) — 방이 나뉘어 4인 가족에 가장 편함 · 클럽 라운지 추가 만족 후기 많음"],
-      ["아이 시설","야외 수영장 5개, 워터슬라이드, 대형 키즈클럽 Camp Hyatt"],
-      ["아쉬운 점","객실·가구가 다소 오래됐다는 후기, 일부 레지던스 동은 도로 소음 · 세면대 1개인 객실도 있음"],
-      ["우리 일정과","★★★ 마블마운틴이 바로 옆, 호이안(2/19)도 가까워 이동이 가장 짧음"]],
-    links:[["공식 사이트","https://www.hyatt.com/hyatt-regency/en-US/danhr-hyatt-regency-danang-resort-and-spa"],["투어비스","https://tourvis.com/hotel/hotels/18925"],["객실 타입 비교 (트립스토어)","https://www.tripstore.kr/blog/%EB%8B%A4%EB%82%AD-%EA%B0%80%EC%A1%B1-%EC%97%AC%ED%96%89-%ED%95%98%EC%96%8F%ED%8A%B8-%EB%A6%AC%EC%A0%A0%EC%8B%9C-%EA%B0%9D%EC%8B%A4-%EB%B9%84%EA%B5%90"],["트립어드바이저 리뷰","https://www.tripadvisor.co.kr/ShowUserReviews-g298085-d2340470-r257258326-Hyatt_Regency_Danang_Resort_and_Spa-Da_Nang.html"]],
-    naver:"하얏트 리젠시 다낭 레지던스 아이 후기", blogs:[["가족 여행 후기 · 레지던스·클럽 라운지 (개인 블로그)","https://trip.xn--o39an2bqdw74b8te7xy.com/hyatt-regency-danang-lounge/"],["레지던스·키즈풀·캠프 하얏트 후기 (브런치)","https://brunch.co.kr/@hotelscomkr/684"]]},
-  {id:"sheraton", name:"쉐라톤 그랜드 다낭", tag:"수영장 놀이 1순위", pros:["250m 인피니티 풀","어린이 풀·미니 워터파크","키즈클럽·해변 활동"], con:"시내에서 다소 멂", rating:"4.8/5",
-    price:"일반 객실 약 20~25만 원 · 4인 패밀리룸 가격은 직접 확인 필요",
-    info:[["위치","논누억 해변 (하얏트 남쪽) · 공항 약 20분 · 호이안 약 25~45분"],
-      ["가족 객실","패밀리룸·커넥팅룸 · 침대가 커서 아이와 함께 자기 편하다는 후기"],
-      ["아이 시설","250m 인피니티 풀 (얕은 유아 구역부터 점점 깊어지는 구조), 키즈풀(07~19시), 패밀리 미니 워터파크, 키즈클럽 (피자 만들기 등 쿠킹 클래스)"],
-      ["좋은 점","조식 평가가 좋고, 아이 조식 무료라는 후기 · 리조트 안에서 하루 종일 놀기 좋음"],
-      ["우리 일정과","★★☆ 하얏트와 가까워 일정은 그대로 가능, 마블마운틴은 차로 10~15분"]],
-    links:[["공식 사이트 (메리어트)","https://www.marriott.com/ko/hotels/dadsi-sheraton-grand-danang-resort/"],["카약 가격 비교","https://www.kayak.co.kr/다낭-호텔-쉐라톤-그랜드-다낭-비치-리조트-스파.3602259.ksp"],["투숙객 후기 (트립닷컴)","https://kr.trip.com/hot/hotel-review/%EC%89%90%EB%9D%BC%ED%86%A4+%EA%B7%B8%EB%9E%9C%EB%93%9C+%EB%8B%A4%EB%82%AD+%EB%A6%AC%EC%A1%B0%ED%8A%B8+%ED%9B%84%EA%B8%B0.html"]],
-    naver:"쉐라톤 그랜드 다낭 아이 가족 후기", blogs:[]},
-  {id:"naman", name:"나만 리트리트", tag:"조용한 가족 휴양", pros:["전용 수영장 빌라","현대적이고 조용함","다낭·호이안 사이"], con:"어린이 시설 규모는 작음", rating:"4.8/5",
-    price:"가격 확인 필요 (풀빌라 기준으로 검색)",
-    info:[["위치","다낭과 호이안 사이 해변 · 호이안까지 택시 약 15분"],
-      ["가족 객실","전용 수영장 풀빌라 (3베드룸 빌라도 있음)"],
-      ["특징","대나무 건축의 조용한 분위기, 바다로 이어지는 개방형 수영장, 무료 아침 요가, 스파"],
-      ["주의","아이 동반 한국어 후기가 거의 없음 → 키즈 시설은 직접 문의 필요"],
-      ["우리 일정과","★★☆ 호이안(2/19)이 가장 가까움, 바나힐은 다소 멂"]],
-    links:[["공식 사이트","https://namanretreat.com/"],["트립어드바이저 가족 리조트 목록","https://www.tripadvisor.com/HotelsList-Da_Nang-Family-Beach-Resorts-zfp12716060.html"]],
-    naver:"나만 리트리트 다낭 풀빌라 후기", blogs:[["나만 리트리트 1일 1마사지 후기 (브런치)","https://brunch.co.kr/@@wlQ/4134"]]},
-  {id:"furama", name:"푸라마 리조트 다낭", tag:"위치·휴양 균형", pros:["넓은 라군형 수영장","해변 바로 앞","시내 접근성 좋음"], con:"시설이 오래됐다는 평", rating:"4.7/5",
-    price:"가격 확인 필요",
-    info:[["위치","미케 해변 남쪽, 시내와 가까움 · 공항 약 15분 · 호이안 약 40분"],
-      ["가족 객실","라군 슈페리어 추천 · 12세 이하 아동 2명까지 무료 투숙이라는 소개 (예약 시 확인)"],
-      ["아이 시설","수영장 3개(라군 풀) + 키즈 전용 풀, 키즈클럽·탁아 서비스"],
-      ["아쉬운 점","객실이 오래돼 에어컨 소음·눅눅함 후기"],
-      ["우리 일정과","★★☆ 한시장·용다리(2/20)가 가깝고, 호이안은 조금 멂"]],
-    links:[["공식 사이트","https://furamavietnam.com/"],["트립어드바이저 리뷰","https://www.tripadvisor.co.kr/Hotel_Review-g298085-d302750-Reviews-or25-Furama_Resort_Danang-Da_Nang.html"]],
-    naver:"푸라마 리조트 다낭 아이 후기", blogs:[["푸라마 후기 · 조식·수영장 팁 (브런치)","https://brunch.co.kr/@whatsinmytrip/23"],["푸라마 풀빌라 가족여행 팁 (브런치)","https://brunch.co.kr/@mytriplog/3916"],["수영장 3개 가족여행 숙소 후기 (블로그)","https://dayoff.co.kr/whatsinmytrip/%EB%8B%A4%EB%82%AD-%ED%91%B8%EB%9D%BC%EB%A7%88%EB%A6%AC%EC%A1%B0%ED%8A%B8-%EC%88%98%EC%98%81%EC%9E%A5%EC%9D%B4-3%EA%B0%9C-%EC%9E%88%EB%8A%94-%EA%B0%80%EC%A1%B1%EC%97%AC%ED%96%89-%EC%88%99%EC%86%8C/"],["객실·수영장·가격 총정리 후기 (블로그)","https://hotel-fanatic.com/furama-resort-danang-review/"]]}
-];
-const LAST_NIGHT = [
-  {id:"premier", name:"프리미어 빌리지 다낭 (아코르)", tag:"🌙 마지막 1박 추천 · 가족 풀빌라", pros:["빌라마다 <b>전용 수영장</b>·정원","2~4베드룸 빌라 (주방 포함)","키즈클럽·그늘진 모래 놀이터","해변 바로 앞"], con:"빌라마다 관리 상태 차이 → 최근 리모델링한 빌라 요청", rating:"4.5/5",
-    price:"3베드룸 비치 빌라 1박 약 <b>$500 (약 70만 원)</b> 후기 · 낮은 날은 $290 (약 40만 원)부터 보임 → 인터컨티넨탈의 절반 이하",
-    info:[["위치","미케 해변 북쪽 끝 (손트라반도 입구) · 공항 약 15~20분 → 귀국일 이동이 짧음"],
-      ["가족 객실","전용 수영장이 딸린 2~4베드룸 빌라 · 방이 넉넉해 4인 가족에 여유 · 아기 침대·유아 의자도 제공"],
-      ["아이 시설","빌라 전용 풀, 리조트 키즈클럽, 그늘진 모래 놀이터"],
-      ["아쉬운 점","오래된 빌라는 냄새·먼지 후기 → 예약 시 리노베이션된 빌라 요청"],
-      ["💸 최저가 찾기","구글 호텔로 2/22~2/23, 성인 2·아동 2 비교 → 아코르 공식(ALL 회원가)과 비교 → 무료 취소로 잡고 가격 알림"]],
-    links:[["💸 구글 호텔 가격 비교","https://www.google.com/travel/search?q=Premier%20Village%20Danang%20Resort&hl=ko"],["트립어드바이저","https://www.tripadvisor.com/Hotel_Review-g298085-d6370235-Reviews-Premier_Village_Danang_Resort-Da_Nang.html"]],
-    naver:"프리미어 빌리지 다낭 풀빌라 가족 후기", blogs:[["3베드룸 풀빌라 숙박기 (영문 블로그)","https://zephyroustravels.com/2024/09/14/accommodation-review-premier-village-da-nang-resort-beachfront-villa-with-private-swimming-pool-da-nang-vietnam-17-21-jul-24/"],["가족 여행 후기 (트립닷컴 모먼츠)","https://us.trip.com/moments/detail/da-nang-669-122037287"]]},
-  {id:"naman_last", name:"나만 리트리트 풀빌라", tag:"🌙 마지막 1박 후보 · 조용한 풀빌라", pros:["전용 수영장 풀빌라","하루 1회 무료 마사지 후기","플로팅 조식 (사전 예약)"], con:"공항까지 약 30~40분 · 11~16세 아동 1인당 1박 150만 동(약 8만 원) 추가 요금 안내", rating:"4.8/5",
-    price:"1베드룸 풀빌라 약 $140~180 (약 20~25만 원) · 2베드룸 풀빌라 약 $589 (약 80만 원) · 4인이면 2베드룸 또는 아동 요금 확인",
-    info:[["위치","다낭과 호이안 사이 해변 · 공항 약 30~40분"],
-      ["가족 객실","1베드룸 풀빌라는 4인 투숙 가능 여부 확인 필요 · 2베드룸 풀빌라가 확실"],
-      ["특징","대나무 건축, 바다로 이어지는 인피니티 풀, 아침 요가"],
-      ["💸 최저가 찾기","구글 호텔로 비교 → 공식 사이트 직접 예약 프로모션 확인"]],
-    links:[["💸 구글 호텔 가격 비교","https://www.google.com/travel/search?q=Naman%20Retreat%20Da%20Nang&hl=ko"],["공식 사이트","https://namanretreat.com/"]],
-    naver:"나만 리트리트 풀빌라 가족 후기", blogs:[["1일 1마사지 후기 (브런치)","https://brunch.co.kr/@@wlQ/4134"]]},
-  {id:"ic", name:"인터컨티넨탈 선 페닌슐라", tag:"⏸ 보류 · 너무 비쌈 (1박 약 105만~200만 원+)", pros:["손트라 700m 전용 만","스노클링 가능성 가장 높음","키즈클럽 Planet Trekkers"], con:"가장 비싸고 시내 이동 불편, 2월엔 파도 변수", rating:"4.9/5",
-    price:"클래식룸도 보통 1박 <b>약 105만 원</b>($763, 최저 $501~최고 $1,033) + 세금·봉사료 약 15% 별도 · 4인 가족 빌라·스위트는 <b>1박 150~200만 원 이상</b>도 흔함 → 아동 추가 요금까지 포함한 총액으로 비교",
-    info:[["위치","손트라반도 산자락의 전용 만 · 공항 약 30분 · 호이안은 약 1시간으로 멂"],
-      ["가족 객실","1베드룸 라군 빌라 (성인 2 + 아동 2 기준)"],
-      ["아이 시설","무료 키즈클럽, 키즈풀과 어른 풀이 나뉘어 있음"],
-      ["주의","만 6~12세 아동은 추가 요금이 붙을 수 있다는 후기 → 예약 전 아동 요금 확인 · 산비탈이라 리조트 안 이동이 많음"],
-      ["우리 일정과","마지막 1박으로 묵기 좋음: 공항까지 약 30분이라 귀국일 이동이 짧음"],
-      ["💸 최저가 찾기","① <b>구글 호텔</b>에서 2/22~2/23, 성인 2·아동 2로 여러 예약 사이트 가격을 한 번에 비교 → ② 가장 싼 곳과 <b>IHG 공식 사이트 회원가</b>(무료 가입) 비교 → ③ 트립닷컴·마이리얼트립·몽키트래블(베트남 현지 여행사) 쿠폰 적용가 확인 → ④ 1박이라 <b>무료 취소</b> 요금으로 먼저 잡고, 가격 알림 받으며 더 싸지면 재예약 · 아동 추가 요금 포함 <b>총액</b>으로 비교"]],
-    links:[["💸 구글 호텔 가격 비교","https://www.google.com/travel/search?q=InterContinental%20Danang%20Sun%20Peninsula%20Resort&hl=ko"],["마이리얼트립 (2/22~23, 4인)","https://accommodation.myrealtrip.com/union/products/1192124?checkIn=2027-02-22&checkOut=2027-02-23&roomCount=1&adultCount=2&childCount=2"],["공식 사이트 (IHG 회원가)","https://www.danang.intercontinental.com/"],["몽키트래블","https://vn.monkeytravel.com/user/product/product_info.php?product_id=1076761497"],["트립닷컴","https://kr.trip.com/hotels/da-nang-hotel-detail-1571261/intercontinental-danang-sun-peninsula-resort-by-ihg/"]],
-    naver:"인터컨티넨탈 다낭 선페닌슐라 아이 후기", blogs:[["다낭 5성급 리조트 순위 후기 (브런치)","https://brunch.co.kr/@japanhotel/68"],["한국인이 사랑하는 다낭 리조트 BEST 5 (브런치)","https://brunch.co.kr/@hotelscomkr/1438"]]}
-];
+const HOTEL = {
+  name:"푸라마 리조트 다낭 (Furama Resort Danang)", room:"오션 스튜디오 스위트",
+  facts:[["숙박","2/18(목) ~ 2/23(화) · 5박"],["객실","오션 스튜디오 스위트"],["체크인","14:00"],["체크아웃","11:00 이전"],["식사","조식 포함 (2/19~2/23, 5회)"],["보증금","51,581원 (체크인 때 카드)"],["취소·변경","❌ 불가 · 환불 안 됨"]],
+  info:[["위치","미케 해변 남쪽 해변 바로 앞 · 공항 약 15분 · 한시장 약 15분 · 호이안 약 40분 · 바나힐 약 50분"],
+    ["객실","침실과 거실이 낮은 단차로 나뉜 스튜디오형 스위트 · 킹베드 1개라는 후기 → 4인이면 엑스트라 베드 확인"],
+    ["수영장","라군 풀 등 수영장 3개 + 키즈 전용 풀 · 저녁 7시쯤 닫는다는 후기 · 선베드는 11시 이후 부족 → 오전에 자리 잡기"],
+    ["아이 시설","무료 키즈클럽 (후기 기준 09:30~18:30) · 해변 놀이터·모래성 프로그램"],
+    ["조식","쌀국수 코너가 따로 있고 가족 여행객 평이 좋음 · 석식은 포함 안 됨"],
+    ["알아둘 점","객실이 다소 오래됐다는 후기 · 밤에 벌레가 있다는 후기 → 모기 기피제 챙기기 · 한국어 가능한 직원도 있다는 후기"]],
+  links:[["공식 사이트","https://furamavietnam.com/"],["트립어드바이저 리뷰","https://www.tripadvisor.co.kr/Hotel_Review-g298085-d302750-Reviews-or25-Furama_Resort_Danang-Da_Nang.html"]],
+  naver:"푸라마 리조트 다낭 오션 스튜디오 스위트 후기",
+  blogs:[["오션 스튜디오 스위트·객실·가격 총정리 (블로그)","https://hotel-fanatic.com/furama-resort-danang-review/"],["조식·수영장 팁 (브런치)","https://brunch.co.kr/@whatsinmytrip/23"],["풀빌라 가족여행 팁 (브런치)","https://brunch.co.kr/@mytriplog/3916"],["수영장 3개 가족여행 숙소 후기 (블로그)","https://dayoff.co.kr/whatsinmytrip/%EB%8B%A4%EB%82%AD-%ED%91%B8%EB%9D%BC%EB%A7%88%EB%A6%AC%EC%A1%B0%ED%8A%B8-%EC%88%98%EC%98%81%EC%9E%A5%EC%9D%B4-3%EA%B0%9C-%EC%9E%88%EB%8A%94-%EA%B0%80%EC%A1%B1%EC%97%AC%ED%96%89-%EC%88%99%EC%86%8C/"],["라군풀 뷰 룸 후기 (트립어드바이저)","https://www.tripadvisor.co.kr/ShowUserReviews-g298085-d302750-r1056384720-Furama_Resort_Danang-Da_Nang.html"]]
+};
 const linkHtml = arr => arr.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join("");
 const GLANCE = [
-  {day:"Day 1", date:"2/18 (목)", theme:"🚌✈️ 출발 · 리조트 도착", am:"06:00 공항버스 → 10:10 출발", pm:"13:10 다낭 도착 → 1차 리조트 체크인", ev:"리조트 수영장 · 저녁"},
-  {day:"Day 2", date:"2/19 (금)", theme:"🛶🏮 호이안 바구니배 · 등불 축제", am:"리조트 휴식", pm:"14:00 코코넛 마을 바구니배", ev:"올드타운 등불 축제 · 소원배"},
-  {day:"Day 3", date:"2/20 (토)", theme:"🏖️🐉 휴양 + 다낭 야경", am:"수영장 · 키즈클럽", pm:"15:30 한시장 쇼핑", ev:"한강변 저녁 · 21:00 용다리 불쇼"},
-  {day:"Day 4", date:"2/21 (일)", theme:"🌉 바나힐 골든브릿지", am:"07:30 출발 · 케이블카 · 골든브릿지", pm:"하산 → 리조트 수영", ev:"리조트 근처 저녁"},
-  {day:"Day 5", date:"2/22 (월)", theme:"🌙 마지막 밤 숙소로 이동 · 휴양", am:"늦은 조식 · 수영 · 12시 체크아웃", pm:"15:00 풀빌라 체크인 · 전용 수영장", ev:"마지막 밤 특식", rest:true},
-  {day:"Day 6", date:"2/23 (화)", theme:"✈️ 귀국", am:"조식 · 수영 · 12시 체크아웃", pm:"13:30 공항 → 16:15 출발", ev:"22:30 인천 도착 · 귀가"}
+  {day:"Day 1", date:"2/18 (목)", theme:"🚌✈️ 출발 · 푸라마 도착", am:"06:00 공항버스 → 10:10 출발", pm:"13:10 다낭 도착 → 14:00 푸라마 체크인", ev:"수영장 · 저녁"},
+  {day:"Day 2", date:"2/19 (금)", theme:"🛶🏮 호이안 바구니배 · 등불 축제", am:"조식 · 리조트 휴식", pm:"14:00 코코넛 마을 바구니배", ev:"올드타운 등불 축제 · 소원배"},
+  {day:"Day 3", date:"2/20 (토)", theme:"🏖️🐉 휴양 + 다낭 야경", am:"조식 · 수영장 · 키즈클럽", pm:"15:00 한시장 쇼핑", ev:"한강변 저녁 · 21:00 용다리 불쇼"},
+  {day:"Day 4", date:"2/21 (일)", theme:"🌉 바나힐 골든브릿지", am:"이른 조식 · 07:30 출발 · 골든브릿지", pm:"하산 → 수영장", ev:"리조트 근처 저녁"},
+  {day:"Day 5", date:"2/22 (월)", theme:"🏖️ 완전 휴양", am:"조식 · 수영장 · 해변", pm:"키즈클럽 · 스파 (선택: 마블마운틴)", ev:"마지막 밤 해산물 특식", rest:true},
+  {day:"Day 6", date:"2/23 (화)", theme:"✈️ 귀국", am:"조식 · 11시 전 체크아웃 · 짐 맡기기", pm:"점심 → 13:30 공항 → 16:15 출발", ev:"22:30 인천 도착 · 귀가"}
 ];
 const DAYS = [
-  {d:"Day 1 · 2/18(목) 이동 + 수영장", items:["🚌 06:00 집 앞에서 8837 공항버스 탑승 (여유 있게 05:40 / 놓치면 06:20) · 성인 16,800원","07:30~07:40 인천공항 T1(제1여객터미널) 하차 → 3층 출국장 베트남항공 카운터 체크인","10:10 인천 출발 → 13:10 다낭 도착 (베트남항공)","그랩으로 1차 리조트 이동 (약 20~30분) · 15시 전후 체크인","리조트 수영장에서 가볍게 물놀이 · 저녁은 리조트에서 편하게"]},
-  {d:"Day 2 · 2/19(금) 호이안: 바구니배 + 등불 축제 🏮", items:["오전: 늦잠, 리조트 수영장에서 휴식 · 점심 후 짧은 낮잠","14:00 그랩으로 껌타인 코코넛 마을 이동 (리조트에서 약 30~40분)","🛶 15:00 동그란 바구니배(퉁짜이) 45분~1시간 · 배 1척에 2명, 척당 약 20~40만 동 + 입장료 3만 동 + 사공 팁","16:30 호이안 올드타운으로 이동 (10~15분) · 내원교, 골목 산책","해 질 무렵 투본강 소원배 · 등불 띄우기 — 🏮 음력 14일 등불 축제 날 (2027.2.19로 안내됨, 가까워지면 재확인), 붐비니 아이들 손 꼭 잡기","호이안에서 저녁 (까오러우·화이트로즈) → 21시쯤 리조트 복귀"]},
-  {d:"Day 3 · 2/20(토) 휴양 + 다낭 시내 야경 🐉", items:["오전~오후: 수영장·해변·키즈클럽 (부모님 교대로 스파·마사지)","15:00 시내로 이동 → 15:30~17:30 한시장 기념품 쇼핑 (19시 폐장, 늦게 가면 문 닫는 가게가 많음 · 2층 옷가게는 흥정 필수)","한강변 카페·저녁","🐉 21:00 용다리 불·물 쇼 (토·일 밤만, 다리 머리 쪽 강변에서 보기) → 리조트 복귀"]},
-  {d:"Day 4 · 2/21(일) 바나힐 골든브릿지 🌉", items:["일요일이라 현지인도 많음 → <b>07:30 일찍 출발</b>해서 케이블카 줄 피하기 (리조트에서 약 45~60분)","케이블카 → 손 모양 다리 '골든브릿지' 사진 → 프렌치 빌리지 · 판타지 파크(실내 놀이시설)","입장료(케이블카 포함): 성인 100만 동, 키 1~1.4m 어린이 80만 동, 1m 미만 무료 · 가족 4명 약 360만 동 (약 19만 원) · 온라인 예매가 저렴","정상은 아래보다 약 5~10℃ 낮고 안개가 잦음 → 겉옷 필수, 비·안개 예보면 2/20과 날짜 바꾸기","14시쯤 하산 → 리조트 복귀 후 수영 · 저녁은 리조트 근처에서 가볍게"]},
-  {d:"Day 5 · 2/22(월) 마지막 밤 숙소로 이동 🌙", items:["늦잠 · 천천히 조식 → 1차 리조트 수영장에서 오전 휴식","12시 체크아웃 → 그랩(7인승)으로 마지막 밤 숙소 이동 · 선택: 1차 리조트가 하얏트·쉐라톤이면 가는 길에 마블마운틴 1시간","15:00 풀빌라 체크인 (일찍 도착하면 짐 맡기고 리조트 구경)","빌라 전용 수영장에서 오후 내내 가족끼리 휴식","마지막 밤 저녁 특식 (빌라 안 바비큐·룸서비스도 좋음)"]},
-  {d:"Day 6 · 2/23(화) 귀국", items:["조식 → 빌라 수영장에서 마지막 휴식 · 12시 체크아웃","점심 후 13:30쯤 다낭 공항 도착 (프리미어 빌리지 약 15~20분 · 나만 약 30~40분 · 국제선 2시간 반 전)","16:15 다낭 출발 → 인천 약 22:30 도착","⚠️ 8837 동탄행 막차는 T2 22:00 · T1 22:20이라 못 탈 가능성이 큼 → 택시·자가용 등 귀가 방법 미리 정하기"]}
+  {d:"Day 1 · 2/18(목) 이동 + 수영장", items:["🚌 06:00 집 앞에서 8837 공항버스 탑승 (여유 있게 05:40 / 놓치면 06:20) · 성인 16,800원","07:30~07:40 인천공항 T1(제1여객터미널) 하차 → 3층 출국장 베트남항공 카운터 체크인","10:10 인천 출발 → 13:10 다낭 도착 (베트남항공)","그랩으로 푸라마 리조트 이동 (약 15분) → <b>14:00 체크인</b> · 💳 보증금 51,581원 카드 결제","리조트 수영장에서 가볍게 물놀이 · 저녁은 리조트나 근처 식당에서 편하게"]},
+  {d:"Day 2 · 2/19(금) 호이안: 바구니배 + 등불 축제 🏮", items:["🍳 리조트 조식 (포함) → 수영장에서 휴식 · 점심 후 짧은 낮잠","14:00 그랩으로 껌타인 코코넛 마을 이동 (푸라마에서 약 40분)","🛶 15:00 동그란 바구니배(퉁짜이) 45분~1시간 · 배 1척에 2명, 척당 약 20~40만 동 + 입장료 3만 동 + 사공 팁","16:30 호이안 올드타운으로 이동 (10~15분) · 내원교, 골목 산책","해 질 무렵 투본강 소원배 · 등불 띄우기 — 🏮 음력 14일 등불 축제 날 (2027.2.19로 안내됨, 가까워지면 재확인), 붐비니 아이들 손 꼭 잡기","호이안에서 저녁 (까오러우·화이트로즈) → 21시쯤 리조트 복귀"]},
+  {d:"Day 3 · 2/20(토) 휴양 + 다낭 시내 야경 🐉", items:["🍳 조식 → 수영장·해변·키즈클럽 (선베드는 11시 전에 자리 잡기)","15:00 그랩으로 한시장 (푸라마에서 약 15분) → 15:30~17:30 기념품 쇼핑 (19시 폐장 · 2층 옷가게는 흥정 필수)","한강변 카페·저녁","🐉 21:00 용다리 불·물 쇼 (토·일 밤만, 다리 머리 쪽 강변에서 보기) → 리조트 복귀"]},
+  {d:"Day 4 · 2/21(일) 바나힐 골든브릿지 🌉", items:["🍳 조식 일찍 → 일요일이라 붐비니 <b>07:30 출발</b> (푸라마에서 약 50분)","케이블카 → 손 모양 다리 '골든브릿지' 사진 → 프렌치 빌리지 · 판타지 파크(실내 놀이시설)","입장료(케이블카 포함): 성인 100만 동, 키 1~1.4m 어린이 80만 동, 1m 미만 무료 · 가족 4명 약 360만 동 (약 19만 원) · 온라인 예매가 저렴","정상은 아래보다 약 5~10℃ 낮고 안개가 잦음 → 겉옷 필수, 비·안개 예보면 2/20과 날짜 바꾸기","14시쯤 하산 → 리조트 수영장 (저녁 7시쯤 닫음) · 저녁은 리조트 근처에서 가볍게"]},
+  {d:"Day 5 · 2/22(월) 완전 휴양 🏖️", items:["🍳 조식 → 이동 없이 하루 종일 리조트: 수영장·해변·키즈클럽","오후 부모님 교대로 스파·마사지","선택: 16:00 마블마운틴(오행산) 동굴 구경 (푸라마에서 약 15분, 1~2시간)","마지막 밤 저녁 특식 (미케 해변 해산물 식당)","짐 미리 싸 두기 (다음 날 11시 전 체크아웃)"]},
+  {d:"Day 6 · 2/23(화) 귀국", items:["🍳 조식 → <b>11:00 전 체크아웃</b> · 💳 보증금 환불(카드 승인 취소) 확인 · 짐은 프런트에 맡기기","체크아웃 후 해변 산책 · 리조트 근처에서 점심","13:15 짐 찾아 그랩 → 13:30쯤 다낭 공항 (약 15분 · 국제선 2시간 반 전)","16:15 다낭 출발 → 인천 약 22:30 도착","⚠️ 8837 동탄행 막차는 T2 22:00 · T1 22:20이라 못 탈 가능성이 큼 → 택시·자가용 등 귀가 방법 미리 정하기"]}
 ];
 const DEFAULT_CHECKS = [
   "항공권 예약 (트립닷컴 · 베트남항공)","여권 유효기간 6개월 이상 확인 (가족 4명)","e티켓에서 영문 이름·수하물 허용량 확인",
-  "메인 리조트 예약 (2/18~2/22, 4박, 성인 2 + 아동 2)","여행자보험 가입","유심/eSIM 구매",
+  "숙소 예약 (푸라마 리조트 다낭 · 오션 스튜디오 스위트 5박, 조식 포함)","여행자보험 가입","유심/eSIM 구매",
   "그랩 앱 설치·결제수단 등록","환전 (달러 → 현지에서 동)","아이들 래시가드·아쿠아슈즈","스노클 마스크 (아이 사이즈)","상비약·선크림·모기 기피제",
   "베트남항공 온라인 체크인 (출발 24시간 전)",
   "인천공항 터미널 확인 → T1 (제1여객터미널)","귀국일 밤 귀가 방법 정하기 (8837 막차 22:00 이전 종료)",
   "8837 공항버스 예매 (2/18 06:00, 4명 · 버스타고)",
-  "마지막 밤 숙소 예약 (2/22~2/23, 풀빌라 · 4인·아동 요금 확인)","2/22 1차 리조트 → 마지막 밤 숙소 이동 (그랩 7인승)"
+  "체크인 때 보증금 51,581원 결제 (신용카드 준비)","체크아웃 때 보증금 환불(카드 승인 취소) 확인",
+  "오션 스튜디오 스위트 4인 투숙·엑스트라 베드 확인 (예약 확인서·호텔 문의)"
 ];
 // v1(저가항공·2/15 일정) 저장본을 v2(베트남항공·2/18 일정)로 바꿈. 바뀌었으면 true
 function migrate(s){
@@ -396,6 +354,17 @@ function migrate(s){
   // v8: 인터컨티넨탈 보류 → 마지막 밤 숙소 미정
   if(s.v === 7){ for(const c of s.checks||[]){ if(c.t.startsWith("인터컨티넨탈 마지막 1박 예약")) c.t = DEFAULT_CHECKS[15]; if(c.t.startsWith("2/22 리조트 → 인터컨티넨탈")) c.t = DEFAULT_CHECKS[16]; }
     if(s.budget && s.budget.b_hotel2) delete s.budget.b_hotel2; s.v = 8; changed = true; }
+  // v9: 푸라마 5박 예약 완료
+  if(s.v === 8){
+    const old = /^(마지막 밤 숙소 예약|2\/22 1차 리조트|인터컨티넨탈 마지막|2\/22 리조트 → 인터컨티넨탈|2\/22 하루 차량)/;
+    s.checks = (s.checks||[]).filter(c=>!old.test(c.t));
+    for(const c of s.checks) if(/리조트 예약/.test(c.t) || c.t === DEFAULT_CHECKS[3]){ c.t = DEFAULT_CHECKS[3]; c.done = true; }
+    if(!s.checks.some(c=>c.t===DEFAULT_CHECKS[3])) s.checks.splice(2, 0, {t:DEFAULT_CHECKS[3], done:true});
+    for(const t of DEFAULT_CHECKS.slice(15)) if(!s.checks.some(c=>c.t===t)) s.checks.push({t, done:false});
+    if(s.budget) ["b_hotel","b_nights","b_hotel2"].forEach(k=>delete s.budget[k]);
+    delete s.resort; delete s.lastNight;
+    s.v = 9; changed = true;
+  }
   if((s.v||1) >= 2) return changed;
   delete s.outbound; delete s.inbound;
   if(s.budget){ ["b_people","b_fare","b_surge","b_bag","b_seat","b_late"].forEach(k=>delete s.budget[k]); if(s.budget.b_nights=="4") delete s.budget.b_nights; if(s.budget.b_hotel=="300000") delete s.budget.b_hotel; }
@@ -410,8 +379,8 @@ function migrate(s){
 }
 
 const KEY = "danang-planner-v1", THEME_KEY = "danang-planner-theme";
-const defaults = () => ({v:8, flights:structuredClone(DEFAULT_FLIGHTS), booking:{}, resort:null, stars:{}, budget:{}, dayNotes:{},
-  checks:DEFAULT_CHECKS.map((t,i)=>({t,done:i===0||i===12})), note:""});
+const defaults = () => ({v:9, flights:structuredClone(DEFAULT_FLIGHTS), booking:{}, resort:null, stars:{}, budget:{}, dayNotes:{},
+  checks:DEFAULT_CHECKS.map((t,i)=>({t,done:i===0||i===3||i===12})), note:""});
 let state = defaults();
 let theme = null;
 function load(){
@@ -492,37 +461,24 @@ function renderFlights(){
     el.oninput=()=>{ state.booking[el.dataset.k]=el.value.trim(); save(); };
   });
 }
-function cardHtml(r, group, selected){
-  return `<label class="card"><input type="radio" name="${group}" value="${r.id}" ${selected===r.id?"checked":""}>
-      <span class="tag">${r.tag}</span><h3>${r.name}</h3>
-      <small style="color:var(--muted)">후기 평점 약 ${r.rating}</small>
-      <ul>${r.pros.map(p=>`<li>${p}</li>`).join("")}</ul>
-      <div class="con">⚠ ${r.con}</div>
-      <div class="price">💰 ${r.price}</div>
-      <details class="more"><summary>자세히 보기</summary>
-        <dl>${r.info.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
-      </details>
-      <div class="links">${linkHtml(r.links)}</div>
-      <div class="blogs"><span>📝 블로그 후기</span><div class="links">
-        <a href="https://search.naver.com/search.naver?where=blog&query=${encodeURIComponent(r.naver)}" target="_blank" rel="noopener"><b>네이버 블로그 후기 모아보기</b> ↗</a>${linkHtml(r.blogs)}</div></div>
-      <div class="stars" data-id="${r.id}">${[1,2,3,4,5].map(n=>`<button type="button" data-n="${n}" class="${(state.stars[r.id]||0)>=n?"on":""}">★</button>`).join("")}</div>
-    </label>`;
-}
 function renderResorts(){
-  $("resortGrid").innerHTML = RESORTS.map(r=>cardHtml(r, "resort", state.resort)).join("");
-  $("lastGrid").innerHTML = LAST_NIGHT.map(r=>cardHtml(r, "lastNight", state.lastNight)).join("");
-  document.querySelectorAll("input[name=resort]").forEach(i=>i.onchange=()=>{state.resort=i.value;save();});
-  document.querySelectorAll("input[name=lastNight]").forEach(i=>i.onchange=()=>{state.lastNight=i.value;save();});
-  document.querySelectorAll(".stars button").forEach(b=>b.onclick=e=>{
-    e.preventDefault(); const id=b.parentElement.dataset.id, n=+b.dataset.n;
-    state.stars[id] = state.stars[id]===n ? 0 : n; save(); renderResorts();
+  const H = HOTEL;
+  $("hotelBox").innerHTML = `<span class="tag">✅ 예약 완료 · 결제 2,057,172원 · 환불 불가</span><h3>${H.name}</h3>
+    <div class="facts">${H.facts.map(([k,v])=>`<div class="fact"><span>${k}</span><b>${v}</b></div>`).join("")}</div>
+    <dl>${H.info.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+    <div class="links">${linkHtml(H.links)}</div>
+    <div class="blogs"><span>📝 블로그 후기</span><div class="links">
+      <a href="https://search.naver.com/search.naver?where=blog&query=${encodeURIComponent(H.naver)}" target="_blank" rel="noopener"><b>네이버 블로그 후기 모아보기</b> ↗</a>${linkHtml(H.blogs)}</div></div>`;
+  $("hotelForm").querySelectorAll("input").forEach(el=>{
+    el.value = state.booking[el.dataset.k]||"";
+    el.oninput=()=>{ state.booking[el.dataset.k]=el.value.trim(); save(); };
   });
 }
-const BIDS = ["b_air","b_hotel","b_nights","b_hotel2","b_days","b_food","b_tour","b_taxi","b_etc"];
+const BIDS = ["b_air","b_stay","b_days","b_food","b_tour","b_taxi","b_etc"];
 function calc(){
   const v = id => +$(id).value || 0;
   const air = v("b_air");
-  const hotel = v("b_hotel")*v("b_nights") + v("b_hotel2");
+  const hotel = v("b_stay");
   const local = v("b_food")*v("b_days") + v("b_tour") + v("b_taxi") + v("b_etc");
   $("t_air").textContent=won(air); $("t_hotel").textContent=won(hotel); $("t_local").textContent=won(local); $("t_all").textContent=won(air+hotel+local);
 }
