@@ -193,8 +193,8 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
     · 가는 편을 놓치면 오는 편이 노쇼로 취소될 수 있어요. 그럴 땐 반드시 항공사에 미리 연락하세요.</div>
   <div class="note">🔒 여권번호·카드번호는 여기 적지 마세요. 예약번호는 Google 로그인한 사람만 볼 수 있게 저장됩니다.</div>
   <div class="links" id="flightLinks" style="margin-top:10px"></div>
-  <h3 style="font-size:1rem;margin:18px 0 6px">🚌 공항 가는 길 · 8837 공항버스</h3>
-  <p class="sub" style="margin-bottom:8px">2/18(목) <b>06:00</b> 집 앞 탑승 추천 (여유 05:40 · 예비 06:20) · 성인 16,800원 · <b>T1(제1여객터미널)에서 하차</b> (T2보다 먼저 정차). 새벽 버스는 만석이면 못 탈 수 있으니 <b>미리 예매</b>하세요 (출발 20분 전까지 가능).</p>
+  <h3 style="font-size:1rem;margin:18px 0 6px">🚗 공항 가는 길 · 자가용 + 인천공항 장기주차장</h3>
+  <p class="sub" style="margin-bottom:8px">2/18(목) <b>06:00 집 출발</b> → 약 1시간 → <b>T1(제1여객터미널) 장기주차장</b> 주차 → 무료 셔틀버스로 터미널 이동 · 장기주차 <b>하루 9,000원</b> (6일 약 5.4만 원) · 2월 방학철엔 주차장이 꽉 차는 날이 있어 <b>주차 예약</b> 권장 · 귀국일 밤 23시쯤 공항을 나와 차로 귀가 (집 약 00:30) — 운전할 사람은 기내에서 충분히 쉬기</p>
   <div class="links" id="busLinks"></div>
   <div class="note">💡 <b>트립닷컴 예약은 웹에 자동으로 연결할 수 없어요</b> (개인 예약을 읽어 오는 공개 기능이 없음). 대신 예약번호를 위에 적어 두고, 위 버튼으로 트립닷컴·베트남항공 예약 관리 화면을 바로 여세요. 온라인 체크인은 보통 출발 24시간 전부터 열립니다.</div>
 </section>
@@ -223,6 +223,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
     <label class="f">여행 일수 (식비 계산)<input type="number" id="b_days" value="6" min="1"></label>
     <label class="f">식비 1일 가족 (원)<input type="number" id="b_food" value="150000" step="10000"></label>
     <label class="f">투어·입장료 총액 (원)<input type="number" id="b_tour" value="400000" step="10000"></label>
+    <label class="f">공항 주차·기름값·통행료 (원) <small>장기주차 6일 약 5.4만 원 포함</small><input type="number" id="b_park" value="90000" step="10000"></label>
     <label class="f">교통 (그랩 등) 총액 (원)<input type="number" id="b_taxi" value="150000" step="10000"></label>
     <label class="f">기타 (보험·유심·마사지) (원)<input type="number" id="b_etc" value="200000" step="10000"></label>
   </div>
@@ -307,9 +308,8 @@ const FLIGHT_LINKS = [
   ["트립닷컴 체크인 안내", "https://kr.trip.com/blog/trip-flight-check-in/"]
 ];
 const BUS_LINKS = [
-  ["버스타고 예매 (8837)", "https://www.bustago.or.kr"],
-  ["8837 시간표", "https://nowboarding.kr/airport/icn/bus/8837"],
-  ["인천공항 공식 홈페이지 (터미널·주차)", "https://www.airport.kr"]
+  ["인천공항 주차 예약 안내", "https://v.daum.net/v/1Ugz5FloPh"],
+  ["인천공항 공식 홈페이지 (주차 요금·실시간 주차 현황)", "https://www.airport.kr"]
 ];
 const HOTEL = {
   name:"푸라마 리조트 다낭 (Furama Resort Danang)", room:"오션 스튜디오 스위트",
@@ -341,7 +341,7 @@ const FOOD = [
 ];
 const linkHtml = arr => arr.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join("");
 const GLANCE = [
-  {day:"Day 1", date:"2/18 (목)", theme:"🚌✈️ 출발 · 푸라마 도착", am:"06:00 공항버스 → 10:10 출발", pm:"13:10 다낭 도착 → 14:00 푸라마 체크인", ev:"수영장 · 저녁"},
+  {day:"Day 1", date:"2/18 (목)", theme:"🚗✈️ 출발 · 푸라마 도착", am:"06:00 자가용 출발 → 10:10 출발", pm:"13:10 다낭 도착 → 14:00 푸라마 체크인", ev:"수영장 · 저녁"},
   {day:"Day 2", date:"2/19 (금)", theme:"🛶🏮 호이안 바구니배 · 등불 축제", am:"조식 · 리조트 휴식", pm:"14:00 코코넛 마을 바구니배", ev:"올드타운 등불 축제 · 소원배"},
   {day:"Day 3", date:"2/20 (토)", theme:"🏖️🐉 휴양 + 다낭 야경", am:"조식 · 수영장 · 키즈클럽", pm:"15:00 한시장 쇼핑", ev:"한강변 저녁 · 21:00 용다리 불쇼"},
   {day:"Day 4", date:"2/21 (일)", theme:"🏖️ 완전 휴양", am:"조식 · 수영장 · 해변", pm:"키즈클럽 · 스파 (선택: 마블마운틴)", ev:"🦐 해산물 특식 (목 시푸드)", rest:true},
@@ -349,20 +349,20 @@ const GLANCE = [
   {day:"Day 6", date:"2/23 (화)", theme:"✈️ 귀국", am:"조식 · 11시 전 체크아웃 · 짐 맡기기", pm:"점심 → 13:30 공항 → 16:15 출발", ev:"22:30 인천 도착 · 귀가"}
 ];
 const DAYS = [
-  {d:"Day 1 · 2/18(목) 이동 + 수영장", items:["🚌 06:00 집 앞에서 8837 공항버스 탑승 (여유 있게 05:40 / 놓치면 06:20) · 성인 16,800원","07:30~07:40 인천공항 T1(제1여객터미널) 하차 → 3층 출국장 베트남항공 카운터 체크인","10:10 인천 출발 → 13:10 다낭 도착 (베트남항공)","그랩으로 푸라마 리조트 이동 (약 15분) → <b>14:00 체크인</b> · 💳 보증금 51,581원 카드 결제","리조트 수영장에서 가볍게 물놀이 · 저녁은 리조트나 근처 식당에서 편하게"]},
+  {d:"Day 1 · 2/18(목) 이동 + 수영장", items:["🚗 06:00 자가용으로 집 출발 (약 1시간 · 통행료 약 6,500원)","07:00~07:15 인천공항 T1 장기주차장 주차 (주차 위치 사진 찍어 두기) → 무료 셔틀버스로 터미널 → 3층 출국장 베트남항공 카운터 체크인","10:10 인천 출발 → 13:10 다낭 도착 (베트남항공)","그랩으로 푸라마 리조트 이동 (약 15분) → <b>14:00 체크인</b> · 💳 보증금 51,581원 카드 결제","리조트 수영장에서 가볍게 물놀이 · 저녁은 리조트나 근처 식당에서 편하게"]},
   {d:"Day 2 · 2/19(금) 호이안: 바구니배 + 등불 축제 🏮", items:["🍳 리조트 조식 (포함) → 수영장에서 휴식 · 점심 후 짧은 낮잠","14:00 그랩으로 껌타인 코코넛 마을 이동 (푸라마에서 약 40분)","🛶 15:00 동그란 바구니배(퉁짜이) 45분~1시간 · 배 1척에 2명, 척당 약 20~40만 동 + 입장료 3만 동 + 사공 팁","16:30 호이안 올드타운으로 이동 (10~15분) · 내원교, 골목 산책","해 질 무렵 투본강 소원배 · 등불 띄우기 — 🏮 음력 14일 등불 축제 날 (2027.2.19로 안내됨, 가까워지면 재확인), 붐비니 아이들 손 꼭 잡기","호이안에서 저녁 (까오러우·화이트로즈) → 21시쯤 리조트 복귀"]},
   {d:"Day 3 · 2/20(토) 휴양 + 다낭 시내 야경 🐉", items:["🍳 조식 → 수영장·해변·키즈클럽 (선베드는 11시 전에 자리 잡기)","15:00 그랩으로 한시장 (푸라마에서 약 15분) → 15:30~17:30 기념품 쇼핑 (19시 폐장 · 2층 옷가게는 흥정 필수)","한강변 카페·저녁","🐉 21:00 용다리 불·물 쇼 (토·일 밤만, 다리 머리 쪽 강변에서 보기) → 리조트 복귀"]},
   {d:"Day 4 · 2/21(일) 완전 휴양 🏖️", items:["🍳 조식 → 이동 없이 하루 종일 리조트: 수영장·해변·키즈클럽 (선베드는 11시 전에 자리 잡기)","오후 부모님 교대로 스파·마사지","선택: 16:00 마블마운틴(오행산) 동굴 구경 (푸라마에서 약 15분, 1~2시간)","🦐 저녁 해산물 특식 (목 시푸드 등 미케 해변 해산물 식당) — 다음 날 바나힐을 위해 일찍 숙소 복귀"]},
   {d:"Day 5 · 2/22(월) 바나힐 골든브릿지 🌉", items:["⏰ <b>아침 일찍 출발 필수!</b> 평일이라도 10시~15시에는 골든브릿지가 사람으로 꽉 차요 → 06:30 조식, <b>07:30 그랩 출발</b>, 8시대에 케이블카 타기 (푸라마에서 약 50분)","월요일을 고른 이유: 주말보다 한산하고(월·화가 가장 한산하다는 자료), 현지인은 평일 입장료가 싸서 주말에 몰림","케이블카 → 손 모양 다리 '골든브릿지' 사진 먼저 → 프렌치 빌리지 · 판타지 파크(실내 놀이시설)","입장료(케이블카 포함): 성인 100만 동, 키 1~1.4m 어린이 80만 동, 1m 미만 무료 · 가족 4명 약 360만 동 (약 19만 원) · 온라인 예매가 저렴","정상은 아래보다 약 5~10℃ 낮고 안개가 잦음 → 겉옷 필수 · 비·안개 예보면 2/20(토)이나 2/21(일)과 바꾸기 (마지막 날이라 더 미룰 수 없음)","14~15시 하산 → 리조트 수영장 (저녁 7시쯤 닫음) · 저녁은 리조트 근처에서 가볍게 · 짐 미리 싸 두기 (다음 날 11시 전 체크아웃)"]},
-  {d:"Day 6 · 2/23(화) 귀국", items:["🍳 조식 → <b>11:00 전 체크아웃</b> · 💳 보증금 환불(카드 승인 취소) 확인 · 짐은 프런트에 맡기기","체크아웃 후 해변 산책 · 리조트 근처에서 점심","13:15 짐 찾아 그랩 → 13:30쯤 다낭 공항 (약 15분 · 국제선 2시간 반 전)","16:15 다낭 출발 → 인천 약 22:30 도착","⚠️ 8837 동탄행 막차는 T2 22:00 · T1 22:20이라 못 탈 가능성이 큼 → 택시·자가용 등 귀가 방법 미리 정하기"]}
+  {d:"Day 6 · 2/23(화) 귀국", items:["🍳 조식 → <b>11:00 전 체크아웃</b> · 💳 보증금 환불(카드 승인 취소) 확인 · 짐은 프런트에 맡기기","체크아웃 후 해변 산책 · 리조트 근처에서 점심","13:15 짐 찾아 그랩 → 13:30쯤 다낭 공항 (약 15분 · 국제선 2시간 반 전)","16:15 다낭 출발 → 인천 약 22:30 도착","23시쯤 입국 심사·짐 찾기 → 셔틀버스로 장기주차장 → 🚗 자가용 귀가 (집 약 00:30 · 심야 운전이니 졸리면 휴게소에서 쉬기)"]}
 ];
 const DEFAULT_CHECKS = [
   "항공권 예약 (트립닷컴 · 베트남항공)","여권 유효기간 6개월 이상 확인 (가족 4명)","e티켓에서 영문 이름·수하물 허용량 확인",
   "숙소 예약 (푸라마 리조트 다낭 · 오션 스튜디오 스위트 5박, 조식 포함)","여행자보험 가입","유심/eSIM 구매",
   "그랩 앱 설치·결제수단 등록","환전 (달러 → 현지에서 동)","아이들 래시가드·아쿠아슈즈","스노클 마스크 (아이 사이즈)","상비약·선크림·모기 기피제",
   "베트남항공 온라인 체크인 (출발 24시간 전)",
-  "인천공항 터미널 확인 → T1 (제1여객터미널)","귀국일 밤 귀가 방법 정하기 (8837 막차 22:00 이전 종료)",
-  "8837 공항버스 예매 (2/18 06:00, 4명 · 버스타고)",
+  "인천공항 터미널 확인 → T1 (제1여객터미널)","귀국일 귀가 방법 → 자가용 (T1 장기주차장)",
+  "인천공항 T1 장기주차장 주차 예약 (2/18~2/23, 6일)",
   "체크인 때 보증금 51,581원 결제 (신용카드 준비)","체크아웃 때 보증금 환불(카드 승인 취소) 확인",
   "오션 스튜디오 스위트 4인 투숙·엑스트라 베드 확인 (예약 확인서·호텔 문의)",
   "바나힐 입장권 온라인 예매 (2/22 월 · 07:30 출발 · 날씨 보고 확정)"
@@ -403,6 +403,15 @@ function migrate(s){
   }
   // v10: 바나힐 월요일로 이동 → 입장권 예매 할 일 추가
   if(s.v === 9){ if(!s.checks.some(c=>c.t===DEFAULT_CHECKS[18])) s.checks.push({t:DEFAULT_CHECKS[18], done:false}); s.v = 10; changed = true; }
+  // v11: 공항 이동을 자가용 + 장기주차로 변경
+  if(s.v === 10){
+    for(const c of s.checks||[]){
+      if(c.t.startsWith("귀국일 밤 귀가 방법") || c.t === DEFAULT_CHECKS[13]){ c.t = DEFAULT_CHECKS[13]; c.done = true; }
+      if(c.t.startsWith("8837 공항버스 예매")) c.t = DEFAULT_CHECKS[14];
+    }
+    if(!s.checks.some(c=>c.t===DEFAULT_CHECKS[14])) s.checks.push({t:DEFAULT_CHECKS[14], done:false});
+    s.v = 11; changed = true;
+  }
   if((s.v||1) >= 2) return changed;
   delete s.outbound; delete s.inbound;
   if(s.budget){ ["b_people","b_fare","b_surge","b_bag","b_seat","b_late"].forEach(k=>delete s.budget[k]); if(s.budget.b_nights=="4") delete s.budget.b_nights; if(s.budget.b_hotel=="300000") delete s.budget.b_hotel; }
@@ -417,8 +426,8 @@ function migrate(s){
 }
 
 const KEY = "danang-planner-v1", THEME_KEY = "danang-planner-theme";
-const defaults = () => ({v:10, flights:structuredClone(DEFAULT_FLIGHTS), booking:{}, resort:null, stars:{}, budget:{}, dayNotes:{},
-  checks:DEFAULT_CHECKS.map((t,i)=>({t,done:i===0||i===3||i===12})), note:""});
+const defaults = () => ({v:11, flights:structuredClone(DEFAULT_FLIGHTS), booking:{}, resort:null, stars:{}, budget:{}, dayNotes:{},
+  checks:DEFAULT_CHECKS.map((t,i)=>({t,done:[0,3,12,13].includes(i)})), note:""});
 let state = defaults();
 let theme = null;
 function load(){
@@ -512,12 +521,12 @@ function renderResorts(){
     el.oninput=()=>{ state.booking[el.dataset.k]=el.value.trim(); save(); };
   });
 }
-const BIDS = ["b_air","b_stay","b_days","b_food","b_tour","b_taxi","b_etc"];
+const BIDS = ["b_air","b_stay","b_park","b_days","b_food","b_tour","b_taxi","b_etc"];
 function calc(){
   const v = id => +$(id).value || 0;
   const air = v("b_air");
   const hotel = v("b_stay");
-  const local = v("b_food")*v("b_days") + v("b_tour") + v("b_taxi") + v("b_etc");
+  const local = v("b_food")*v("b_days") + v("b_tour") + v("b_taxi") + v("b_etc") + v("b_park");
   $("t_air").textContent=won(air); $("t_hotel").textContent=won(hotel); $("t_local").textContent=won(local); $("t_all").textContent=won(air+hotel+local);
 }
 function renderBudget(){
