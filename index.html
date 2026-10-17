@@ -137,9 +137,11 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
   <h3 style="font-size:1rem;margin:18px 0 6px">🎫 예약 정보</h3>
   <div class="form" id="bookingForm">
     <label class="f">트립닷컴 예약번호<input type="text" data-k="tripNo" placeholder="예약 확인 메일에 있어요"></label>
-    <label class="f">항공사 예약번호 (PNR, 6자리)<input type="text" data-k="pnr" placeholder="e티켓의 Booking ref"></label>
-    <label class="f">위탁수하물 허용량<input type="text" data-k="bag" placeholder="예: 1인 23kg 1개"></label>
   </div>
+  <div class="note">🎫 <b>가는 편·오는 편이 편도 2장으로 따로 발권됐어요</b> (예약번호가 각각 다름). 항공사 예약번호는 위 항공편 카드에 하나씩 적으세요.<br>
+    · 온라인 체크인·변경·취소를 <b>편마다 따로</b> 해야 해요.<br>
+    · 수하물 허용량이 편마다 다를 수 있으니 e티켓 두 장을 각각 확인하세요.<br>
+    · 가는 편을 놓치면 오는 편이 노쇼로 취소될 수 있어요. 그럴 땐 반드시 항공사에 미리 연락하세요.</div>
   <div class="note">🔒 여권번호·카드번호는 여기 적지 마세요. 예약번호는 Google 로그인한 사람만 볼 수 있게 저장됩니다.</div>
   <div class="links" id="flightLinks" style="margin-top:10px"></div>
   <div class="note">💡 <b>트립닷컴 예약은 웹에 자동으로 연결할 수 없어요</b> (개인 예약을 읽어 오는 공개 기능이 없음). 대신 예약번호를 위에 적어 두고, 위 버튼으로 트립닷컴·베트남항공 예약 관리 화면을 바로 여세요. 온라인 체크인은 보통 출발 24시간 전부터 열립니다.</div>
@@ -217,7 +219,8 @@ const DEFAULT_FLIGHTS = [
   {label:"가는 편", airline:"베트남항공", no:"VN431", date:"2027-02-18 (목)", dep:"인천 10:10", arr:"다낭 13:10"},
   {label:"오는 편", airline:"베트남항공", no:"", date:"2027-02-23 (화)", dep:"다낭 16:15", arr:"인천 약 22:30"}
 ];
-const FLIGHT_FIELDS = [["airline","항공사"],["no","편명"],["date","날짜"],["dep","출발"],["arr","도착"]];
+const FLIGHT_FIELDS = [["airline","항공사"],["no","편명"],["date","날짜"],["dep","출발"],["arr","도착"],["pnr","항공사 예약번호 (PNR)"],["bag","위탁수하물 허용량"]];
+const FLIGHT_PLACEHOLDER = {no:"e티켓에서 확인", pnr:"영문·숫자 6자리", bag:"예: 1인 23kg 1개"};
 const FLIGHT_LINKS = [
   ["트립닷컴 (로그인 → 내 예약)", "https://kr.trip.com/"],
   ["베트남항공 예약 관리·체크인", "https://www.vietnamairlines.com/"],
@@ -260,6 +263,11 @@ const DEFAULT_CHECKS = [
 ];
 // v1(저가항공·2/15 일정) 저장본을 v2(베트남항공·2/18 일정)로 바꿈. 바뀌었으면 true
 function migrate(s){
+  // 예약 정보 칸에 적었던 PNR·수하물은 가는 편 카드로 옮김 (편도 2장 발권이라 편마다 따로 적음)
+  if(s.v >= 2 && s.booking && s.flights && (s.booking.pnr || s.booking.bag)){
+    for(const k of ["pnr","bag"]) if(s.booking[k]){ if(!s.flights[0][k]) s.flights[0][k] = s.booking[k]; delete s.booking[k]; }
+    return true;
+  }
   if((s.v||1) >= 2) return false;
   delete s.outbound; delete s.inbound;
   if(s.budget){ ["b_people","b_fare","b_surge","b_bag","b_seat","b_late"].forEach(k=>delete s.budget[k]); if(s.budget.b_nights=="4") delete s.budget.b_nights; if(s.budget.b_hotel=="300000") delete s.budget.b_hotel; }
@@ -347,7 +355,7 @@ const esc = s => String(s??"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").repl
 function renderFlights(){
   $("flightCards").innerHTML = state.flights.map((f,i)=>`
     <div class="card" style="cursor:default"><span class="tag">${esc(f.label)}</span>
-      ${FLIGHT_FIELDS.map(([k,t])=>`<label class="f">${t}<input type="text" data-i="${i}" data-k="${k}" value="${esc(f[k])}" placeholder="${k==="no"?"e티켓에서 확인":""}"></label>`).join("")}
+      ${FLIGHT_FIELDS.map(([k,t])=>`<label class="f">${t}<input type="text" data-i="${i}" data-k="${k}" value="${esc(f[k])}" placeholder="${FLIGHT_PLACEHOLDER[k]||""}"></label>`).join("")}
     </div>`).join("");
   $("flightCards").querySelectorAll("input").forEach(el=>el.oninput=()=>{ state.flights[el.dataset.i][el.dataset.k]=el.value; save(); });
   $("bookingForm").querySelectorAll("input").forEach(el=>{
