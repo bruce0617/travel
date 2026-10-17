@@ -125,6 +125,9 @@ textarea{min-height:70px;resize:vertical}
 .hotel dl{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;margin:0;font-size:.88rem}
 .hotel dt{color:var(--muted);white-space:nowrap}
 .hotel dd{margin:0}
+.card{position:relative}
+.like{position:absolute;top:10px;right:12px;background:none;border:0;font-size:1.3rem;cursor:pointer;color:var(--muted)}
+.like.on{color:#e0457b}
 .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:.8rem;color:var(--muted)}
 .sync{align-self:center;white-space:nowrap;font-size:.8rem;color:var(--muted)}
 footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
@@ -149,7 +152,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
 </header>
 <nav><div class="wrap">
   <a href="#glance">일정 한눈에</a><a href="#overview">요약</a><a href="#flights">항공</a><a href="#resorts">숙소</a>
-  <a href="#budget">예산</a><a href="#itinerary">상세 일정</a><a href="#checklist">체크리스트</a><a href="#notes">메모</a>
+  <a href="#budget">예산</a><a href="#itinerary">상세 일정</a><a href="#food">맛집</a><a href="#checklist">체크리스트</a><a href="#notes">메모</a>
   <button class="btn ghost" id="themeBtn" style="margin-left:auto;padding:4px 10px">🌓</button>
 </div></nav>
 
@@ -238,6 +241,23 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
   <div id="days"></div>
 </section>
 
+<section id="food">
+  <h2>🍜 다낭 · 호이안 맛집</h2>
+  <p class="sub">아이들과 가기 좋고 한국인 후기가 많은 곳 위주예요. 카드마다 구글 지도와 블로그 후기 링크가 있어요. 마음에 드는 곳은 ♡로 찜해 두세요.</p>
+  <div class="bar" id="foodFilters" style="margin-bottom:12px"></div>
+  <div class="grid" id="foodGrid"></div>
+  <h3 style="font-size:1.05rem;margin:24px 0 6px">📌 내가 찾은 맛집 · 블로그 링크</h3>
+  <p class="sub">블로그에서 본 맛집이나 글 주소를 저장해 두면 가족 모두 볼 수 있어요 (Google 로그인 시 동기화).</p>
+  <div id="myFoodList"></div>
+  <div class="form" style="margin-top:10px">
+    <label class="f">가게 이름<input type="text" id="mf_name" placeholder="예: 반쎄오 바즈엉"></label>
+    <label class="f">지역<select id="mf_area"><option>다낭</option><option>호이안</option><option>기타</option></select></label>
+    <label class="f">블로그·지도 링크<input type="text" id="mf_url" placeholder="https://..."></label>
+    <label class="f">메모<input type="text" id="mf_memo" placeholder="예: 2/20 점심 후보, 줄 김"></label>
+  </div>
+  <div class="row"><button class="btn" id="addFood">저장</button></div>
+</section>
+
 <section id="checklist">
   <h2>✅ 준비 체크리스트</h2>
   <div class="progress"><div id="prog"></div></div>
@@ -304,6 +324,21 @@ const HOTEL = {
   naver:"푸라마 리조트 다낭 오션 스튜디오 스위트 후기",
   blogs:[["오션 스튜디오 스위트·객실·가격 총정리 (블로그)","https://hotel-fanatic.com/furama-resort-danang-review/"],["조식·수영장 팁 (브런치)","https://brunch.co.kr/@whatsinmytrip/23"],["풀빌라 가족여행 팁 (브런치)","https://brunch.co.kr/@mytriplog/3916"],["수영장 3개 가족여행 숙소 후기 (블로그)","https://dayoff.co.kr/whatsinmytrip/%EB%8B%A4%EB%82%AD-%ED%91%B8%EB%9D%BC%EB%A7%88%EB%A6%AC%EC%A1%B0%ED%8A%B8-%EC%88%98%EC%98%81%EC%9E%A5%EC%9D%B4-3%EA%B0%9C-%EC%9E%88%EB%8A%94-%EA%B0%80%EC%A1%B1%EC%97%AC%ED%96%89-%EC%88%99%EC%86%8C/"],["라군풀 뷰 룸 후기 (트립어드바이저)","https://www.tripadvisor.co.kr/ShowUserReviews-g298085-d302750-r1056384720-Furama_Resort_Danang-Da_Nang.html"]]
 };
+const FOOD = [
+  {area:"다낭", name:"반쎄오 바즈엉", local:"Bánh Xèo Bà Dưỡng", dish:"반쎄오(베트남식 부침개) · 넴루이(꼬치를 라이스페이퍼에 싸 먹기)", tip:"다낭 대표 반쎄오집 · 골목 안 로컬 식당 · 반쎄오+넴루이 세트가 있어 주문 쉬움", when:"2/20 한시장 가는 날 점심·간식", blogs:[["반쎄오 바즈엉 후기 (트래블레인)","https://www.travelrain.com/484870"],["다낭 반쎄오 맛집 모음 (다낭원더)","https://danangwander.com/ko/loai-am-thuc/banh-xeo-ko/"]]},
+  {area:"다낭", name:"반쎄오 76", local:"Bánh Xèo 76", dish:"1인용으로 작게 부친 반쎄오", tip:"가성비 좋고 주방이 열려 있어 만드는 과정을 볼 수 있음 · 아이들이 구경하기 좋음", when:"시내 나가는 날 간단한 식사", blogs:[["반쎄오 76 후기 (트래블레인)","https://www.travelrain.com/484831"]]},
+  {area:"다낭", name:"마담란", local:"Madame Lân", dish:"반쎄오 · 분짜 · 모닝글로리 볶음 등 베트남 요리 전반", tip:"용다리 근처 정원 분위기의 큰 식당 · 메뉴가 다양해 아이들 입맛 맞추기 쉬움 · 2026 미슐랭 셀렉티드", when:"⭐ 2/20 저녁 (21:00 용다리 불쇼 전)", blogs:[["2026 다낭 미슐랭 맛집 가이드","https://www.starkitchen-vietnam-gift.com/ko/post/michelin-guide-danang-1"],["놓치기 아쉬운 다낭 대표 맛집 (트리플)","https://triple.guide/articles/68cea35d-c065-4672-8579-9f7cf0a39a6b"]]},
+  {area:"다낭", name:"미꽝 1A", local:"Mì Quảng 1A", dish:"미꽝 (국물이 자작한 다낭식 비빔 쌀국수)", tip:"현지 대표 미꽝집 · 영업 06:00~21:00", when:"시내 나가는 날 점심", blogs:[["다낭 시내 맛집 추천 총정리 (트립스토어)","https://www.tripstore.kr/blog/%EB%8B%A4%EB%82%AD-%EC%8B%9C%EB%82%B4-%EB%A7%9B%EC%A7%91-%EC%B6%94%EC%B2%9C-%EC%B4%9D%EC%A0%95%EB%A6%AC"]]},
+  {area:"다낭", name:"목 시푸드", local:"MOC Seafood", dish:"수조에서 직접 고르는 해산물 (새우·게·조개·랍스터)", tip:"야외 공간이 넓어 아이와 가기 좋다는 평 · 무게(kg)로 계산하니 주문 전에 가격 확인", when:"⭐ 2/22 마지막 밤 해산물 특식", blogs:[["저렴하고 맛있는 다낭 맛집 BEST 7 (KKday)","https://www.kkday.com/ko/blog/25736/asia-vietnam-danang-best-resrestaurant"]]},
+  {area:"다낭", name:"퀀 베만", local:"Quán Bé Mặn", dish:"해산물 볶음밥 · 구운 새우 · 레몬그라스 생선찜", tip:"현지인으로 붐비는 캐주얼 해산물집 · 미케 해변 근처", when:"2/22 해산물 특식 대안", blogs:[]},
+  {area:"다낭", name:"피자 포피스", local:"Pizza 4P's", dish:"화덕 피자 · 부라타 치즈 피자", tip:"아이 동반 가족에게 인기 · 베트남 음식이 안 맞는 날 좋음 · 예약 권장", when:"아이들이 현지 음식에 지친 날", blogs:[["놓치기 아쉬운 다낭 대표 맛집 (트리플)","https://triple.guide/articles/68cea35d-c065-4672-8579-9f7cf0a39a6b"]]},
+  {area:"다낭", name:"콩카페", local:"Cộng Cà Phê", dish:"코코넛 커피 스무디 (아이는 코코넛 스무디·요거트)", tip:"한시장 근처에도 지점이 있어 쇼핑 중 쉬어 가기 좋음", when:"⭐ 2/20 한시장 쇼핑 중", blogs:[]},
+  {area:"호이안", name:"모닝글로리", local:"Morning Glory", dish:"까오러우 · 화이트로즈(새우 만두) · 프라이드 완탄 — 호이안 3대 명물", tip:"올드타운 중심 · 맛과 위생이 좋아 가족이 가기 무난 · 등불 축제 날은 붐비니 예약 추천", when:"⭐ 2/19 등불 축제 저녁", blogs:[["모닝글로리 후기 모음 (트립닷컴)","https://kr.trip.com/moments/theme/poi-morning-glory-original-17278338-restaurant-993134/"],["호이안 맛집 베스트 3 (트립스토어)","https://www.tripstore.kr/blog/%ED%98%B8%EC%9D%B4%EC%95%88-%EB%A7%9B%EC%A7%91-%EC%B6%94%EC%B2%9C-%EB%A1%9C%EC%BB%AC%EB%B6%80%ED%84%B0-%EB%B0%98%EB%AF%B8%EA%B9%8C%EC%A7%80-%EB%B2%A0%EC%8A%A4%ED%8A%B8-3"]]},
+  {area:"호이안", name:"반미 프엉", local:"Bánh Mì Phượng", dish:"반미 (계란 오믈렛 반미 · 돼지고기·햄 반미)", tip:"앤서니 부르댕이 '호이안 넘버원 반미'로 소개해 유명 · 영어 메뉴판 · 앉아서 먹을 수 있음", when:"2/19 올드타운 도착 후 간식", blogs:[["반미 프엉 후기 (트래블레인)","https://www.travelrain.com/1026"]]},
+  {area:"호이안", name:"마담콴 반미 퀸", local:"Madam Khánh – The Banh Mi Queen", dish:"반미", tip:"반미 프엉과 함께 호이안 반미 양대 맛집 · 115 Trần Cao Vân", when:"반미 프엉 줄이 길 때 대안", blogs:[["호이안 맛집 BEST (스타키친)","https://www.starkitchen-vietnam-gift.com/ko/post/hoi-an-food-guide-2"]]},
+  {area:"호이안", name:"화이트로즈 레스토랑", local:"White Rose Restaurant", dish:"화이트로즈 (장미 모양 새우 만두)", tip:"화이트로즈를 직접 만드는 원조집 · 533 Hai Bà Trưng", when:"2/19 호이안 간식", blogs:[["호이안 맛집 BEST (스타키친)","https://www.starkitchen-vietnam-gift.com/ko/post/hoi-an-food-guide-2"]]},
+  {area:"호이안", name:"까오러우 탄", local:"Cao Lầu Thanh", dish:"까오러우 (호이안 전통 비빔 국수)", tip:"까오러우 전문 로컬집 · 26 Thái Phiên", when:"2/19 호이안 식사", blogs:[["호이안 맛집 BEST 5 · 올드타운 vs 안방비치 (트립스토어)","https://www.tripstore.kr/blog/%EB%B2%A0%ED%8A%B8%EB%82%A8-%ED%98%B8%EC%9D%B4%EC%95%88-%EB%A7%9B%EC%A7%91-%EC%98%AC%EB%93%9C%ED%83%80%EC%9A%B4-%EC%95%88%EB%B0%A9%EB%B9%84%EC%B9%98-%EB%A1%9C%EC%BB%AC-%EB%B9%84%EA%B5%90"]]}
+];
 const linkHtml = arr => arr.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join("");
 const GLANCE = [
   {day:"Day 1", date:"2/18 (목)", theme:"🚌✈️ 출발 · 푸라마 도착", am:"06:00 공항버스 → 10:10 출발", pm:"13:10 다낭 도착 → 14:00 푸라마 체크인", ev:"수영장 · 저녁"},
@@ -529,7 +564,48 @@ function renderSummary(){
   $("summaryTable").innerHTML = `<thead><tr><th></th><th>날짜</th><th>테마</th><th>오전</th><th>오후</th><th>저녁</th></tr></thead><tbody>` +
     GLANCE.map(g=>`<tr class="${g.rest?"rest":""}"><td><b>${g.day}</b></td><td>${g.date}</td><td>${g.theme}</td><td>${g.am}</td><td>${g.pm}</td><td>${g.ev}</td></tr>`).join("") + `</tbody>`;
 }
+let foodFilter = "전체";
+function renderFood(){
+  $("foodFilters").innerHTML = ["전체","다낭","호이안","♥ 찜"].map(f=>`<button type="button" class="btn ${foodFilter===f?"":"ghost"}" data-f="${f}">${f}</button>`).join("");
+  $("foodFilters").querySelectorAll("button").forEach(b=>b.onclick=()=>{ foodFilter=b.dataset.f; renderFood(); });
+  const likes = state.foodLikes||{};
+  const list = FOOD.filter(r=> foodFilter==="전체" || r.area===foodFilter || (foodFilter==="♥ 찜" && likes[r.name]));
+  $("foodGrid").innerHTML = list.map(r=>`<div class="card" style="cursor:default">
+      <span class="tag">${r.area}${r.when.startsWith("⭐")?" · 일정 추천":""}</span>
+      <button type="button" class="like ${likes[r.name]?"on":""}" data-n="${esc(r.name)}" title="찜하기">${likes[r.name]?"♥":"♡"}</button>
+      <h3>${r.name} <small style="color:var(--muted);font-weight:400">${r.local}</small></h3>
+      <div><b>대표 메뉴</b> · ${r.dish}</div>
+      <div style="font-size:.88rem">${r.tip}</div>
+      <div class="price">🗓️ ${r.when}</div>
+      <div class="links">
+        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.local+" "+(r.area==="다낭"?"Da Nang":"Hoi An"))}" target="_blank" rel="noopener">📍 구글 지도 ↗</a>
+      </div>
+      <div class="blogs"><span>📝 블로그 후기</span><div class="links">
+        <a href="https://search.naver.com/search.naver?where=blog&query=${encodeURIComponent(r.area+" "+r.name+" 후기")}" target="_blank" rel="noopener"><b>네이버 블로그 후기 모아보기</b> ↗</a>${linkHtml(r.blogs)}</div></div>
+    </div>`).join("") || `<p class="sub">찜한 맛집이 없어요. 카드의 ♡를 눌러 보세요.</p>`;
+  $("foodGrid").querySelectorAll(".like").forEach(b=>b.onclick=()=>{
+    state.foodLikes = state.foodLikes||{}; const n=b.dataset.n;
+    if(state.foodLikes[n]) delete state.foodLikes[n]; else state.foodLikes[n]=true;
+    save(); renderFood();
+  });
+  // 내가 추가한 맛집·블로그
+  const mine = state.myFood||[];
+  $("myFoodList").innerHTML = mine.length ? mine.map((m,i)=>`<div class="check" style="align-items:flex-start">
+      <div><b>${esc(m.name)}</b> <small style="color:var(--muted)">${esc(m.area)}</small>${m.memo?`<div style="font-size:.85rem">${esc(m.memo)}</div>`:""}
+      ${/^https?:\/\//.test(m.url)?`<div class="links" style="margin-top:4px"><a href="${esc(m.url)}" target="_blank" rel="noopener">🔗 링크 열기 ↗</a></div>`:""}</div>
+      <button type="button" data-del="${i}" title="삭제">✕</button></div>`).join("") : `<p class="sub">아직 없어요. 블로그에서 본 맛집이나 글 링크를 아래에 저장해 두세요.</p>`;
+  $("myFoodList").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{ state.myFood.splice(+b.dataset.del,1); save(); renderFood(); });
+}
+$("addFood").onclick=()=>{
+  const name=$("mf_name").value.trim(), url=$("mf_url").value.trim();
+  if(!name && !url){ $("mf_name").focus(); return; }
+  state.myFood = state.myFood||[];
+  state.myFood.push({name:name||"(이름 없음)", area:$("mf_area").value, url, memo:$("mf_memo").value.trim()});
+  ["mf_name","mf_url","mf_memo"].forEach(id=>$(id).value="");
+  save(); renderFood();
+};
 function renderAll(){
+  renderFood();
   renderGlance(); renderSummary();
   $("flightLinks").innerHTML = linkHtml(FLIGHT_LINKS);
   $("busLinks").innerHTML = linkHtml(BUS_LINKS);
