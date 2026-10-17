@@ -36,6 +36,12 @@ nav{position:sticky;top:0;z-index:5;background:var(--surface);border-bottom:1px 
 nav .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:6px;padding-bottom:6px}
 nav a{white-space:nowrap;text-decoration:none;color:var(--muted);padding:6px 10px;border-radius:8px;font-size:.9rem}
 nav a:hover{background:var(--surface-2);color:var(--text)}
+nav a.active{background:var(--accent);color:#fff;font-weight:500}
+main > section{display:none}
+main > section.active{display:block}
+.pager{display:flex;justify-content:space-between;gap:8px;margin-top:4px}
+.pager a{text-decoration:none;font-size:.9rem;border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--surface)}
+.pager a:hover{border-color:var(--accent)}
 main{padding:20px 0 60px}
 section{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:18px}
 section h2{margin:0 0 4px;font-size:1.25rem}
@@ -128,7 +134,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
 </header>
 <nav><div class="wrap">
   <a href="#glance">일정 한눈에</a><a href="#overview">요약</a><a href="#flights">항공</a><a href="#resorts">리조트</a>
-  <a href="#budget">예산</a><a href="#itinerary">일정</a><a href="#checklist">체크리스트</a><a href="#notes">메모</a>
+  <a href="#budget">예산</a><a href="#itinerary">상세 일정</a><a href="#checklist">체크리스트</a><a href="#notes">메모</a>
   <button class="btn ghost" id="themeBtn" style="margin-left:auto;padding:4px 10px">🌓</button>
 </div></nav>
 
@@ -136,7 +142,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
 
 <section id="glance">
   <h2>📅 한눈에 보는 일정</h2>
-  <p class="sub">2/18(목) ~ 2/23(화) · 숙소 한 곳에서 5박 · 큰 외출 다음 날은 쉬기. 자세한 시간은 아래 <a href="#itinerary">휴양 일정</a>에 있어요.</p>
+  <p class="sub">2/18(목) ~ 2/23(화) · 숙소 한 곳에서 5박 · 큰 외출 다음 날은 쉬기. 자세한 시간은 <a href="#itinerary">상세 일정</a> 페이지에 있어요.</p>
   <div class="glance" id="glanceGrid"></div>
   <div class="legend"><span>🏖️ 휴양</span><span>🚌✈️ 이동</span><span>🛶🏮🌉🐉 명소</span></div>
 </section>
@@ -239,6 +245,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
   </ul>
 </section>
 </main>
+<div class="wrap pager" id="pager"></div>
 <footer>다낭 가족여행 플래너</footer>
 
 <script type="module">
@@ -493,6 +500,22 @@ function renderAll(){
   $("busLinks").innerHTML = linkHtml(BUS_LINKS);
   renderFlights(); renderResorts(); renderBudget(); renderDays(); renderChecks(); $("freeNote").value=state.note||"";
 }
+// ── 탭(페이지) 전환: 주소의 #이름으로 한 섹션만 보여줌 ──
+const TABS = [...document.querySelectorAll("nav a[href^='#']")].map(a=>({id:a.getAttribute("href").slice(1), label:a.textContent, el:a}));
+function showTab(){
+  const id = TABS.some(t=>t.id===location.hash.slice(1)) ? location.hash.slice(1) : TABS[0].id;
+  document.querySelectorAll("main > section").forEach(s=>s.classList.toggle("active", s.id===id));
+  TABS.forEach(t=>t.el.classList.toggle("active", t.id===id));
+  const i = TABS.findIndex(t=>t.id===id), prev = TABS[i-1], next = TABS[i+1];
+  $("pager").innerHTML = (prev?`<a href="#${prev.id}">← ${prev.label}</a>`:"<span></span>") + (next?`<a href="#${next.id}">${next.label} →</a>`:"<span></span>");
+  // 브라우저의 #앵커 자동 스크롤이 끝난 뒤 맨 위로 (제목이 메뉴에 가려지지 않게)
+  setTimeout(()=>{ window.scrollTo(0, 0); TABS[i].el.parentElement.scrollLeft = TABS[i].el.offsetLeft - 60; }, 0);
+}
+history.scrollRestoration = "manual";
+window.addEventListener("hashchange", showTab);
+window.addEventListener("load", ()=>setTimeout(()=>window.scrollTo(0, 0), 0));
+showTab();
+
 load();
 if(theme) document.documentElement.dataset.theme=theme;
 renderAll();
