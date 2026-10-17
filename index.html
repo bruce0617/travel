@@ -248,27 +248,35 @@ const RESORTS = [
 ];
 const linkHtml = arr => arr.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join("");
 const DAYS = [
-  {d:"Day 1 · 2/18(목)", items:["10:10 인천 출발 → 13:10 다낭 도착 (베트남항공)","그랩으로 리조트 이동 (20~40분) · 15시 전후 체크인","리조트 수영장에서 가볍게 물놀이","저녁 미케 해변 근처 식당"]},
+  {d:"Day 1 · 2/18(목)", items:["🚌 06:00 집 앞에서 8837 공항버스 탑승 (여유 있게 05:40 / 놓치면 06:20) · 성인 16,800원","07:30~08:00 인천공항 도착 → 체크인 (T1 먼저, T2는 15~20분 뒤 도착)","10:10 인천 출발 → 13:10 다낭 도착 (베트남항공)","그랩으로 리조트 이동 (20~40분) · 15시 전후 체크인","리조트 수영장에서 가볍게 물놀이","저녁 미케 해변 근처 식당"]},
   {d:"Day 2 · 2/19(금)", items:["리조트 수영장·해변 종일 휴식","키즈클럽 프로그램 확인","저녁 한강변 야경 · 한시장 구경"]},
   {d:"Day 3 · 2/20(토)", items:["바다가 잔잔하면 손트라반도 오전 스노클링 투어","린응사 해수관음상","🐉 21:00 용다리 불·물 쇼 (토·일 밤에만)"]},
   {d:"Day 4 · 2/21(일)", items:["바나힐 골든브릿지·놀이공원 (정상은 쌀쌀하니 겉옷 챙기기)","비 오는 날엔 리조트 휴식 + 마사지로 교체","용다리 쇼를 어제 못 봤으면 오늘 21:00"]},
   {d:"Day 5 · 2/22(월)", items:["오전 마블마운틴 (오행산) 동굴 탐험","오후 호이안 올드타운 · 등불 야경 · 소원배","호이안에서 저녁 후 리조트 복귀"]},
-  {d:"Day 6 · 2/23(화)", items:["조식 후 마지막 수영 · 12시 체크아웃","점심 후 13:30쯤 다낭 공항 도착 (국제선 2시간 반 전)","16:15 다낭 출발 → 인천 밤 도착"]}
+  {d:"Day 6 · 2/23(화)", items:["조식 후 마지막 수영 · 12시 체크아웃","점심 후 13:30쯤 다낭 공항 도착 (국제선 2시간 반 전)","16:15 다낭 출발 → 인천 약 22:30 도착","⚠️ 8837 동탄행 막차는 T2 22:00 · T1 22:20이라 못 탈 가능성이 큼 → 택시·자가용 등 귀가 방법 미리 정하기"]}
 ];
 const DEFAULT_CHECKS = [
   "항공권 예약 (트립닷컴 · 베트남항공)","여권 유효기간 6개월 이상 확인 (가족 4명)","e티켓에서 영문 이름·수하물 허용량 확인",
   "리조트 예약 (2/18~2/23, 5박, 성인 2 + 아동 2)","여행자보험 가입","유심/eSIM 구매",
   "그랩 앱 설치·결제수단 등록","환전 (달러 → 현지에서 동)","아이들 래시가드·아쿠아슈즈","스노클 마스크 (아이 사이즈)","상비약·선크림·모기 기피제",
-  "베트남항공 온라인 체크인 (출발 24시간 전)"
+  "베트남항공 온라인 체크인 (출발 24시간 전)",
+  "e티켓에서 인천공항 터미널(T1/T2) 확인","귀국일 밤 귀가 방법 정하기 (8837 막차 22:00 이전 종료)"
 ];
 // v1(저가항공·2/15 일정) 저장본을 v2(베트남항공·2/18 일정)로 바꿈. 바뀌었으면 true
 function migrate(s){
+  let changed = false;
   // 예약 정보 칸에 적었던 PNR·수하물은 가는 편 카드로 옮김 (편도 2장 발권이라 편마다 따로 적음)
   if(s.v >= 2 && s.booking && s.flights && (s.booking.pnr || s.booking.bag)){
     for(const k of ["pnr","bag"]) if(s.booking[k]){ if(!s.flights[0][k]) s.flights[0][k] = s.booking[k]; delete s.booking[k]; }
+    changed = true;
+  }
+  // v3: 공항버스 관련 체크리스트 추가
+  if(s.v === 2){
+    s.checks = [...(s.checks||[]), ...DEFAULT_CHECKS.slice(12).map(t=>({t,done:false}))];
+    s.v = 3;
     return true;
   }
-  if((s.v||1) >= 2) return false;
+  if((s.v||1) >= 2) return changed;
   delete s.outbound; delete s.inbound;
   if(s.budget){ ["b_people","b_fare","b_surge","b_bag","b_seat","b_late"].forEach(k=>delete s.budget[k]); if(s.budget.b_nights=="4") delete s.budget.b_nights; if(s.budget.b_hotel=="300000") delete s.budget.b_hotel; }
   const old = (s.checks||[]).filter(c=>!/항공권 가격 알림|항공권 예약|위탁수하물·좌석|리조트 예약/.test(c.t));
@@ -277,11 +285,12 @@ function migrate(s){
   if(notes.length) s.note = (s.note ? s.note+"\n\n" : "") + "[이전 일정(2/15~) 날짜별 메모]\n" + notes.join("\n");
   s.dayNotes = {};
   s.v = 2;
+  migrate(s);
   return true;
 }
 
 const KEY = "danang-planner-v1", THEME_KEY = "danang-planner-theme";
-const defaults = () => ({v:2, flights:structuredClone(DEFAULT_FLIGHTS), booking:{}, resort:null, stars:{}, budget:{}, dayNotes:{},
+const defaults = () => ({v:3, flights:structuredClone(DEFAULT_FLIGHTS), booking:{}, resort:null, stars:{}, budget:{}, dayNotes:{},
   checks:DEFAULT_CHECKS.map((t,i)=>({t,done:i===0})), note:""});
 let state = defaults();
 let theme = null;
