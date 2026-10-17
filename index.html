@@ -88,6 +88,17 @@ textarea{min-height:70px;resize:vertical}
 .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .progress{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin:6px 0 10px}
 .progress div{height:100%;background:var(--accent);width:0}
+.glance{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.gday{border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.gday header{background:var(--accent-soft);padding:8px 12px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;border:0}
+.gday header b{color:var(--accent);font-size:.95rem}
+.gday header span{font-size:.8rem;color:var(--muted);white-space:nowrap}
+.gday .theme{padding:8px 12px 2px;font-weight:700;font-size:.95rem}
+.gday dl{margin:0;padding:4px 12px 10px;display:grid;grid-template-columns:auto 1fr;gap:3px 8px;font-size:.86rem}
+.gday dt{color:var(--muted)}
+.gday dd{margin:0}
+.gday.rest header{background:var(--surface-2)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:.8rem;color:var(--muted)}
 .sync{align-self:center;white-space:nowrap;font-size:.8rem;color:var(--muted)}
 footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
 </style>
@@ -110,12 +121,19 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
   </div>
 </header>
 <nav><div class="wrap">
-  <a href="#overview">요약</a><a href="#flights">항공</a><a href="#resorts">리조트</a>
+  <a href="#glance">일정 한눈에</a><a href="#overview">요약</a><a href="#flights">항공</a><a href="#resorts">리조트</a>
   <a href="#budget">예산</a><a href="#itinerary">일정</a><a href="#checklist">체크리스트</a><a href="#notes">메모</a>
   <button class="btn ghost" id="themeBtn" style="margin-left:auto;padding:4px 10px">🌓</button>
 </div></nav>
 
 <main class="wrap">
+
+<section id="glance">
+  <h2>📅 한눈에 보는 일정</h2>
+  <p class="sub">2/18(목) ~ 2/23(화) · 숙소 한 곳에서 5박 · 큰 외출 다음 날은 쉬기. 자세한 시간은 아래 <a href="#itinerary">휴양 일정</a>에 있어요.</p>
+  <div class="glance" id="glanceGrid"></div>
+  <div class="legend"><span>🏖️ 휴양</span><span>🚌✈️ 이동</span><span>🛶🏮🌉🐉 명소</span></div>
+</section>
 
 <section id="overview">
   <h2>한눈에 보기</h2>
@@ -180,7 +198,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
 </section>
 
 <section id="itinerary">
-  <h2>🗓️ 휴양 일정 (5박 6일)</h2>
+  <h2>🗓️ 휴양 일정 (5박 6일) · 자세히</h2>
   <p class="sub">각 날짜 아래 메모 칸에 바꾼 계획을 적어 두세요. 자동으로 저장됩니다.</p>
   <div id="days"></div>
 </section>
@@ -256,6 +274,14 @@ const RESORTS = [
     links:[["공식 사이트","https://furamavietnam.com/"],["트립어드바이저 후기","https://www.tripadvisor.com/Hotel_Review-g298085-d302750-Reviews-Furama_Resort_Danang-Da_Nang.html"]]}
 ];
 const linkHtml = arr => arr.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join("");
+const GLANCE = [
+  {day:"Day 1", date:"2/18 (목)", theme:"🚌✈️ 출발 · 리조트 도착", am:"06:00 공항버스 → 10:10 출발", pm:"13:10 다낭 도착 → 체크인", ev:"리조트 수영장 · 저녁"},
+  {day:"Day 2", date:"2/19 (금)", theme:"🛶🏮 호이안 바구니배 · 등불 축제", am:"리조트 휴식", pm:"14:00 코코넛 마을 바구니배", ev:"올드타운 등불 축제 · 소원배"},
+  {day:"Day 3", date:"2/20 (토)", theme:"🏖️ 휴양", am:"수영장 · 키즈클럽", pm:"스파·마사지 (선택: 마블마운틴)", ev:"근처 해산물 식당", rest:true},
+  {day:"Day 4", date:"2/21 (일)", theme:"🛍️🐉 다낭 시내 · 야경", am:"리조트 휴식", pm:"15:30 한시장 쇼핑", ev:"한강변 저녁 · 21:00 용다리 불쇼"},
+  {day:"Day 5", date:"2/22 (월)", theme:"🌉 바나힐 골든브릿지", am:"07:30 출발 · 케이블카 · 골든브릿지", pm:"프렌치 빌리지 → 하산 · 수영", ev:"마지막 밤 특식"},
+  {day:"Day 6", date:"2/23 (화)", theme:"✈️ 귀국", am:"마지막 수영 · 12시 체크아웃", pm:"13:30 공항 → 16:15 출발", ev:"22:30 인천 도착 · 귀가"}
+];
 const DAYS = [
   {d:"Day 1 · 2/18(목) 이동 + 수영장", items:["🚌 06:00 집 앞에서 8837 공항버스 탑승 (여유 있게 05:40 / 놓치면 06:20) · 성인 16,800원","07:30~07:40 인천공항 T1(제1여객터미널) 하차 → 3층 출국장 베트남항공 카운터 체크인","10:10 인천 출발 → 13:10 다낭 도착 (베트남항공)","그랩으로 리조트 이동 (약 20~30분) · 15시 전후 체크인","리조트 수영장에서 가볍게 물놀이 · 저녁은 리조트에서 편하게"]},
   {d:"Day 2 · 2/19(금) 호이안: 바구니배 + 등불 축제 🏮", items:["오전: 늦잠, 리조트 수영장에서 휴식 · 점심 후 짧은 낮잠","14:00 그랩으로 껌타인 코코넛 마을 이동 (리조트에서 약 30~40분)","🛶 15:00 동그란 바구니배(퉁짜이) 45분~1시간 · 배 1척에 2명, 척당 약 20~40만 동 + 입장료 3만 동 + 사공 팁","16:30 호이안 올드타운으로 이동 (10~15분) · 내원교, 골목 산책","해 질 무렵 투본강 소원배 · 등불 띄우기 — 🏮 음력 14일 등불 축제 날 (2027.2.19로 안내됨, 가까워지면 재확인), 붐비니 아이들 손 꼭 잡기","호이안에서 저녁 (까오러우·화이트로즈) → 21시쯤 리조트 복귀"]},
@@ -444,7 +470,14 @@ $("themeBtn").onclick=()=>{
   theme = dark ? "light" : "dark"; document.documentElement.dataset.theme=theme;
   try{ localStorage.setItem(THEME_KEY, theme); }catch(e){}
 };
+function renderGlance(){
+  $("glanceGrid").innerHTML = GLANCE.map(g=>`<div class="gday${g.rest?" rest":""}">
+    <header><b>${g.day}</b><span>${g.date}</span></header>
+    <div class="theme">${g.theme}</div>
+    <dl><dt>오전</dt><dd>${g.am}</dd><dt>오후</dt><dd>${g.pm}</dd><dt>저녁</dt><dd>${g.ev}</dd></dl></div>`).join("");
+}
 function renderAll(){
+  renderGlance();
   $("flightLinks").innerHTML = linkHtml(FLIGHT_LINKS);
   $("busLinks").innerHTML = linkHtml(BUS_LINKS);
   renderFlights(); renderResorts(); renderBudget(); renderDays(); renderChecks(); $("freeNote").value=state.note||"";
