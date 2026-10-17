@@ -268,7 +268,8 @@ const DEFAULT_CHECKS = [
   "리조트 예약 (2/18~2/23, 5박, 성인 2 + 아동 2)","여행자보험 가입","유심/eSIM 구매",
   "그랩 앱 설치·결제수단 등록","환전 (달러 → 현지에서 동)","아이들 래시가드·아쿠아슈즈","스노클 마스크 (아이 사이즈)","상비약·선크림·모기 기피제",
   "베트남항공 온라인 체크인 (출발 24시간 전)",
-  "e티켓에서 인천공항 터미널(T1/T2) 확인","귀국일 밤 귀가 방법 정하기 (8837 막차 22:00 이전 종료)"
+  "e티켓에서 인천공항 터미널(T1/T2) 확인","귀국일 밤 귀가 방법 정하기 (8837 막차 22:00 이전 종료)",
+  "8837 공항버스 예매 (2/18 06:00, 4명 · 버스타고)"
 ];
 // v1(저가항공·2/15 일정) 저장본을 v2(베트남항공·2/18 일정)로 바꿈. 바뀌었으면 true
 function migrate(s){
@@ -278,12 +279,10 @@ function migrate(s){
     for(const k of ["pnr","bag"]) if(s.booking[k]){ if(!s.flights[0][k]) s.flights[0][k] = s.booking[k]; delete s.booking[k]; }
     changed = true;
   }
-  // v3: 공항버스 관련 체크리스트 추가
-  if(s.v === 2){
-    s.checks = [...(s.checks||[]), ...DEFAULT_CHECKS.slice(12).map(t=>({t,done:false}))];
-    s.v = 3;
-    return true;
-  }
+  // v3·v4: 공항버스 관련 체크리스트 추가
+  const addChecks = (from, to) => { s.checks = [...(s.checks||[]), ...DEFAULT_CHECKS.slice(from, to).map(t=>({t,done:false}))]; };
+  if(s.v === 2){ addChecks(12, 14); s.v = 3; changed = true; }
+  if(s.v === 3){ addChecks(14, 15); s.v = 4; changed = true; }
   if((s.v||1) >= 2) return changed;
   delete s.outbound; delete s.inbound;
   if(s.budget){ ["b_people","b_fare","b_surge","b_bag","b_seat","b_late"].forEach(k=>delete s.budget[k]); if(s.budget.b_nights=="4") delete s.budget.b_nights; if(s.budget.b_hotel=="300000") delete s.budget.b_hotel; }
@@ -298,7 +297,7 @@ function migrate(s){
 }
 
 const KEY = "danang-planner-v1", THEME_KEY = "danang-planner-theme";
-const defaults = () => ({v:3, flights:structuredClone(DEFAULT_FLIGHTS), booking:{}, resort:null, stars:{}, budget:{}, dayNotes:{},
+const defaults = () => ({v:4, flights:structuredClone(DEFAULT_FLIGHTS), booking:{}, resort:null, stars:{}, budget:{}, dayNotes:{},
   checks:DEFAULT_CHECKS.map((t,i)=>({t,done:i===0})), note:""});
 let state = defaults();
 let theme = null;
