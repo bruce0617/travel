@@ -98,6 +98,12 @@ textarea{min-height:70px;resize:vertical}
 .gday dt{color:var(--muted)}
 .gday dd{margin:0}
 .gday.rest header{background:var(--surface-2)}
+.summary{margin:6px 0 4px}
+.summary table{min-width:640px;font-size:.86rem}
+.summary th{white-space:nowrap;background:var(--surface-2)}
+.summary td:first-child,.summary td:nth-child(2){white-space:nowrap}
+.summary tr.rest td{background:var(--surface-2)}
+.summary td b{color:var(--accent)}
 .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:.8rem;color:var(--muted)}
 .sync{align-self:center;white-space:nowrap;font-size:.8rem;color:var(--muted)}
 footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
@@ -199,7 +205,8 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
 
 <section id="itinerary">
   <h2>🗓️ 휴양 일정 (5박 6일) · 자세히</h2>
-  <p class="sub">각 날짜 아래 메모 칸에 바꾼 계획을 적어 두세요. 자동으로 저장됩니다.</p>
+  <div class="tbl summary"><table id="summaryTable"></table></div>
+  <p class="sub" style="margin-top:14px">아래는 날짜별 상세 일정이에요. 각 날짜 메모 칸에 바꾼 계획을 적어 두면 자동으로 저장됩니다.</p>
   <div id="days"></div>
 </section>
 
@@ -476,8 +483,12 @@ function renderGlance(){
     <div class="theme">${g.theme}</div>
     <dl><dt>오전</dt><dd>${g.am}</dd><dt>오후</dt><dd>${g.pm}</dd><dt>저녁</dt><dd>${g.ev}</dd></dl></div>`).join("");
 }
+function renderSummary(){
+  $("summaryTable").innerHTML = `<thead><tr><th></th><th>날짜</th><th>테마</th><th>오전</th><th>오후</th><th>저녁</th></tr></thead><tbody>` +
+    GLANCE.map(g=>`<tr class="${g.rest?"rest":""}"><td><b>${g.day}</b></td><td>${g.date}</td><td>${g.theme}</td><td>${g.am}</td><td>${g.pm}</td><td>${g.ev}</td></tr>`).join("") + `</tbody>`;
+}
 function renderAll(){
-  renderGlance();
+  renderGlance(); renderSummary();
   $("flightLinks").innerHTML = linkHtml(FLIGHT_LINKS);
   $("busLinks").innerHTML = linkHtml(BUS_LINKS);
   renderFlights(); renderResorts(); renderBudget(); renderDays(); renderChecks(); $("freeNote").value=state.note||"";
