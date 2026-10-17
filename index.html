@@ -144,6 +144,9 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
     · 가는 편을 놓치면 오는 편이 노쇼로 취소될 수 있어요. 그럴 땐 반드시 항공사에 미리 연락하세요.</div>
   <div class="note">🔒 여권번호·카드번호는 여기 적지 마세요. 예약번호는 Google 로그인한 사람만 볼 수 있게 저장됩니다.</div>
   <div class="links" id="flightLinks" style="margin-top:10px"></div>
+  <h3 style="font-size:1rem;margin:18px 0 6px">🚌 공항 가는 길 · 8837 공항버스</h3>
+  <p class="sub" style="margin-bottom:8px">2/18(목) <b>06:00</b> 집 앞 탑승 추천 (여유 05:40 · 예비 06:20) · 성인 16,800원 · T1 먼저, T2는 15~20분 뒤. 새벽 버스는 만석이면 못 탈 수 있으니 <b>미리 예매</b>하세요 (출발 20분 전까지 가능).</p>
+  <div class="links" id="busLinks"></div>
   <div class="note">💡 <b>트립닷컴 예약은 웹에 자동으로 연결할 수 없어요</b> (개인 예약을 읽어 오는 공개 기능이 없음). 대신 예약번호를 위에 적어 두고, 위 버튼으로 트립닷컴·베트남항공 예약 관리 화면을 바로 여세요. 온라인 체크인은 보통 출발 24시간 전부터 열립니다.</div>
 </section>
 
@@ -227,6 +230,11 @@ const FLIGHT_LINKS = [
   ["VN431 운항 현황", "https://us.trip.com/flights/status-vn431/"],
   ["트립닷컴 e티켓 안내", "https://kr.trip.com/blog/trip-e-ticket/"],
   ["트립닷컴 체크인 안내", "https://kr.trip.com/blog/trip-flight-check-in/"]
+];
+const BUS_LINKS = [
+  ["버스타고 예매 (8837)", "https://www.bustago.or.kr"],
+  ["8837 시간표", "https://nowboarding.kr/airport/icn/bus/8837"],
+  ["인천공항 공식 홈페이지 (터미널·주차)", "https://www.airport.kr"]
 ];
 // 가격은 2026년 10월 검색 기준 참고값 (날짜·객실 조건이 제각각)
 const RESORTS = [
@@ -436,6 +444,7 @@ $("themeBtn").onclick=()=>{
 };
 function renderAll(){
   $("flightLinks").innerHTML = linkHtml(FLIGHT_LINKS);
+  $("busLinks").innerHTML = linkHtml(BUS_LINKS);
   renderFlights(); renderResorts(); renderBudget(); renderDays(); renderChecks(); $("freeNote").value=state.note||"";
 }
 load();
