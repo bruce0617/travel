@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>다낭 가족여행 플래너</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ef; --surface:#ffffff; --surface-2:#f0ede6; --text:#1f2328; --muted:#5f6670;
+  --line:#e2ddd2; --accent:#0e7c86; --accent-soft:#d9f0f1; --warn:#a15c00; --warn-soft:#fdf0dc;
+  --ok:#2f7d32; --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14171a; --surface:#1d2125; --surface-2:#252a2f; --text:#e8eaed; --muted:#a2a9b1;
+    --line:#333a41; --accent:#4cc3cc; --accent-soft:#16383b; --warn:#f0b35a; --warn-soft:#3a2c17; --ok:#7fc684;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14171a; --surface:#1d2125; --surface-2:#252a2f; --text:#e8eaed; --muted:#a2a9b1;
+  --line:#333a41; --accent:#4cc3cc; --accent-soft:#16383b; --warn:#f0b35a; --warn-soft:#3a2c17; --ok:#7fc684;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans KR",system-ui,sans-serif;line-height:1.6;font-size:15px}
+a{color:var(--accent)}
+header{background:var(--surface);border-bottom:1px solid var(--line)}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+.hero{padding:28px 0 18px}
+.hero h1{margin:0 0 4px;font-size:1.7rem}
+.hero p{margin:0;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{background:var(--accent-soft);color:var(--accent);padding:4px 10px;border-radius:999px;font-size:.85rem;font-weight:500}
+nav{position:sticky;top:0;z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:6px;padding-bottom:6px}
+nav a{white-space:nowrap;text-decoration:none;color:var(--muted);padding:6px 10px;border-radius:8px;font-size:.9rem}
+nav a:hover{background:var(--surface-2);color:var(--text)}
+nav a.active{background:var(--accent);color:#fff;font-weight:500}
+main > section{display:none}
+main > section.active{display:block}
+.pager{display:flex;justify-content:space-between;gap:8px;margin-top:4px}
+.pager a{text-decoration:none;font-size:.9rem;border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--surface)}
+.pager a:hover{border-color:var(--accent)}
+main{padding:20px 0 60px}
+section{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:18px}
+section h2{margin:0 0 4px;font-size:1.25rem}
+.sub{color:var(--muted);margin:0 0 14px;font-size:.9rem}
+.note{background:var(--warn-soft);color:var(--text);border-left:4px solid var(--warn);padding:10px 12px;border-radius:8px;font-size:.9rem;margin:12px 0}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:500}
+.tbl{overflow-x:auto}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;cursor:pointer}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt input{margin-top:5px;accent-color:var(--accent)}
+.opt b{display:block}
+.opt small{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.card{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px;cursor:pointer;position:relative}
+.card:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+.card input[type=radio]{position:absolute;top:14px;right:14px;accent-color:var(--accent)}
+.card h3{margin:0;font-size:1.02rem;padding-right:24px}
+.tag{font-size:.78rem;color:var(--accent);font-weight:700}
+.card ul{margin:0;padding-left:18px;font-size:.88rem}
+.card .con{color:var(--warn);font-size:.85rem}
+.card .price{font-size:.85rem;background:var(--surface-2);border-radius:8px;padding:6px 8px}
+.links{display:flex;flex-wrap:wrap;gap:6px}
+.links a{font-size:.82rem;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:var(--surface)}
+.links a:hover{border-color:var(--accent)}
+.stars{display:flex;gap:2px}
+.stars button{background:none;border:0;cursor:pointer;font-size:1.1rem;color:var(--line);padding:0}
+.stars button.on{color:#e7a800}
+.form{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--muted)}
+input[type=number],input[type=text],textarea,select{font:inherit;color:var(--text);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
+textarea{min-height:70px;resize:vertical}
+.total{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.stat{flex:1 1 180px;background:var(--surface-2);border-radius:12px;padding:12px 14px}
+.stat span{display:block;color:var(--muted);font-size:.8rem}
+.stat strong{font-size:1.35rem}
+.stat.main{background:var(--accent-soft)}
+.stat.main strong{color:var(--accent)}
+.day{border-left:3px solid var(--accent);padding:4px 0 4px 14px;margin-bottom:16px}
+.day h3{margin:0;font-size:1rem}
+.day ul{margin:6px 0 8px;padding-left:18px;font-size:.9rem}
+.check{display:flex;gap:10px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line);font-size:.92rem}
+.check input{accent-color:var(--accent);width:18px;height:18px}
+.check.done span{text-decoration:line-through;color:var(--muted)}
+.check button{margin-left:auto;background:none;border:0;color:var(--muted);cursor:pointer}
+.row{display:flex;gap:8px;margin-top:10px}
+.btn{font:inherit;background:var(--accent);color:#fff;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;white-space:nowrap}
+.btn.ghost{background:var(--surface-2);color:var(--text);border:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.progress{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin:6px 0 10px}
+.progress div{height:100%;background:var(--accent);width:0}
+.glance{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.gday{border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.gday header{background:var(--accent-soft);padding:8px 12px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;border:0}
+.gday header b{color:var(--accent);font-size:.95rem}
+.gday header span{font-size:.8rem;color:var(--muted);white-space:nowrap}
+.gday .theme{padding:8px 12px 2px;font-weight:700;font-size:.95rem}
+.gday dl{margin:0;padding:4px 12px 10px;display:grid;grid-template-columns:auto 1fr;gap:3px 8px;font-size:.86rem}
+.gday dt{color:var(--muted)}
+.gday dd{margin:0}
+.gday.rest header{background:var(--surface-2)}
+.summary{margin:6px 0 4px}
+.summary table{min-width:640px;font-size:.86rem}
+.summary th{white-space:nowrap;background:var(--surface-2)}
+.summary td:first-child,.summary td:nth-child(2){white-space:nowrap}
+.summary tr.rest td{background:var(--surface-2)}
+.summary td b{color:var(--accent)}
+.more summary{cursor:pointer;color:var(--accent);font-size:.88rem;font-weight:500}
+.more dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;margin:8px 0 0;font-size:.85rem}
+.more dt{color:var(--muted);white-space:nowrap}
+.more dd{margin:0}
+.blogs{border-top:1px dashed var(--line);padding-top:8px;display:flex;flex-direction:column;gap:6px}
+.blogs > span{font-size:.82rem;color:var(--muted)}
+.hotel{border:1px solid var(--accent);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.hotel h3{margin:0;font-size:1.15rem}
+.hotel .facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.hotel .fact{background:var(--surface-2);border-radius:10px;padding:8px 10px}
+.hotel .fact span{display:block;font-size:.78rem;color:var(--muted)}
+.hotel .fact b{font-size:.95rem}
+.hotel dl{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;margin:0;font-size:.88rem}
+.hotel dt{color:var(--muted);white-space:nowrap}
+.hotel dd{margin:0}
+.card{position:relative}
+.like{position:absolute;top:10px;right:12px;background:none;border:0;font-size:1.3rem;cursor:pointer;color:var(--muted)}
+.like.on{color:#e0457b}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:.8rem;color:var(--muted)}
+.sync{align-self:center;white-space:nowrap;font-size:.8rem;color:var(--muted)}
+footer{color:var(--muted);font-size:.8rem;text-align:center;padding-bottom:30px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap hero">
+    <a href="./" style="display:inline-block;font-size:.85rem;text-decoration:none;margin-bottom:6px">← 우리 가족 여행</a>
+    <h1>🌴 다낭 가족여행 플래너</h1>
+    <p>엄마·아빠·초등학생 두 딸 · 5박 6일 · 인천 출발</p>
+    <div class="chips">
+      <span class="chip">2027.02.18(목) → 02.23(화)</span>
+      <span class="chip">✈️ 베트남항공 예약 완료</span>
+      <span class="chip">🏨 푸라마 리조트 다낭 예약 완료</span>
+      <span class="chip">수영·물놀이 중심</span>
+    </div>
+    <div class="bar" style="margin-top:14px">
+      <button class="btn" id="authBtn" hidden>Google 로그인</button>
+      <span id="syncStatus" class="sync"></span>
+    </div>
+  </div>
+</header>
+<nav><div class="wrap">
+  <a href="#glance">일정 한눈에</a><a href="#overview">요약</a><a href="#flights">항공</a><a href="#resorts">숙소</a>
+  <a href="#budget">예산</a><a href="#itinerary">상세 일정</a><a href="#food">맛집</a><a href="#checklist">체크리스트</a><a href="#notes">메모</a>
+  <button class="btn ghost" id="themeBtn" style="margin-left:auto;padding:4px 10px">🌓</button>
+</div></nav>
+
+<main class="wrap">
+
+<section id="glance">
+  <h2>📅 한눈에 보는 일정</h2>
+  <p class="sub">2/18(목) ~ 2/23(화) · 푸라마 리조트 다낭 5박 (조식 포함). 자세한 시간은 <a href="#itinerary">상세 일정</a> 페이지에 있어요.</p>
+  <div class="glance" id="glanceGrid"></div>
+  <div class="legend"><span>🏖️ 휴양</span><span>🚌✈️ 이동</span><span>🛶🏮🌉🐉 명소</span></div>
+</section>
+
+<section id="overview">
+  <h2>한눈에 보기</h2>
+  <p class="sub">2026년 10월 조사 기준. 가격은 참고값이며 예약 시점에 다시 확인하세요.</p>
+  <div class="tbl"><table>
+    <tr><th>날짜</th><td>2/18(목) 출발 ~ 2/23(화) 귀국 (현지 5박)</td></tr>
+    <tr><th>날씨</th><td>낮 약 25℃ · 밤 약 20℃ · 바다 약 23℃. 우기 끝무렵이라 흐리거나 쌀쌀한 날이 섞일 수 있음 → 아이들 래시가드 필수</td></tr>
+    <tr><th>설 연휴</th><td>2027년 설 연휴(2/5~2/8 전후)가 끝나고 열흘 뒤라 성수기를 피함</td></tr>
+    <tr><th>항공</th><td>✅ 베트남항공 · 가는 편 2/18 인천 <b>T1</b> 10:10 / 오는 편 2/23 다낭 16:15 (트립닷컴 예약)</td></tr>
+    <tr><th>숙소</th><td>✅ <b>푸라마 리조트 다낭 · 오션 스튜디오 스위트</b> · 5박 (2/18~2/23) · 조식 포함 · 체크인 14:00 / 체크아웃 11:00 이전 · 체크인 때 보증금 51,581원 · ⚠️ 변경·취소 불가 (환불 안 됨)</td></tr>
+    <tr><th>일정 원칙</th><td>숙소는 <b>푸라마 한 곳에서 5박</b> (짐 옮기지 않기) · 외출은 하루 한 번 · 명소: <b>호이안 바구니배·등불 축제(2/19)</b>, <b>한시장·용다리 불쇼(2/20)</b>, <b>바나힐 골든브릿지(2/22 월, 아침 일찍)</b></td></tr>
+    <tr><th>스노클링</th><td>다낭 해변은 모래 바닥이라 물고기 보기 어려움. 참섬은 2월에 결항이 잦아 <b>손트라반도 오전 투어</b>를 날씨 보고 결정</td></tr>
+  </table></div>
+</section>
+
+<section id="flights">
+  <h2>✈️ 항공편 · 예약 완료</h2>
+  <p class="sub">트립닷컴에서 예약한 베트남항공 왕복이에요. e티켓과 다른 부분이 있으면 칸을 직접 고치세요. 자동 저장·동기화됩니다.</p>
+  <div class="grid" id="flightCards"></div>
+  <h3 style="font-size:1rem;margin:18px 0 6px">🎫 예약 정보</h3>
+  <div class="form" id="bookingForm">
+    <label class="f">트립닷컴 예약번호<input type="text" data-k="tripNo" placeholder="예약 확인 메일에 있어요"></label>
+  </div>
+  <div class="note">🎫 <b>가는 편·오는 편이 편도 2장으로 따로 발권됐어요</b> (예약번호가 각각 다름). 항공사 예약번호는 위 항공편 카드에 하나씩 적으세요.<br>
+    · 온라인 체크인·변경·취소를 <b>편마다 따로</b> 해야 해요.<br>
+    · 수하물 허용량이 편마다 다를 수 있으니 e티켓 두 장을 각각 확인하세요.<br>
+    · 가는 편을 놓치면 오는 편이 노쇼로 취소될 수 있어요. 그럴 땐 반드시 항공사에 미리 연락하세요.</div>
+  <div class="note">🔒 여권번호·카드번호는 여기 적지 마세요. 예약번호는 Google 로그인한 사람만 볼 수 있게 저장됩니다.</div>
+  <div class="links" id="flightLinks" style="margin-top:10px"></div>
+  <h3 style="font-size:1rem;margin:18px 0 6px">🚗 공항 가는 길 · 자가용 + 인천공항 장기주차장</h3>
+  <p class="sub" style="margin-bottom:8px">2/18(목) <b>06:00 집 출발</b> → 약 1시간 → <b>T1(제1여객터미널) 장기주차장</b> 주차 → 무료 셔틀버스로 터미널 이동 · 장기주차 <b>하루 9,000원</b> → ♿ <b>장애인 차량 50% 할인</b>으로 6일 약 2.7만 원 (장애인 자동차 표지 앞유리 부착 · 자동 할인 안 되면 직원 있는 정산소에서 복지카드 제시 · 출차 영수증 보관, 빠지면 30일 안에 사후감면 신청) · 2월 방학철엔 주차장이 꽉 차는 날이 있어 <b>주차 예약</b> 권장 · 귀국일 밤 23시쯤 공항을 나와 차로 귀가 (집 약 00:30) — 운전할 사람은 기내에서 충분히 쉬기</p>
+  <div class="links" id="busLinks"></div>
+  <div class="note">💡 <b>트립닷컴 예약은 웹에 자동으로 연결할 수 없어요</b> (개인 예약을 읽어 오는 공개 기능이 없음). 대신 예약번호를 위에 적어 두고, 위 버튼으로 트립닷컴·베트남항공 예약 관리 화면을 바로 여세요. 온라인 체크인은 보통 출발 24시간 전부터 열립니다.</div>
+</section>
+
+<section id="resorts">
+  <h2>🏨 숙소 · 예약 완료</h2>
+  <p class="sub">푸라마 리조트 다낭 한 곳에서 5박 해요. 예약번호를 적어 두면 Google 로그인한 사람만 볼 수 있게 저장됩니다.</p>
+  <div class="hotel" id="hotelBox"></div>
+  <h3 style="font-size:1rem;margin:18px 0 6px">🎫 숙소 예약 정보</h3>
+  <div class="form" id="hotelForm">
+    <label class="f">예약 사이트<input type="text" data-k="hotelSite" placeholder="예: 트립닷컴, 아고다"></label>
+    <label class="f">숙소 예약번호<input type="text" data-k="hotelNo" placeholder="예약 확인 메일에 있어요"></label>
+    <label class="f">보증금 결제·환불 메모<input type="text" data-k="hotelDeposit" placeholder="예: 2/18 카드 결제, 2/23 환불 확인"></label>
+  </div>
+  <div class="note">⚠️ <b>변경·취소가 안 되는 환불 불가 상품이에요.</b> 날짜를 바꾸거나 취소하면 결제한 2,057,172원을 돌려받지 못해요. 그래서 <b>여행자보험</b>을 들 때 여행 취소 보상이 되는지 확인해 두면 좋아요.</div>
+  <div class="note">💳 <b>체크인 때 보증금 51,581원을 추가로 결제해야 해요.</b> 신용카드를 준비하세요. 이 금액은 약 100만 동으로, 미니바·추가 요금에 대비한 보증금이라 문제가 없으면 <b>체크아웃 때 돌려받거나 카드 승인이 취소</b>되는 경우가 보통이에요. 체크인할 때 환불 방법을 꼭 물어보세요.</div>
+  <div class="note">🛏️ <b>오션 스튜디오 스위트는 킹베드 1개 구조</b>라는 후기가 있어요. 4명이 편하게 자려면 <b>엑스트라 베드</b>가 필요할 수 있으니, 예약 확인서에 인원이 성인 2 + 아동 2로 들어가 있는지와 엑스트라 베드 가능 여부를 호텔에 미리 확인하세요.</div>
+</section>
+
+<section id="budget">
+  <h2>💰 예산 계산기</h2>
+  <p class="sub">숫자를 바꾸면 바로 다시 계산됩니다. 숙박비 등 임시값은 실제 견적으로 바꿔 넣으세요.</p>
+  <div class="form">
+    <label class="f">항공권 결제 총액 (4인, 원) <small>트립닷컴 결제 금액을 넣으세요</small><input type="number" id="b_air" value="2329800" step="10000"></label>
+    <label class="f">숙박 결제 총액 (원) <small>푸라마 5박 · 조식 포함</small><input type="number" id="b_stay" value="2057172" step="10000"></label>
+    <label class="f">여행 일수 (식비 계산)<input type="number" id="b_days" value="6" min="1"></label>
+    <label class="f">식비 1일 가족 (원)<input type="number" id="b_food" value="150000" step="10000"></label>
+    <label class="f">투어·입장료 총액 (원)<input type="number" id="b_tour" value="400000" step="10000"></label>
+    <label class="f">공항 주차·기름값·통행료 (원) <small>장기주차 6일 약 2.7만 원(장애인 50% 할인) 포함</small><input type="number" id="b_park" value="63000" step="10000"></label>
+    <label class="f">교통 (그랩 등) 총액 (원)<input type="number" id="b_taxi" value="150000" step="10000"></label>
+    <label class="f">기타 (보험·유심·마사지) (원)<input type="number" id="b_etc" value="200000" step="10000"></label>
+  </div>
+  <div class="total">
+    <div class="stat"><span>항공 합계</span><strong id="t_air">-</strong></div>
+    <div class="stat"><span>숙박 합계</span><strong id="t_hotel">-</strong></div>
+    <div class="stat"><span>현지 경비</span><strong id="t_local">-</strong></div>
+    <div class="stat main"><span>총 예상 비용</span><strong id="t_all">-</strong></div>
+  </div>
+</section>
+
+<section id="itinerary">
+  <h2>🗓️ 휴양 일정 (5박 6일) · 자세히</h2>
+  <div class="tbl summary"><table id="summaryTable"></table></div>
+  <p class="sub" style="margin-top:14px">아래는 날짜별 상세 일정이에요. 각 날짜 메모 칸에 바꾼 계획을 적어 두면 자동으로 저장됩니다.</p>
+  <div id="days"></div>
+</section>
+
+<section id="food">
+  <h2>🍜 다낭 · 호이안 맛집</h2>
+  <p class="sub">아이들과 가기 좋고 한국인 후기가 많은 곳 위주예요. 카드마다 구글 지도와 블로그 후기 링크가 있어요. 마음에 드는 곳은 ♡로 찜해 두세요.</p>
+  <div class="bar" id="foodFilters" style="margin-bottom:12px"></div>
+  <div class="grid" id="foodGrid"></div>
+  <h3 style="font-size:1.05rem;margin:24px 0 6px">📌 내가 찾은 맛집 · 블로그 링크</h3>
+  <p class="sub">블로그에서 본 맛집이나 글 주소를 저장해 두면 가족 모두 볼 수 있어요 (Google 로그인 시 동기화).</p>
+  <div id="myFoodList"></div>
+  <div class="form" style="margin-top:10px">
+    <label class="f">가게 이름<input type="text" id="mf_name" placeholder="예: 반쎄오 바즈엉"></label>
+    <label class="f">지역<select id="mf_area"><option>다낭</option><option>호이안</option><option>기타</option></select></label>
+    <label class="f">블로그·지도 링크<input type="text" id="mf_url" placeholder="https://..."></label>
+    <label class="f">메모<input type="text" id="mf_memo" placeholder="예: 2/20 점심 후보, 줄 김"></label>
+  </div>
+  <div class="row"><button class="btn" id="addFood">저장</button></div>
+</section>
+
+<section id="checklist">
+  <h2>✅ 준비 체크리스트</h2>
+  <div class="progress"><div id="prog"></div></div>
+  <div id="checks"></div>
+  <div class="row">
+    <input type="text" id="newCheck" placeholder="할 일 추가…">
+    <button class="btn" id="addCheck">추가</button>
+  </div>
+</section>
+
+<section id="notes">
+  <h2>📝 메모 · 저장</h2>
+  <p class="sub">Google 로그인하면 선택과 메모가 모든 기기에 자동으로 동기화됩니다. 내보내기 파일은 백업용으로 쓰세요.</p>
+  <textarea id="freeNote" style="min-height:120px" placeholder="자유 메모…"></textarea>
+  <div class="bar" style="margin-top:10px">
+    <button class="btn" id="exportBtn">📤 내보내기 (JSON)</button>
+    <label class="btn ghost">📥 가져오기<input type="file" id="importFile" accept=".json" hidden></label>
+    <button class="btn ghost" id="resetBtn">초기화</button>
+  </div>
+  <h3 style="font-size:1rem;margin-top:22px">참고 자료</h3>
+  <ul style="font-size:.88rem">
+    <li><a href="https://kr.trip.com/flights/airport-icn-city-dad/" target="_blank" rel="noopener">트립닷컴 인천→다낭</a> · <a href="https://us.trip.com/flights/city-dad-airport-icn/" target="_blank" rel="noopener">다낭→인천</a></li>
+    <li><a href="https://www.koreanair.com/flights/en/flights-from-seoul-to-da-nang" target="_blank" rel="noopener">대한항공 서울–다낭 운임</a></li>
+    <li><a href="https://en.climate-data.org/asia/vietnam/da-nang-city/da-nang-4260/" target="_blank" rel="noopener">다낭 2월 기후</a> · <a href="https://weatherspark.com/m/119966/2/Average-Weather-in-February-in-Da-Nang-Vietnam" target="_blank" rel="noopener">WeatherSpark</a></li>
+    <li><a href="https://www.vietnamtourism.com/en/cham-island-from-hoi-an-boats-snorkelling-and-staying-overnight" target="_blank" rel="noopener">참섬 운항·스노클링 시기</a> · <a href="https://www.beachesforkings.com/da-nang/snorkelling/" target="_blank" rel="noopener">다낭 스노클링</a></li>
+    <li><a href="https://gobang.kr/contents/7978" target="_blank" rel="noopener">2027년 공휴일</a></li>
+  </ul>
+</section>
+</main>
+<div class="wrap pager" id="pager"></div>
+<footer>다낭 가족여행 플래너</footer>
+
+<script type="module">
+import { FIREBASE_CONFIG, PLAN_ID } from "./firebase-config.js";
+
+const DEFAULT_FLIGHTS = [
+  {label:"가는 편", airline:"베트남항공", no:"VN431", date:"2027-02-18 (목)", dep:"인천 10:10", arr:"다낭 13:10"},
+  {label:"오는 편", airline:"베트남항공", no:"", date:"2027-02-23 (화)", dep:"다낭 16:15", arr:"인천 약 22:30"}
+];
+const FLIGHT_FIELDS = [["airline","항공사"],["no","편명"],["date","날짜"],["dep","출발"],["arr","도착"],["pnr","항공사 예약번호 (PNR)"],["bag","위탁수하물 허용량"]];
+const FLIGHT_PLACEHOLDER = {no:"e티켓에서 확인", pnr:"영문·숫자 6자리", bag:"예: 1인 23kg 1개"};
+const FLIGHT_LINKS = [
+  ["트립닷컴 (로그인 → 내 예약)", "https://kr.trip.com/"],
+  ["베트남항공 예약 관리·체크인", "https://www.vietnamairlines.com/"],
+  ["VN431 운항 현황", "https://us.trip.com/flights/status-vn431/"],
+  ["트립닷컴 e티켓 안내", "https://kr.trip.com/blog/trip-e-ticket/"],
+  ["트립닷컴 체크인 안내", "https://kr.trip.com/blog/trip-flight-check-in/"]
+];
+const BUS_LINKS = [
+  ["인천공항 주차 예약 안내", "https://v.daum.net/v/1Ugz5FloPh"],
+  ["인천공항 공식 홈페이지 (주차 요금·실시간 주차 현황)", "https://www.airport.kr"],
+  ["인천공항 주차 요금·감면 안내 (공식)", "https://www.airport.kr/ap_lp/ko/tpt/parinf/parfeeinf/parfeeinf.do"],
+  ["주차요금 사후감면 신청 (할인 빠졌을 때)", "https://parking.airport.kr/wp/6110_01"]
+];
+const HOTEL = {
+  name:"푸라마 리조트 다낭 (Furama Resort Danang)", room:"오션 스튜디오 스위트",
+  facts:[["숙박","2/18(목) ~ 2/23(화) · 5박"],["객실","오션 스튜디오 스위트"],["체크인","14:00"],["체크아웃","11:00 이전"],["식사","조식 포함 (2/19~2/23, 5회)"],["보증금","51,581원 (체크인 때 카드)"],["취소·변경","❌ 불가 · 환불 안 됨"]],
+  info:[["위치","미케 해변 남쪽 해변 바로 앞 · 공항 약 15분 · 한시장 약 15분 · 호이안 약 40분 · 바나힐 약 50분"],
+    ["객실","침실과 거실이 낮은 단차로 나뉜 스튜디오형 스위트 · 킹베드 1개라는 후기 → 4인이면 엑스트라 베드 확인"],
+    ["수영장","라군 풀 등 수영장 3개 + 키즈 전용 풀 · 저녁 7시쯤 닫는다는 후기 · 선베드는 11시 이후 부족 → 오전에 자리 잡기"],
+    ["아이 시설","무료 키즈클럽 (후기 기준 09:30~18:30) · 해변 놀이터·모래성 프로그램"],
+    ["조식","쌀국수 코너가 따로 있고 가족 여행객 평이 좋음 · 석식은 포함 안 됨"],
+    ["알아둘 점","객실이 다소 오래됐다는 후기 · 밤에 벌레가 있다는 후기 → 모기 기피제 챙기기 · 한국어 가능한 직원도 있다는 후기"]],
+  links:[["공식 사이트","https://furamavietnam.com/"],["트립어드바이저 리뷰","https://www.tripadvisor.co.kr/Hotel_Review-g298085-d302750-Reviews-or25-Furama_Resort_Danang-Da_Nang.html"]],
+  naver:"푸라마 리조트 다낭 오션 스튜디오 스위트 후기",
+  blogs:[["오션 스튜디오 스위트·객실·가격 총정리 (블로그)","https://hotel-fanatic.com/furama-resort-danang-review/"],["조식·수영장 팁 (브런치)","https://brunch.co.kr/@whatsinmytrip/23"],["풀빌라 가족여행 팁 (브런치)","https://brunch.co.kr/@mytriplog/3916"],["수영장 3개 가족여행 숙소 후기 (블로그)","https://dayoff.co.kr/whatsinmytrip/%EB%8B%A4%EB%82%AD-%ED%91%B8%EB%9D%BC%EB%A7%88%EB%A6%AC%EC%A1%B0%ED%8A%B8-%EC%88%98%EC%98%81%EC%9E%A5%EC%9D%B4-3%EA%B0%9C-%EC%9E%88%EB%8A%94-%EA%B0%80%EC%A1%B1%EC%97%AC%ED%96%89-%EC%88%99%EC%86%8C/"],["라군풀 뷰 룸 후기 (트립어드바이저)","https://www.tripadvisor.co.kr/ShowUserReviews-g298085-d302750-r1056384720-Furama_Resort_Danang-Da_Nang.html"]]
+};
+const FOOD = [
+  {area:"다낭", name:"반쎄오 바즈엉", local:"Bánh Xèo Bà Dưỡng", dish:"반쎄오(베트남식 부침개) · 넴루이(꼬치를 라이스페이퍼에 싸 먹기)", tip:"다낭 대표 반쎄오집 · 골목 안 로컬 식당 · 반쎄오+넴루이 세트가 있어 주문 쉬움", when:"2/20 한시장 가는 날 점심·간식", blogs:[["반쎄오 바즈엉 후기 (트래블레인)","https://www.travelrain.com/484870"],["다낭 반쎄오 맛집 모음 (다낭원더)","https://danangwander.com/ko/loai-am-thuc/banh-xeo-ko/"]]},
+  {area:"다낭", name:"반쎄오 76", local:"Bánh Xèo 76", dish:"1인용으로 작게 부친 반쎄오", tip:"가성비 좋고 주방이 열려 있어 만드는 과정을 볼 수 있음 · 아이들이 구경하기 좋음", when:"시내 나가는 날 간단한 식사", blogs:[["반쎄오 76 후기 (트래블레인)","https://www.travelrain.com/484831"]]},
+  {area:"다낭", name:"마담란", local:"Madame Lân", dish:"반쎄오 · 분짜 · 모닝글로리 볶음 등 베트남 요리 전반", tip:"용다리 근처 정원 분위기의 큰 식당 · 메뉴가 다양해 아이들 입맛 맞추기 쉬움 · 2026 미슐랭 셀렉티드", when:"⭐ 2/20 저녁 (21:00 용다리 불쇼 전)", blogs:[["2026 다낭 미슐랭 맛집 가이드","https://www.starkitchen-vietnam-gift.com/ko/post/michelin-guide-danang-1"],["놓치기 아쉬운 다낭 대표 맛집 (트리플)","https://triple.guide/articles/68cea35d-c065-4672-8579-9f7cf0a39a6b"]]},
+  {area:"다낭", name:"미꽝 1A", local:"Mì Quảng 1A", dish:"미꽝 (국물이 자작한 다낭식 비빔 쌀국수)", tip:"현지 대표 미꽝집 · 영업 06:00~21:00", when:"시내 나가는 날 점심", blogs:[["다낭 시내 맛집 추천 총정리 (트립스토어)","https://www.tripstore.kr/blog/%EB%8B%A4%EB%82%AD-%EC%8B%9C%EB%82%B4-%EB%A7%9B%EC%A7%91-%EC%B6%94%EC%B2%9C-%EC%B4%9D%EC%A0%95%EB%A6%AC"]]},
+  {area:"다낭", name:"목 시푸드", local:"MOC Seafood", dish:"수조에서 직접 고르는 해산물 (새우·게·조개·랍스터)", tip:"야외 공간이 넓어 아이와 가기 좋다는 평 · 무게(kg)로 계산하니 주문 전에 가격 확인", when:"⭐ 2/21 저녁 해산물 특식", blogs:[["저렴하고 맛있는 다낭 맛집 BEST 7 (KKday)","https://www.kkday.com/ko/blog/25736/asia-vietnam-danang-best-resrestaurant"]]},
+  {area:"다낭", name:"퀀 베만", local:"Quán Bé Mặn", dish:"해산물 볶음밥 · 구운 새우 · 레몬그라스 생선찜", tip:"현지인으로 붐비는 캐주얼 해산물집 · 미케 해변 근처", when:"2/21 해산물 특식 대안", blogs:[]},
+  {area:"다낭", name:"피자 포피스", local:"Pizza 4P's", dish:"화덕 피자 · 부라타 치즈 피자", tip:"아이 동반 가족에게 인기 · 베트남 음식이 안 맞는 날 좋음 · 예약 권장", when:"아이들이 현지 음식에 지친 날", blogs:[["놓치기 아쉬운 다낭 대표 맛집 (트리플)","https://triple.guide/articles/68cea35d-c065-4672-8579-9f7cf0a39a6b"]]},
+  {area:"다낭", name:"콩카페", local:"Cộng Cà Phê", dish:"코코넛 커피 스무디 (아이는 코코넛 스무디·요거트)", tip:"한시장 근처에도 지점이 있어 쇼핑 중 쉬어 가기 좋음", when:"⭐ 2/20 한시장 쇼핑 중", blogs:[]},
+  {area:"호이안", name:"모닝글로리", local:"Morning Glory", dish:"까오러우 · 화이트로즈(새우 만두) · 프라이드 완탄 — 호이안 3대 명물", tip:"올드타운 중심 · 맛과 위생이 좋아 가족이 가기 무난 · 등불 축제 날은 붐비니 예약 추천", when:"⭐ 2/19 등불 축제 저녁", blogs:[["모닝글로리 후기 모음 (트립닷컴)","https://kr.trip.com/moments/theme/poi-morning-glory-original-17278338-restaurant-993134/"],["호이안 맛집 베스트 3 (트립스토어)","https://www.tripstore.kr/blog/%ED%98%B8%EC%9D%B4%EC%95%88-%EB%A7%9B%EC%A7%91-%EC%B6%94%EC%B2%9C-%EB%A1%9C%EC%BB%AC%EB%B6%80%ED%84%B0-%EB%B0%98%EB%AF%B8%EA%B9%8C%EC%A7%80-%EB%B2%A0%EC%8A%A4%ED%8A%B8-3"]]},
+  {area:"호이안", name:"반미 프엉", local:"Bánh Mì Phượng", dish:"반미 (계란 오믈렛 반미 · 돼지고기·햄 반미)", tip:"앤서니 부르댕이 '호이안 넘버원 반미'로 소개해 유명 · 영어 메뉴판 · 앉아서 먹을 수 있음", when:"2/19 올드타운 도착 후 간식", blogs:[["반미 프엉 후기 (트래블레인)","https://www.travelrain.com/1026"]]},
+  {area:"호이안", name:"마담콴 반미 퀸", local:"Madam Khánh – The Banh Mi Queen", dish:"반미", tip:"반미 프엉과 함께 호이안 반미 양대 맛집 · 115 Trần Cao Vân", when:"반미 프엉 줄이 길 때 대안", blogs:[["호이안 맛집 BEST (스타키친)","https://www.starkitchen-vietnam-gift.com/ko/post/hoi-an-food-guide-2"]]},
+  {area:"호이안", name:"화이트로즈 레스토랑", local:"White Rose Restaurant", dish:"화이트로즈 (장미 모양 새우 만두)", tip:"화이트로즈를 직접 만드는 원조집 · 533 Hai Bà Trưng", when:"2/19 호이안 간식", blogs:[["호이안 맛집 BEST (스타키친)","https://www.starkitchen-vietnam-gift.com/ko/post/hoi-an-food-guide-2"]]},
+  {area:"호이안", name:"까오러우 탄", local:"Cao Lầu Thanh", dish:"까오러우 (호이안 전통 비빔 국수)", tip:"까오러우 전문 로컬집 · 26 Thái Phiên", when:"2/19 호이안 식사", blogs:[["호이안 맛집 BEST 5 · 올드타운 vs 안방비치 (트립스토어)","https://www.tripstore.kr/blog/%EB%B2%A0%ED%8A%B8%EB%82%A8-%ED%98%B8%EC%9D%B4%EC%95%88-%EB%A7%9B%EC%A7%91-%EC%98%AC%EB%93%9C%ED%83%80%EC%9A%B4-%EC%95%88%EB%B0%A9%EB%B9%84%EC%B9%98-%EB%A1%9C%EC%BB%AC-%EB%B9%84%EA%B5%90"]]}
+];
+const linkHtml = arr => arr.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join("");
+const GLANCE = [
+  {day:"Day 1", date:"2/18 (목)", theme:"🚗✈️ 출발 · 푸라마 도착", am:"06:00 자가용 출발 → 10:10 출발", pm:"13:10 다낭 도착 → 14:00 푸라마 체크인", ev:"수영장 · 저녁"},
+  {day:"Day 2", date:"2/19 (금)", theme:"🛶🏮 호이안 바구니배 · 등불 축제", am:"조식 · 리조트 휴식", pm:"14:00 코코넛 마을 바구니배", ev:"올드타운 등불 축제 · 소원배"},
+  {day:"Day 3", date:"2/20 (토)", theme:"🏖️🐉 휴양 + 다낭 야경", am:"조식 · 수영장 · 키즈클럽", pm:"15:00 한시장 쇼핑", ev:"한강변 저녁 · 21:00 용다리 불쇼"},
+  {day:"Day 4", date:"2/21 (일)", theme:"🏖️ 완전 휴양", am:"조식 · 수영장 · 해변", pm:"키즈클럽 · 스파 (선택: 마블마운틴)", ev:"🦐 해산물 특식 (목 시푸드)", rest:true},
+  {day:"Day 5", date:"2/22 (월)", theme:"🌉 바나힐 골든브릿지", am:"⏰ 06:30 조식 · 07:30 출발 (일찍!)", pm:"14~15시 복귀 → 수영장", ev:"리조트 근처 가벼운 저녁 · 짐 싸기"},
+  {day:"Day 6", date:"2/23 (화)", theme:"✈️ 귀국", am:"조식 · 11시 전 체크아웃 · 짐 맡기기", pm:"점심 → 13:30 공항 → 16:15 출발", ev:"22:30 인천 도착 · 귀가"}
+];
+const DAYS = [
+  {d:"Day 1 · 2/18(목) 이동 + 수영장", items:["🚗 06:00 자가용으로 집 출발 (약 1시간 · 통행료 약 6,500원)","07:00~07:15 인천공항 T1 장기주차장 주차 (♿ 장애인 표지 앞유리 부착 확인 · 주차 위치 사진 찍어 두기) → 무료 셔틀버스로 터미널 → 3층 출국장 베트남항공 카운터 체크인","10:10 인천 출발 → 13:10 다낭 도착 (베트남항공)","그랩으로 푸라마 리조트 이동 (약 15분) → <b>14:00 체크인</b> · 💳 보증금 51,581원 카드 결제","리조트 수영장에서 가볍게 물놀이 · 저녁은 리조트나 근처 식당에서 편하게"]},
+  {d:"Day 2 · 2/19(금) 호이안: 바구니배 + 등불 축제 🏮", items:["🍳 리조트 조식 (포함) → 수영장에서 휴식 · 점심 후 짧은 낮잠","14:00 그랩으로 껌타인 코코넛 마을 이동 (푸라마에서 약 40분)","🛶 15:00 동그란 바구니배(퉁짜이) 45분~1시간 · 배 1척에 2명, 척당 약 20~40만 동 + 입장료 3만 동 + 사공 팁","16:30 호이안 올드타운으로 이동 (10~15분) · 내원교, 골목 산책","해 질 무렵 투본강 소원배 · 등불 띄우기 — 🏮 음력 14일 등불 축제 날 (2027.2.19로 안내됨, 가까워지면 재확인), 붐비니 아이들 손 꼭 잡기","호이안에서 저녁 (까오러우·화이트로즈) → 21시쯤 리조트 복귀"]},
+  {d:"Day 3 · 2/20(토) 휴양 + 다낭 시내 야경 🐉", items:["🍳 조식 → 수영장·해변·키즈클럽 (선베드는 11시 전에 자리 잡기)","15:00 그랩으로 한시장 (푸라마에서 약 15분) → 15:30~17:30 기념품 쇼핑 (19시 폐장 · 2층 옷가게는 흥정 필수)","한강변 카페·저녁","🐉 21:00 용다리 불·물 쇼 (토·일 밤만, 다리 머리 쪽 강변에서 보기) → 리조트 복귀"]},
+  {d:"Day 4 · 2/21(일) 완전 휴양 🏖️", items:["🍳 조식 → 이동 없이 하루 종일 리조트: 수영장·해변·키즈클럽 (선베드는 11시 전에 자리 잡기)","오후 부모님 교대로 스파·마사지","선택: 16:00 마블마운틴(오행산) 동굴 구경 (푸라마에서 약 15분, 1~2시간)","🦐 저녁 해산물 특식 (목 시푸드 등 미케 해변 해산물 식당) — 다음 날 바나힐을 위해 일찍 숙소 복귀"]},
+  {d:"Day 5 · 2/22(월) 바나힐 골든브릿지 🌉", items:["⏰ <b>아침 일찍 출발 필수!</b> 평일이라도 10시~15시에는 골든브릿지가 사람으로 꽉 차요 → 06:30 조식, <b>07:30 그랩 출발</b>, 8시대에 케이블카 타기 (푸라마에서 약 50분)","월요일을 고른 이유: 주말보다 한산하고(월·화가 가장 한산하다는 자료), 현지인은 평일 입장료가 싸서 주말에 몰림","케이블카 → 손 모양 다리 '골든브릿지' 사진 먼저 → 프렌치 빌리지 · 판타지 파크(실내 놀이시설)","입장료(케이블카 포함): 성인 100만 동, 키 1~1.4m 어린이 80만 동, 1m 미만 무료 · 가족 4명 약 360만 동 (약 19만 원) · 온라인 예매가 저렴","정상은 아래보다 약 5~10℃ 낮고 안개가 잦음 → 겉옷 필수 · 비·안개 예보면 2/20(토)이나 2/21(일)과 바꾸기 (마지막 날이라 더 미룰 수 없음)","14~15시 하산 → 리조트 수영장 (저녁 7시쯤 닫음) · 저녁은 리조트 근처에서 가볍게 · 짐 미리 싸 두기 (다음 날 11시 전 체크아웃)"]},
+  {d:"Day 6 · 2/23(화) 귀국", items:["🍳 조식 → <b>11:00 전 체크아웃</b> · 💳 보증금 환불(카드 승인 취소) 확인 · 짐은 프런트에 맡기기","체크아웃 후 해변 산책 · 리조트 근처에서 점심","13:15 짐 찾아 그랩 → 13:30쯤 다낭 공항 (약 15분 · 국제선 2시간 반 전)","16:15 다낭 출발 → 인천 약 22:30 도착","23시쯤 입국 심사·짐 찾기 → 셔틀버스로 장기주차장 → 출차 때 ♿ 50% 할인 적용 확인 · 영수증 챙기기 → 🚗 자가용 귀가 (집 약 00:30 · 심야 운전이니 졸리면 휴게소에서 쉬기)"]}
+];
+const DEFAULT_CHECKS = [
+  "항공권 예약 (트립닷컴 · 베트남항공)","여권 유효기간 6개월 이상 확인 (가족 4명)","e티켓에서 영문 이름·수하물 허용량 확인",
+  "숙소 예약 (푸라마 리조트 다낭 · 오션 스튜디오 스위트 5박, 조식 포함)","여행자보험 가입","유심/eSIM 구매",
+  "그랩 앱 설치·결제수단 등록","환전 (달러 → 현지에서 동)","아이들 래시가드·아쿠아슈즈","스노클 마스크 (아이 사이즈)","상비약·선크림·모기 기피제",
+  "베트남항공 온라인 체크인 (출발 24시간 전)",
+  "인천공항 터미널 확인 → T1 (제1여객터미널)","귀국일 귀가 방법 → 자가용 (T1 장기주차장)",
+  "인천공항 T1 장기주차장 주차 예약 (2/18~2/23, 6일)",
+  "체크인 때 보증금 51,581원 결제 (신용카드 준비)","체크아웃 때 보증금 환불(카드 승인 취소) 확인",
+  "오션 스튜디오 스위트 4인 투숙·엑스트라 베드 확인 (예약 확인서·호텔 문의)",
+  "바나힐 입장권 온라인 예매 (2/22 월 · 07:30 출발 · 날씨 보고 확정)",
+  "♿ 장애인 자동차 표지 앞유리 부착 · 출차 영수증 보관 (주차 50% 할인 · 빠지면 30일 안에 사후감면)"
+];
+// v1(저가항공·2/15 일정) 저장본을 v2(베트남항공·2/18 일정)로 바꿈. 바뀌었으면 true
+function migrate(s){
+  let changed = false;
+  // 예약 정보 칸에 적었던 PNR·수하물은 가는 편 카드로 옮김 (편도 2장 발권이라 편마다 따로 적음)
+  if(s.v >= 2 && s.booking && s.flights && (s.booking.pnr || s.booking.bag)){
+    for(const k of ["pnr","bag"]) if(s.booking[k]){ if(!s.flights[0][k]) s.flights[0][k] = s.booking[k]; delete s.booking[k]; }
+    changed = true;
+  }
+  // v3·v4: 공항버스 관련 체크리스트 추가
+  const addChecks = (from, to) => { s.checks = [...(s.checks||[]), ...DEFAULT_CHECKS.slice(from, to).map(t=>({t,done:false}))]; };
+  if(s.v === 2){ addChecks(12, 14); s.v = 3; changed = true; }
+  if(s.v === 3){ addChecks(14, 15); s.v = 4; changed = true; }
+  // v5: 터미널이 T1으로 확인됨
+  if(s.v === 4){ for(const c of s.checks||[]) if(c.t.startsWith("e티켓에서 인천공항 터미널") || c.t === DEFAULT_CHECKS[12]){ c.t = DEFAULT_CHECKS[12]; c.done = true; } s.v = 5; changed = true; }
+  if(s.v === 5){
+    for(const c of s.checks||[]) if(c.t === "리조트 예약 (2/18~2/23, 5박, 성인 2 + 아동 2)") c.t = DEFAULT_CHECKS[3];
+    addChecks(15, 17); s.v = 6; changed = true;
+  }
+  // v7: 바나힐을 2/21로 옮겨 2/22은 그랩 이동만 필요
+  if(s.v === 6){ for(const c of s.checks||[]) if(c.t.startsWith("2/22 하루 차량 대절")) c.t = DEFAULT_CHECKS[16]; s.v = 7; changed = true; }
+  // v8: 인터컨티넨탈 보류 → 마지막 밤 숙소 미정
+  if(s.v === 7){ for(const c of s.checks||[]){ if(c.t.startsWith("인터컨티넨탈 마지막 1박 예약")) c.t = DEFAULT_CHECKS[15]; if(c.t.startsWith("2/22 리조트 → 인터컨티넨탈")) c.t = DEFAULT_CHECKS[16]; }
+    if(s.budget && s.budget.b_hotel2) delete s.budget.b_hotel2; s.v = 8; changed = true; }
+  // v9: 푸라마 5박 예약 완료
+  if(s.v === 8){
+    const old = /^(마지막 밤 숙소 예약|2\/22 1차 리조트|인터컨티넨탈 마지막|2\/22 리조트 → 인터컨티넨탈|2\/22 하루 차량)/;
+    s.checks = (s.checks||[]).filter(c=>!old.test(c.t));
+    for(const c of s.checks) if(/리조트 예약/.test(c.t) || c.t === DEFAULT_CHECKS[3]){ c.t = DEFAULT_CHECKS[3]; c.done = true; }
+    if(!s.checks.some(c=>c.t===DEFAULT_CHECKS[3])) s.checks.splice(2, 0, {t:DEFAULT_CHECKS[3], done:true});
+    for(const t of DEFAULT_CHECKS.slice(15)) if(!s.checks.some(c=>c.t===t)) s.checks.push({t, done:false});
+    if(s.budget) ["b_hotel","b_nights","b_hotel2"].forEach(k=>delete s.budget[k]);
+    delete s.resort; delete s.lastNight;
+    s.v = 9; changed = true;
+  }
+  // v10: 바나힐 월요일로 이동 → 입장권 예매 할 일 추가
+  if(s.v === 9){ if(!s.checks.some(c=>c.t===DEFAULT_CHECKS[18])) s.checks.push({t:DEFAULT_CHECKS[18], done:false}); s.v = 10; changed = true; }
+  // v11: 공항 이동을 자가용 + 장기주차로 변경
+  if(s.v === 10){
+    for(const c of s.checks||[]){
+      if(c.t.startsWith("귀국일 밤 귀가 방법") || c.t === DEFAULT_CHECKS[13]){ c.t = DEFAULT_CHECKS[13]; c.done = true; }
+      if(c.t.startsWith("8837 공항버스 예매")) c.t = DEFAULT_CHECKS[14];
+    }
+    if(!s.checks.some(c=>c.t===DEFAULT_CHECKS[14])) s.checks.push({t:DEFAULT_CHECKS[14], done:false});
+    s.v = 11; changed = true;
+  }
+  // v12: 장애인 차량 주차 50% 할인 반영
+  if(s.v === 11){
+    if(s.budget && s.budget.b_park=="90000") delete s.budget.b_park;
+    if(!s.checks.some(c=>c.t===DEFAULT_CHECKS[19])) s.checks.push({t:DEFAULT_CHECKS[19], done:false});
+    s.v = 12; changed = true;
+  }
+  if((s.v||1) >= 2) return changed;
+  delete s.outbound; delete s.inbound;
+  if(s.budget){ ["b_people","b_fare","b_surge","b_bag","b_seat","b_late"].forEach(k=>delete s.budget[k]); if(s.budget.b_nights=="4") delete s.budget.b_nights; if(s.budget.b_hotel=="300000") delete s.budget.b_hotel; }
+  const old = (s.checks||[]).filter(c=>!/항공권 가격 알림|항공권 예약|위탁수하물·좌석|리조트 예약/.test(c.t));
+  s.checks = [{t:DEFAULT_CHECKS[0],done:true}, {t:DEFAULT_CHECKS[2],done:false}, {t:DEFAULT_CHECKS[3],done:false}, ...old, {t:DEFAULT_CHECKS[11],done:false}];
+  const notes = Object.values(s.dayNotes||{}).filter(x=>x && x.trim());
+  if(notes.length) s.note = (s.note ? s.note+"\n\n" : "") + "[이전 일정(2/15~) 날짜별 메모]\n" + notes.join("\n");
+  s.dayNotes = {};
+  s.v = 2;
+  migrate(s);
+  return true;
+}
+
+const KEY = "danang-planner-v1", THEME_KEY = "danang-planner-theme";
+const defaults = () => ({v:12, flights:structuredClone(DEFAULT_FLIGHTS), booking:{}, resort:null, stars:{}, budget:{}, dayNotes:{},
+  checks:DEFAULT_CHECKS.map((t,i)=>({t,done:[0,3,12,13].includes(i)})), note:""});
+let state = defaults();
+let theme = null;
+function load(){
+  try{ const s = JSON.parse(localStorage.getItem(KEY)); if(s){ delete s.theme; migrate(s); state = Object.assign(state, s); } }catch(e){}
+  try{ theme = localStorage.getItem(THEME_KEY); }catch(e){}
+}
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+  if(remote){ clearTimeout(pushTimer); pushTimer = setTimeout(push, 700); setSync("저장 대기…"); }
+}
+
+// ── Firebase 동기화 ──
+let remote = null, pushTimer = null, lastPushed = null;
+const setSync = t => { $("syncStatus").textContent = t; };
+async function push(){
+  pushTimer = null;
+  const data = JSON.stringify(state);
+  lastPushed = data;
+  try{ await remote.setDoc(remote.ref, {data, updatedAt: Date.now()}); setSync("☁️ 동기화됨"); }
+  catch(e){ console.error(e); setSync("⚠️ 저장 실패"); }
+}
+function applyRemote(data){
+  const s = JSON.parse(data), migrated = migrate(s);
+  state = Object.assign(defaults(), s);
+  try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+  renderAll();
+  if(migrated) save();
+}
+async function initSync(){
+  if(!FIREBASE_CONFIG){ setSync("이 기기에만 저장"); return; }
+  const base = "https://www.gstatic.com/firebasejs/10.12.2/";
+  let app, authMod, fs;
+  try{
+    [app, authMod, fs] = await Promise.all([import(base+"firebase-app.js"), import(base+"firebase-auth.js"), import(base+"firebase-firestore.js")]);
+  }catch(e){ console.error(e); setSync("⚠️ 동기화 불러오기 실패"); return; }
+  const fb = app.initializeApp(FIREBASE_CONFIG), auth = authMod.getAuth(fb), db = fs.getFirestore(fb);
+  const ref = fs.doc(db, "plans", PLAN_ID);
+  let unsub = null;
+  $("authBtn").hidden = false;
+  $("authBtn").onclick = async () => {
+    if(auth.currentUser){ await authMod.signOut(auth); return; }
+    try{ await authMod.signInWithPopup(auth, new authMod.GoogleAuthProvider()); }
+    catch(e){ if(e.code!=="auth/popup-closed-by-user" && e.code!=="auth/cancelled-popup-request") alert("로그인 실패: "+e.code); }
+  };
+  authMod.onAuthStateChanged(auth, user => {
+    if(unsub){ unsub(); unsub = null; }
+    remote = null;
+    if(!user){ $("authBtn").textContent = "Google 로그인"; setSync("로그인하면 동기화"); return; }
+    $("authBtn").textContent = "로그아웃";
+    setSync("불러오는 중…");
+    unsub = fs.onSnapshot(ref, snap => {
+      if(snap.metadata.hasPendingWrites) return;
+      const first = !remote;
+      remote = {ref, setDoc: fs.setDoc};
+      if(snap.exists()){
+        const data = snap.data().data;
+        // 내가 방금 보낸 값이거나, 아직 안 보낸 편집이 있으면 덮어쓰지 않음
+        if(data !== lastPushed && !pushTimer && data !== JSON.stringify(state)) applyRemote(data);
+      }else if(first){
+        push();
+      }
+      setSync("☁️ 동기화됨");
+    }, err => { console.error(err); setSync(`⚠️ 접근 권한 없음 (${user.email})`); });
+  });
+}
+const won = n => Math.round(n).toLocaleString("ko-KR") + "원";
+const $ = id => document.getElementById(id);
+
+const esc = s => String(s??"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+function renderFlights(){
+  $("flightCards").innerHTML = state.flights.map((f,i)=>`
+    <div class="card" style="cursor:default"><span class="tag">${esc(f.label)}</span>
+      ${FLIGHT_FIELDS.map(([k,t])=>`<label class="f">${t}<input type="text" data-i="${i}" data-k="${k}" value="${esc(f[k])}" placeholder="${FLIGHT_PLACEHOLDER[k]||""}"></label>`).join("")}
+    </div>`).join("");
+  $("flightCards").querySelectorAll("input").forEach(el=>el.oninput=()=>{ state.flights[el.dataset.i][el.dataset.k]=el.value; save(); });
+  $("bookingForm").querySelectorAll("input").forEach(el=>{
+    el.value = state.booking[el.dataset.k]||"";
+    el.oninput=()=>{ state.booking[el.dataset.k]=el.value.trim(); save(); };
+  });
+}
+function renderResorts(){
+  const H = HOTEL;
+  $("hotelBox").innerHTML = `<span class="tag">✅ 예약 완료 · 결제 2,057,172원 · 환불 불가</span><h3>${H.name}</h3>
+    <div class="facts">${H.facts.map(([k,v])=>`<div class="fact"><span>${k}</span><b>${v}</b></div>`).join("")}</div>
+    <dl>${H.info.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+    <div class="links">${linkHtml(H.links)}</div>
+    <div class="blogs"><span>📝 블로그 후기</span><div class="links">
+      <a href="https://search.naver.com/search.naver?where=blog&query=${encodeURIComponent(H.naver)}" target="_blank" rel="noopener"><b>네이버 블로그 후기 모아보기</b> ↗</a>${linkHtml(H.blogs)}</div></div>`;
+  $("hotelForm").querySelectorAll("input").forEach(el=>{
+    el.value = state.booking[el.dataset.k]||"";
+    el.oninput=()=>{ state.booking[el.dataset.k]=el.value.trim(); save(); };
+  });
+}
+const BIDS = ["b_air","b_stay","b_park","b_days","b_food","b_tour","b_taxi","b_etc"];
+function calc(){
+  const v = id => +$(id).value || 0;
+  const air = v("b_air");
+  const hotel = v("b_stay");
+  const local = v("b_food")*v("b_days") + v("b_tour") + v("b_taxi") + v("b_etc") + v("b_park");
+  $("t_air").textContent=won(air); $("t_hotel").textContent=won(hotel); $("t_local").textContent=won(local); $("t_all").textContent=won(air+hotel+local);
+}
+function renderBudget(){
+  BIDS.forEach(id=>{
+    if(state.budget[id]!=null) $(id).value = state.budget[id];
+    $(id).oninput=()=>{ state.budget[id]=$(id).value; save(); calc(); };
+  });
+  calc();
+}
+function renderDays(){
+  $("days").innerHTML = DAYS.map((d,i)=>`<div class="day"><h3>${d.d}</h3><ul>${d.items.map(x=>`<li>${x}</li>`).join("")}</ul>
+    <textarea data-i="${i}" placeholder="이 날 메모·변경 사항…">${(state.dayNotes[i]||"").replace(/</g,"&lt;")}</textarea></div>`).join("");
+  $("days").querySelectorAll("textarea").forEach(t=>t.oninput=()=>{state.dayNotes[t.dataset.i]=t.value;save();});
+}
+function renderChecks(){
+  $("checks").innerHTML = state.checks.map((c,i)=>`<label class="check ${c.done?"done":""}"><input type="checkbox" data-i="${i}" ${c.done?"checked":""}><span></span><button type="button" data-del="${i}" title="삭제">✕</button></label>`).join("");
+  $("checks").querySelectorAll(".check span").forEach((s,i)=>s.textContent=state.checks[i].t);
+  $("checks").querySelectorAll("input").forEach(c=>c.onchange=()=>{state.checks[c.dataset.i].done=c.checked;save();renderChecks();});
+  $("checks").querySelectorAll("[data-del]").forEach(b=>b.onclick=e=>{e.preventDefault();state.checks.splice(+b.dataset.del,1);save();renderChecks();});
+  const done = state.checks.filter(c=>c.done).length;
+  $("prog").style.width = (state.checks.length? done/state.checks.length*100:0)+"%";
+}
+$("addCheck").onclick=()=>{ const t=$("newCheck").value.trim(); if(!t) return; state.checks.push({t,done:false}); $("newCheck").value=""; save(); renderChecks(); };
+$("newCheck").onkeydown=e=>{ if(e.key==="Enter") $("addCheck").click(); };
+$("freeNote").oninput=()=>{state.note=$("freeNote").value;save();};
+$("exportBtn").onclick=()=>{
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:"application/json"}));
+  a.download="danang-plan.json"; a.click();
+};
+$("importFile").onchange=e=>{
+  const f=e.target.files[0]; if(!f) return;
+  f.text().then(t=>{ try{ const s=JSON.parse(t); delete s.theme; migrate(s); state=Object.assign(defaults(),s); save(); renderAll(); }catch(err){ alert("파일을 읽을 수 없습니다."); } });
+};
+$("resetBtn").onclick=()=>{ if(confirm("모든 선택과 메모를 초기화할까요? (동기화 중이면 모든 기기에서 초기화됩니다)")){ state=defaults(); save(); renderAll(); } };
+$("themeBtn").onclick=()=>{
+  const dark = theme ? theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  theme = dark ? "light" : "dark"; document.documentElement.dataset.theme=theme;
+  try{ localStorage.setItem(THEME_KEY, theme); }catch(e){}
+};
+function renderGlance(){
+  $("glanceGrid").innerHTML = GLANCE.map(g=>`<div class="gday${g.rest?" rest":""}">
+    <header><b>${g.day}</b><span>${g.date}</span></header>
+    <div class="theme">${g.theme}</div>
+    <dl><dt>오전</dt><dd>${g.am}</dd><dt>오후</dt><dd>${g.pm}</dd><dt>저녁</dt><dd>${g.ev}</dd></dl></div>`).join("");
+}
+function renderSummary(){
+  $("summaryTable").innerHTML = `<thead><tr><th></th><th>날짜</th><th>테마</th><th>오전</th><th>오후</th><th>저녁</th></tr></thead><tbody>` +
+    GLANCE.map(g=>`<tr class="${g.rest?"rest":""}"><td><b>${g.day}</b></td><td>${g.date}</td><td>${g.theme}</td><td>${g.am}</td><td>${g.pm}</td><td>${g.ev}</td></tr>`).join("") + `</tbody>`;
+}
+let foodFilter = "전체";
+function renderFood(){
+  $("foodFilters").innerHTML = ["전체","다낭","호이안","♥ 찜"].map(f=>`<button type="button" class="btn ${foodFilter===f?"":"ghost"}" data-f="${f}">${f}</button>`).join("");
+  $("foodFilters").querySelectorAll("button").forEach(b=>b.onclick=()=>{ foodFilter=b.dataset.f; renderFood(); });
+  const likes = state.foodLikes||{};
+  const list = FOOD.filter(r=> foodFilter==="전체" || r.area===foodFilter || (foodFilter==="♥ 찜" && likes[r.name]));
+  $("foodGrid").innerHTML = list.map(r=>`<div class="card" style="cursor:default">
+      <span class="tag">${r.area}${r.when.startsWith("⭐")?" · 일정 추천":""}</span>
+      <button type="button" class="like ${likes[r.name]?"on":""}" data-n="${esc(r.name)}" title="찜하기">${likes[r.name]?"♥":"♡"}</button>
+      <h3>${r.name} <small style="color:var(--muted);font-weight:400">${r.local}</small></h3>
+      <div><b>대표 메뉴</b> · ${r.dish}</div>
+      <div style="font-size:.88rem">${r.tip}</div>
+      <div class="price">🗓️ ${r.when}</div>
+      <div class="links">
+        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.local+" "+(r.area==="다낭"?"Da Nang":"Hoi An"))}" target="_blank" rel="noopener">📍 구글 지도 ↗</a>
+      </div>
+      <div class="blogs"><span>📝 블로그 후기</span><div class="links">
+        <a href="https://search.naver.com/search.naver?where=blog&query=${encodeURIComponent(r.area+" "+r.name+" 후기")}" target="_blank" rel="noopener"><b>네이버 블로그 후기 모아보기</b> ↗</a>${linkHtml(r.blogs)}</div></div>
+    </div>`).join("") || `<p class="sub">찜한 맛집이 없어요. 카드의 ♡를 눌러 보세요.</p>`;
+  $("foodGrid").querySelectorAll(".like").forEach(b=>b.onclick=()=>{
+    state.foodLikes = state.foodLikes||{}; const n=b.dataset.n;
+    if(state.foodLikes[n]) delete state.foodLikes[n]; else state.foodLikes[n]=true;
+    save(); renderFood();
+  });
+  // 내가 추가한 맛집·블로그
+  const mine = state.myFood||[];
+  $("myFoodList").innerHTML = mine.length ? mine.map((m,i)=>`<div class="check" style="align-items:flex-start">
+      <div><b>${esc(m.name)}</b> <small style="color:var(--muted)">${esc(m.area)}</small>${m.memo?`<div style="font-size:.85rem">${esc(m.memo)}</div>`:""}
+      ${/^https?:\/\//.test(m.url)?`<div class="links" style="margin-top:4px"><a href="${esc(m.url)}" target="_blank" rel="noopener">🔗 링크 열기 ↗</a></div>`:""}</div>
+      <button type="button" data-del="${i}" title="삭제">✕</button></div>`).join("") : `<p class="sub">아직 없어요. 블로그에서 본 맛집이나 글 링크를 아래에 저장해 두세요.</p>`;
+  $("myFoodList").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{ state.myFood.splice(+b.dataset.del,1); save(); renderFood(); });
+}
+$("addFood").onclick=()=>{
+  const name=$("mf_name").value.trim(), url=$("mf_url").value.trim();
+  if(!name && !url){ $("mf_name").focus(); return; }
+  state.myFood = state.myFood||[];
+  state.myFood.push({name:name||"(이름 없음)", area:$("mf_area").value, url, memo:$("mf_memo").value.trim()});
+  ["mf_name","mf_url","mf_memo"].forEach(id=>$(id).value="");
+  save(); renderFood();
+};
+function renderAll(){
+  renderFood();
+  renderGlance(); renderSummary();
+  $("flightLinks").innerHTML = linkHtml(FLIGHT_LINKS);
+  $("busLinks").innerHTML = linkHtml(BUS_LINKS);
+  renderFlights(); renderResorts(); renderBudget(); renderDays(); renderChecks(); $("freeNote").value=state.note||"";
+}
+// ── 탭(페이지) 전환: 주소의 #이름으로 한 섹션만 보여줌 ──
+const TABS = [...document.querySelectorAll("nav a[href^='#']")].map(a=>({id:a.getAttribute("href").slice(1), label:a.textContent, el:a}));
+function showTab(){
+  const id = TABS.some(t=>t.id===location.hash.slice(1)) ? location.hash.slice(1) : TABS[0].id;
+  document.querySelectorAll("main > section").forEach(s=>s.classList.toggle("active", s.id===id));
+  TABS.forEach(t=>t.el.classList.toggle("active", t.id===id));
+  const i = TABS.findIndex(t=>t.id===id), prev = TABS[i-1], next = TABS[i+1];
+  $("pager").innerHTML = (prev?`<a href="#${prev.id}">← ${prev.label}</a>`:"<span></span>") + (next?`<a href="#${next.id}">${next.label} →</a>`:"<span></span>");
+  // 브라우저의 #앵커 자동 스크롤이 끝난 뒤 맨 위로 (제목이 메뉴에 가려지지 않게)
+  setTimeout(()=>{ window.scrollTo(0, 0); TABS[i].el.parentElement.scrollLeft = TABS[i].el.offsetLeft - 60; }, 0);
+}
+history.scrollRestoration = "manual";
+window.addEventListener("hashchange", showTab);
+window.addEventListener("load", ()=>setTimeout(()=>window.scrollTo(0, 0), 0));
+showTab();
+
+load();
+if(theme) document.documentElement.dataset.theme=theme;
+renderAll();
+initSync();
+</script>
+</body>
+</html>

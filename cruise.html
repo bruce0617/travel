@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>부부 크루즈 플래너</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="wrap hero">
+    <a class="back" href="./">← 우리 가족 여행</a>
+    <h1>🚢 부부 크루즈 여행 플래너</h1>
+    <p>엄마 회사 30주년 · 아빠 20주년 장기휴가 기념 · 두 사람만의 여행</p>
+    <div class="chips">
+      <span class="chip" id="targetChip"></span>
+      <span class="chip">💭 지금은 코스 고르기 · 적금 단계</span>
+    </div>
+    <div class="bar" style="margin-top:14px">
+      <button class="btn" id="authBtn" hidden>Google 로그인</button>
+      <span id="syncStatus" class="sync"></span>
+    </div>
+  </div>
+</header>
+<nav><div class="wrap">
+  <a href="#routes">추천 코스</a><a href="#lines">선사</a><a href="#basics">크루즈 기초</a><a href="#money">비용·적금</a>
+  <a href="#roadmap">준비 로드맵</a><a href="#ask">후배에게 묻기</a><a href="#videos">영상·링크</a><a href="#notes">메모</a>
+  <button class="btn ghost" id="themeBtn" style="margin-left:auto;padding:4px 10px">🌓</button>
+</div></nav>
+
+<main class="wrap">
+
+<section id="routes">
+  <h2>🗺️ 추천 코스</h2>
+  <p class="sub">마음에 드는 코스에 ♥를 눌러 두세요. 영상은 유튜브 검색 결과로 연결돼요. 요금·일정은 2026년 기준이라 예약할 때 다시 확인하세요.</p>
+  <div class="note">💡 <b>장기휴가 추천 조합</b>: 로마 2~3박 → <b>지중해 크루즈 7~10박</b> → 바르셀로나 2~3박 (총 2주 남짓). 시기는 <b>5월 말~6월 초나 9월</b>이 날씨 좋고 성수기보다 덜 붐벼요.</div>
+  <div class="grid" id="routeCards"></div>
+</section>
+
+<section id="lines">
+  <h2>🛳️ 크루즈 선사 고르기</h2>
+  <p class="sub">같은 코스라도 <b>선사에 따라 분위기·음식·손님층·가격</b>이 크게 달라요. 부부 기념 여행이면 "조용함"과 "음식"을 기준으로 고르는 걸 추천해요.</p>
+  <div class="tbl"><table id="lineTable" style="min-width:640px"></table></div>
+  <div class="note">🇰🇷 <b>예약 방법은 두 가지</b><br>
+    · <b>국내 여행사 크루즈 패키지</b>: 항공·호텔·한국어 인솔자까지 한 번에. 편하지만 일정 선택 폭이 좁고 비쌀 수 있어요.<br>
+    · <b>선사 홈페이지 직접 예약 + 항공 따로</b>: 고를 수 있는 날짜·객실이 많고 특가가 자주 나와요. 영어 안내를 읽어야 해요.</div>
+</section>
+
+<section id="basics">
+  <h2>📘 크루즈 기초</h2>
+  <p class="sub">처음 크루즈를 준비할 때 알아 두면 좋은 것들이에요.</p>
+  <div id="basicsBox"></div>
+</section>
+
+<section id="money">
+  <h2>💰 비용 계산 · 크루즈 적금</h2>
+  <p class="sub">기본값은 <b>지중해 10박 · 발코니 · 부부 2명</b> 기준 대략적인 값이에요. 숫자를 바꾸면 바로 다시 계산돼요.</p>
+  <div class="form" id="budgetForm"></div>
+  <div class="total" id="budgetTotal"></div>
+  <div class="row"><button class="btn ghost" id="toGoal">이 총액을 적금 목표로 설정</button></div>
+
+  <h3 style="font-size:1rem;margin:22px 0 6px">🐷 크루즈 적금</h3>
+  <div class="form">
+    <label class="f">목표 금액 (원)<input type="number" id="goal" step="500000"></label>
+    <label class="f">목표 출발 시기<input type="month" id="target"></label>
+  </div>
+  <div class="progress" style="margin-top:14px"><div id="saveBar"></div></div>
+  <div class="total" id="saveStats" style="margin-top:6px"></div>
+  <div class="form" style="margin-top:14px">
+    <label class="f">날짜<input type="date" id="s_date"></label>
+    <label class="f">금액 (원)<input type="number" id="s_amt" step="100000" placeholder="예: 300000"></label>
+    <label class="f">메모<input type="text" id="s_memo" placeholder="예: 10월 적금"></label>
+  </div>
+  <div class="row"><button class="btn" id="addSave">모은 돈 기록</button></div>
+  <div id="saveList" style="margin-top:8px"></div>
+</section>
+
+<section id="roadmap">
+  <h2>🧭 준비 로드맵</h2>
+  <p class="sub">지금부터 출발까지 할 일이에요. 끝난 일은 체크하세요.</p>
+  <div class="progress"><div id="roadBar"></div></div>
+  <div id="roadList"></div>
+</section>
+
+<section id="ask">
+  <h2>🙋 후배에게 묻기</h2>
+  <p class="sub">유럽 크루즈를 다녀온 회사 후배분께 물어볼 질문이에요. 들은 답을 적어 두면 코스·선사 고를 때 가장 좋은 자료가 돼요.</p>
+  <div id="askList"></div>
+</section>
+
+<section id="videos">
+  <h2>🎬 영상 · 링크</h2>
+  <p class="sub">유튜브 검색 결과로 연결돼요. 좋은 영상이나 블로그를 찾으면 아래에 직접 저장하세요.</p>
+  <div id="videoGroups"></div>
+  <h3 style="font-size:1rem;margin:22px 0 6px">⭐ 내가 저장한 링크</h3>
+  <div class="form">
+    <label class="f">제목<input type="text" id="l_title" placeholder="예: MSC 발코니 객실 투어"></label>
+    <label class="f">링크<input type="url" id="l_url" placeholder="https://"></label>
+    <label class="f">메모<input type="text" id="l_memo" placeholder="예: 후배가 추천"></label>
+  </div>
+  <div class="row"><button class="btn" id="addLink">저장</button></div>
+  <div id="linkList" style="margin-top:8px"></div>
+</section>
+
+<section id="notes">
+  <h2>📝 메모</h2>
+  <textarea id="freeNote" style="min-height:220px" placeholder="크루즈 관련 아이디어·궁금한 점을 자유롭게 적어 두세요."></textarea>
+</section>
+
+</main>
+<div class="wrap pager" id="pager"></div>
+<footer>부부 크루즈 여행 플래너</footer>
+
+<script type="module">
+import { $, esc, won, initTheme, createStore, initTabs, linkHtml } from "./lib.js";
+
+const yt = q => "https://www.youtube.com/results?search_query=" + encodeURIComponent(q);
+
+const ROUTES = [
+  {id:"wmed", name:"🇮🇹 서지중해 (이탈리아 출발)", tag:"⭐ 첫 크루즈 추천 · 후배분 코스로 추정",
+    from:"치비타베키아(로마 외항) · 제노바 · 사보나", len:"7~10박", season:"4~6월, 9~10월 (7~8월은 덥고 붐빔)",
+    ports:"로마 · 나폴리(폼페이·아말피 해안) · 라스페치아(피렌체·친퀘테레) · 마르세유 · 바르셀로나 · 팔마 데 마요르카",
+    pros:["매일 다른 나라·도시에 도착하고, 이동은 자는 동안","MSC·코스타 등 선택지가 많고 가격대가 넓음","앞뒤로 로마·바르셀로나 육지 여행 붙이기 좋음"],
+    con:"기항지 관광이 빡빡할 수 있음 → 하루쯤은 배에서 쉬기",
+    videos:[["서지중해 크루즈 브이로그", yt("서지중해 크루즈 브이로그")],["MSC 지중해 크루즈 후기", yt("MSC 지중해 크루즈 후기")],["코스타 지중해 크루즈", yt("코스타 크루즈 지중해 여행")]]},
+  {id:"emed", name:"🇬🇷 그리스 · 아드리아해", tag:"사진·노을 최고",
+    from:"트리에스테·라벤나 등 베네치아 근처 항구 · 아테네(피레우스)", len:"7~10박", season:"5~6월, 9~10월",
+    ports:"산토리니 · 미코노스 · 아테네 · 두브로브니크(크로아티아) · 코토르(몬테네그로) · 코르푸",
+    pros:["하얀 집과 파란 바다, 산토리니 노을","크로아티아·몬테네그로 중세 성곽 도시","기념일 사진 찍기 좋은 곳이 많음"],
+    con:"2021년부터 대형 크루즈선은 베네치아 시내에 못 들어감 · 산토리니는 작은 보트(텐더)로 내려 줄이 길 수 있음",
+    videos:[["그리스 산토리니 크루즈", yt("그리스 산토리니 크루즈 여행")],["두브로브니크 코토르 크루즈", yt("두브로브니크 코토르 크루즈")],["동지중해 크루즈 브이로그", yt("동지중해 크루즈 브이로그")]]},
+  {id:"fjord", name:"🇳🇴 노르웨이 피오르", tag:"조용한 경치 여행",
+    from:"코펜하겐 · 킬(독일) · 함부르크 · 사우샘프턴(영국)", len:"7~12박", season:"5~8월 (6~7월은 밤에도 밝은 백야)",
+    ports:"가이랑에르 · 플롬 · 베르겐 · 스타방에르(프레이케스톨렌)",
+    pros:["배가 피오르 안까지 들어가 절벽·폭포를 바로 앞에서 봄","도시 관광보다 경치 위주라 휴양을 좋아하는 우리와 잘 맞음"],
+    con:"날씨 변덕이 심하고 물가가 비쌈 · 북해 구간은 흔들릴 수 있음",
+    videos:[["노르웨이 피오르 크루즈", yt("노르웨이 피오르 크루즈")],["가이랑에르 피오르 4K", yt("Geiranger fjord cruise 4K")]]},
+  {id:"alaska", name:"🇺🇸 알래스카", tag:"빙하·고래",
+    from:"시애틀 · 밴쿠버", len:"7박", season:"5~9월 (6~8월이 가장 따뜻)",
+    ports:"주노 · 스캐그웨이 · 케치칸 · 빙하 국립공원",
+    pros:["빙하가 무너지는 장면, 고래·곰 보기","인천→시애틀 직항이라 유럽보다 가까움","미국 선사(프린세스 등)가 이 코스에 강함"],
+    con:"한여름 외엔 쌀쌀함 · 헬기·경비행기 같은 기항지 투어가 비쌈",
+    videos:[["알래스카 크루즈 여행", yt("알래스카 크루즈 여행 브이로그")],["알래스카 빙하 크루즈 4K", yt("Alaska glacier cruise 4K")]]},
+  {id:"river", name:"🇦🇹 다뉴브 · 라인강 리버 크루즈", tag:"부부 기념 여행 인기",
+    from:"부다페스트 · 빈 · 파사우 / 바젤 · 암스테르담", len:"7~10박", season:"4~10월 · 11월 말~12월 크리스마스 마켓",
+    ports:"부다페스트 · 브라티슬라바 · 빈 · 바하우 계곡 / 라인강 고성·포도밭 마을",
+    pros:["손님 150~190명 정도의 작은 배라 조용하고 도시 한가운데 정박","강 위라 멀미 걱정이 거의 없음","기항지 투어가 요금에 들어 있는 경우가 많음"],
+    con:"1인 요금이 바다 크루즈보다 비쌈 · 수영장·공연 같은 배 안 즐길 거리는 적음",
+    videos:[["다뉴브강 리버크루즈", yt("다뉴브강 리버크루즈")],["라인강 리버크루즈", yt("라인강 리버크루즈")],["크리스마스 마켓 리버크루즈", yt("크리스마스 마켓 리버크루즈")]]},
+  {id:"trans", name:"🌊 지중해 + 대서양 횡단", tag:"장기휴가에만 가능",
+    from:"가을: 바르셀로나·로마 → 미국 플로리다 / 봄: 반대 방향", len:"13~16박", season:"봄 4~5월 · 가을 10~11월",
+    ports:"지중해 2~4곳 + 카나리아 제도·마데이라 + 바다 위에서만 6~7일",
+    pros:["배를 옮기는 '재배치' 항해라 1박당 요금이 싼 편","바다 위에서 푹 쉬는, 시간이 많을 때만 가능한 여행","끝나고 미국 여행을 붙일 수 있음"],
+    con:"바다만 보는 날이 많아 지루할 수 있음 · 대서양은 흔들릴 수 있음",
+    videos:[["대서양 횡단 크루즈", yt("대서양 횡단 크루즈")],["transatlantic cruise vlog", yt("transatlantic cruise vlog")]]}
+];
+
+const LINES = [
+  ["가성비 · 활기", "MSC 크루즈", "이탈리아 선사. 지중해 출발이 가장 많고 배가 크고 화려함. 가족 손님이 많아 북적. 배 안 고급 구역 '요트클럽'도 있음", "https://www.msccruises.com", yt("MSC 크루즈 후기")],
+  ["가성비 · 활기", "코스타 크루즈", "이탈리아 선사. 이탈리아 분위기·음식, 유럽 손님 위주. 가격이 착한 편", "https://www.costacruises.com", yt("코스타 크루즈 후기")],
+  ["가족 · 놀이", "로열캐리비안", "세계에서 가장 큰 배들. 워터슬라이드·서핑 등 놀이시설 → 나중에 딸들과 가족 크루즈 후보", "https://www.royalcaribbean.com", yt("로열캐리비안 크루즈 후기")],
+  ["프리미엄", "셀러브리티", "세련된 인테리어와 음식으로 부부 손님에게 인기. 배 안 고급 구역 '리트릿'", "https://www.celebritycruises.com", yt("셀러브리티 크루즈 후기")],
+  ["프리미엄", "프린세스", "차분한 분위기, 한국 손님도 많은 편. 알래스카 코스에 강함", "https://www.princess.com", yt("프린세스 크루즈 후기")],
+  ["성인 전용 · 조용", "바이킹", "18세 이상만 탑승, 카지노 없음. 기항지 투어 하나씩 포함. 바다(오션)·강(리버) 크루즈 모두 있음", "https://www.viking.com", yt("바이킹 크루즈 후기")],
+  ["고급", "오셔니아", "작은 배에 음식이 특히 유명. 차분한 미식 여행", "https://www.oceaniacruises.com", yt("Oceania cruises review")],
+  ["최고급 · 올인클루시브", "리젠트 세븐 시즈 · 실버시", "술·팁(리젠트는 기항지 투어까지) 포함. 모두 스위트급 객실. 1인 요금이 아주 높음", "https://www.rssc.com", yt("Regent Seven Seas cruise review")]
+];
+
+const BASICS = [
+  ["🛏️ 객실 종류", [
+    ["인사이드","창문 없음 · 가장 저렴 · 잠만 잔다면 OK"],
+    ["오션뷰","바다가 보이는 창문 (열리지 않음)"],
+    ["발코니 ⭐","개인 테라스에서 바다·입항 풍경 · <b>기념 여행이면 추천</b>"],
+    ["스위트","넓은 방 + 전용 라운지·식당 등 혜택 (MSC 요트클럽, 셀러브리티 리트릿처럼 '배 안의 배')"],
+    ["객실 위치","멀미가 걱정되면 <b>배 가운데 · 낮은 층</b>이 덜 흔들려요. 공연장·식당 바로 위아래는 시끄러울 수 있어요"]]],
+  ["📖 꼭 알아야 할 말", [
+    ["기항지","배가 서는 도시 (Port of call). 아침에 내려서 관광하고 저녁에 배로 돌아와요"],
+    ["해상일","하루 종일 바다 위에 있는 날 (Sea day). 수영장·스파·공연을 즐기는 날"],
+    ["올 어보드 시간","기항지에서 배로 돌아와야 하는 마감 시간. 보통 출항 30분~1시간 전. <b>늦으면 배는 떠나요</b>"],
+    ["선사 투어","배에서 파는 기항지 투어. 개별 투어보다 비싸지만 늦어지면 배가 기다려 줘요"],
+    ["텐더","항구가 작아 큰 배가 바다에 서고, 작은 보트로 갈아타서 내리는 것"],
+    ["승선·하선","배에 타고(Embarkation) 내리는(Disembarkation) 날. 하선일은 아침 일찍 내려요"]]],
+  ["💳 요금에 들어 있는 것 / 따로 내는 것", [
+    ["포함","객실 · 메인 식당과 뷔페 · 공연 · 수영장·운동시설"],
+    ["따로","팁(서비스 요금, 1인 하루 약 $15~20 · 선사마다 다름) · 술·커피·탄산 · 와이파이 · 기항지 투어 · 유료 특별 식당 · 스파"],
+    ["음료","유럽 선사(MSC·코스타)는 식사 때 생수도 돈을 받는 경우가 많아요 → 음료 패키지 비교"],
+    ["항만세","요금에 포함됐는지 꼭 확인 (따로 붙는 경우가 있음)"],
+    ["결제","승선 때 카드를 등록하고 배 안에서는 객실 카드로 결제 · 유럽 선사는 유로, 미국 선사는 달러"]]],
+  ["💡 꿀팁", [
+    ["하루 전 도착","출발 도시에 <b>승선 하루 전</b> 도착하기. 비행기가 늦어도 배는 기다리지 않아요"],
+    ["기내 가방","첫날 큰 짐은 저녁에야 방에 와요 → 수영복·약·갈아입을 옷은 들고 타기"],
+    ["드레스코드","주 1~2번 '갈라(포멀) 나이트' → 정장·원피스 한 벌씩. 나머지 날은 편한 차림"],
+    ["선사 앱","선사 앱으로 일정·식당 예약·결제 내역 확인 (배 안 와이파이 없이도 되는 경우가 많음)"],
+    ["멀미","지중해는 여름에 대체로 잔잔한 편. 멀미약·멀미 밴드 챙기기"]]]
+];
+
+const BUD = [
+  ["c_people","인원 (명)",2,"부부 2명"],
+  ["c_nights","크루즈 박수",10,"7~10박이 일반적"],
+  ["c_fare","크루즈 요금 1인 (원)",3000000,"발코니 기준 · MSC·코스타 150~300만 · 셀러브리티 250~450만 · 바이킹 600만+"],
+  ["c_tip","팁 1인 1박 (원)",25000,"약 $15~20"],
+  ["c_air","왕복 항공 1인 (원)",1800000,"유럽 이코노미 대략값"],
+  ["c_hotel_n","앞뒤 육지 숙박 (박)",4,"예: 로마 2 + 바르셀로나 2"],
+  ["c_hotel","호텔 1박 (원)",250000,"2인 1실"],
+  ["c_tour","기항지 투어 (2인 합계)",1500000,""],
+  ["c_pkg","음료·와이파이 패키지 (2인 합계)",1000000,""],
+  ["c_etc","기타 · 식비·교통·쇼핑",1000000,""]
+];
+
+const ROADMAP = [
+  ["1. 탐색","지금 ~ 2028",["후배에게 크루즈 이야기 듣기 (👉 '후배에게 묻기' 탭 채우기)","영상 보고 마음에 드는 코스 ♥ 2개로 좁히기","회사 장기휴가(30주년·20주년) 가능한 시기 확인","크루즈 적금 시작 ('비용·적금' 탭에 기록)"]],
+  ["2. 맛보기","2028 ~ 2029",["아시아 단거리 크루즈 3~5박 타 보기 (부산·일본·대만 · 멀미·선사 취향 확인)","관심 선사 회원 가입·뉴스레터 받기 (조기 예약 특가 알림)","선사와 객실 등급 정하기"]],
+  ["3. 예약","출발 18~12개월 전",["선사 일정 발표 확인 (보통 1~2년 전에 공개)","여행사 패키지 vs 선사 직접 예약 비교","객실 고르고 계약금 결제","취소 규정·잔금 날짜 확인","항공권 가격 알림 설정"]],
+  ["4. 세부 준비","출발 6~3개월 전",["잔금 결제","왕복 항공권 (승선 하루 전 도착)","앞뒤 육지 호텔 예약","기항지 투어 예약 (선사 투어 vs 개별 투어)","음료·와이파이 패키지 결정","여행자보험 (해외 의료·여행 취소 보장)"]],
+  ["5. 출발 직전","1개월 전",["선사 온라인 체크인 · 승선 시간 예약 · 선사 앱 설치","유럽 사전 입국 허가(ETIAS) 신청 · 여권 만료일 확인","갈라 나이트 옷 · 멀미약 · 멀티 어댑터","유로(또는 달러) 조금 · 해외결제 카드","공항 장기주차 예약 (♿ 장애인 차량 50% 할인)"]]
+];
+
+const ASK = [
+  "어느 선사, 어떤 배였어? (예: MSC ○○호)",
+  "출발 항구·코스·며칠짜리였어?",
+  "언제(몇 월) 갔어? 날씨·붐빔은 어땠어?",
+  "객실 종류·위치는? 다시 간다면 같은 객실?",
+  "총비용은 얼마나 들었어? (크루즈 요금·항공·팁·투어·배 안에서 쓴 돈)",
+  "어디서, 얼마나 미리 예약했어? (여행사 / 선사 직접)",
+  "가장 좋았던 기항지·투어는?",
+  "아쉬웠던 점, 다시 간다면 바꿀 것은?",
+  "영어는 얼마나 필요했어? 한국 사람도 있었어?",
+  "멀미·음식·드레스코드는 어땠어?",
+  "사진·영상 공유 부탁 (받으면 '영상·링크' 탭에 저장)"
+];
+
+const VIDEOS = [
+  ["처음이라면", [["크루즈 처음 가기 전 알아야 할 것", yt("크루즈 여행 처음 가기 전 꿀팁")],["크루즈 객실 고르는 법", yt("크루즈 객실 고르는 법 발코니")],["크루즈 비용 총정리", yt("크루즈 여행 비용 총정리")],["크루즈 준비물", yt("크루즈 여행 준비물")]]],
+  ["코스별", ROUTES.flatMap(r=>r.videos)],
+  ["선사별", LINES.map(l=>[l[1], l[4]])],
+  ["부부 여행", [["부부 크루즈 여행 브이로그", yt("부부 크루즈 여행 브이로그")],["결혼기념일 크루즈", yt("결혼기념일 크루즈 여행")],["50대 부부 유럽 크루즈", yt("50대 부부 유럽 크루즈")]]]
+];
+
+const defaults = () => ({v:1, likes:{}, budget:{}, goal:15000000, target:"2031-05", saves:[], done:{}, ask:{}, links:[], note:""});
+const store = createStore({key:"cruise-planner-v1", planId:"cruise-anniversary", defaults, render: renderAll});
+const S = () => store.state;
+
+function renderRoutes(){
+  $("routeCards").innerHTML = ROUTES.map(r=>`<div class="card" style="cursor:default">
+    <button class="like ${S().likes[r.id]?"on":""}" data-id="${r.id}" title="찜">♥</button>
+    <span class="tag">${r.tag}</span><h3>${r.name}</h3>
+    <dl class="more" style="display:grid;grid-template-columns:auto 1fr;gap:4px 10px;margin:0;font-size:.85rem">
+      <dt style="color:var(--muted)">출발</dt><dd style="margin:0">${r.from}</dd>
+      <dt style="color:var(--muted)">기간</dt><dd style="margin:0">${r.len}</dd>
+      <dt style="color:var(--muted)">시기</dt><dd style="margin:0">${r.season}</dd>
+      <dt style="color:var(--muted)">기항지</dt><dd style="margin:0">${r.ports}</dd></dl>
+    <ul>${r.pros.map(p=>`<li>${p}</li>`).join("")}</ul>
+    <div class="con">⚠️ ${r.con}</div>
+    <div class="links">${r.videos.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">▶ ${t}</a>`).join("")}</div></div>`).join("");
+  $("routeCards").querySelectorAll(".like").forEach(b=>b.onclick=()=>{ const l=S().likes; l[b.dataset.id]=!l[b.dataset.id]; if(!l[b.dataset.id]) delete l[b.dataset.id]; store.save(); renderRoutes(); });
+}
+
+function renderLines(){
+  $("lineTable").innerHTML = `<thead><tr><th>등급</th><th>선사</th><th>특징</th><th>링크</th></tr></thead><tbody>` +
+    LINES.map(([tier,name,desc,site,video])=>`<tr><td style="white-space:nowrap">${tier}</td><td style="white-space:nowrap"><b>${name}</b></td><td>${desc}</td>
+      <td><div class="links" style="flex-wrap:nowrap"><a href="${site}" target="_blank" rel="noopener">공식 ↗</a><a href="${video}" target="_blank" rel="noopener">▶ 영상</a></div></td></tr>`).join("") + `</tbody>`;
+}
+
+function renderBasics(){
+  $("basicsBox").innerHTML = BASICS.map(([h,rows])=>`<h3 style="font-size:1rem;margin:16px 0 6px">${h}</h3>
+    <div class="tbl"><table>${rows.map(([k,v])=>`<tr><th style="white-space:nowrap;width:1%">${k}</th><td>${v}</td></tr>`).join("")}</table></div>`).join("");
+}
+
+const bv = id => { const x = S().budget[id]; return Number(x ?? BUD.find(b=>b[0]===id)[2]) || 0; };
+function budgetTotal(){
+  const p = bv("c_people"), cruise = bv("c_fare")*p + bv("c_tip")*bv("c_nights")*p, air = bv("c_air")*p,
+    land = bv("c_hotel_n")*bv("c_hotel"), extra = bv("c_tour") + bv("c_pkg") + bv("c_etc");
+  return {cruise, air, land, extra, total: cruise+air+land+extra};
+}
+function renderBudget(){
+  $("budgetForm").innerHTML = BUD.map(([id,label,def,hint])=>`<label class="f">${label}${hint?` <small>${hint}</small>`:""}<input type="number" id="${id}" value="${esc(S().budget[id] ?? def)}"></label>`).join("");
+  BUD.forEach(([id])=>$(id).oninput=()=>{ S().budget[id]=$(id).value; store.save(); calc(); });
+  calc();
+}
+function calc(){
+  const t = budgetTotal();
+  $("budgetTotal").innerHTML = [["크루즈 (요금+팁)",t.cruise],["항공",t.air],["앞뒤 육지 숙박",t.land],["투어·패키지·기타",t.extra]]
+    .map(([k,v])=>`<div class="stat"><span>${k}</span><strong>${won(v)}</strong></div>`).join("") + `<div class="stat main"><span>총 예상 비용</span><strong>${won(t.total)}</strong></div>`;
+}
+$("toGoal").onclick=()=>{ S().goal = Math.ceil(budgetTotal().total/100000)*100000; store.save(); renderSavings(); $("goal").scrollIntoView({behavior:"smooth",block:"center"}); };
+
+function monthsLeft(){
+  const [y,m] = (S().target||"").split("-").map(Number); if(!y) return null;
+  const now = new Date(); return Math.max(0, (y-now.getFullYear())*12 + (m-1-now.getMonth()));
+}
+function renderSavings(){
+  const s = S(); $("goal").value = s.goal; $("target").value = s.target;
+  const saved = s.saves.reduce((a,x)=>a+(Number(x.amt)||0),0), goal = Number(s.goal)||0, left = Math.max(0, goal-saved), ml = monthsLeft();
+  $("saveBar").style.width = (goal ? Math.min(100, saved/goal*100) : 0) + "%";
+  $("saveStats").innerHTML = [["모은 돈",won(saved)+(goal?` (${Math.round(saved/goal*100)}%)`:"")],["남은 돈",won(left)],["출발까지",ml==null?"-":`약 ${ml}개월`]]
+    .map(([k,v])=>`<div class="stat"><span>${k}</span><strong>${v}</strong></div>`).join("") +
+    `<div class="stat main"><span>매달 모아야 할 돈</span><strong>${ml ? won(left/ml) : "-"}</strong></div>`;
+  const list = [...s.saves.entries()].sort((a,b)=>String(b[1].date).localeCompare(String(a[1].date)));
+  $("saveList").innerHTML = list.length ? list.map(([i,x])=>`<div class="item"><span>🐷</span><div><b>${won(Number(x.amt)||0)}</b> <small style="display:inline">${esc(x.date)}</small>${x.memo?`<small>${esc(x.memo)}</small>`:""}</div><button data-i="${i}" title="삭제">✕</button></div>`).join("")
+    : `<p class="sub" style="margin:6px 0 0">아직 기록이 없어요. 첫 적금을 기록해 보세요.</p>`;
+  $("saveList").querySelectorAll("button").forEach(b=>b.onclick=()=>{ if(confirm("이 기록을 지울까요?")){ s.saves.splice(b.dataset.i,1); store.save(); renderSavings(); } });
+  renderChip();
+}
+$("goal").oninput=()=>{ S().goal=Number($("goal").value)||0; store.save(); renderSavings(); };
+$("target").onchange=()=>{ S().target=$("target").value; store.save(); renderSavings(); };
+$("addSave").onclick=()=>{
+  const amt = Number($("s_amt").value); if(!amt){ $("s_amt").focus(); return; }
+  S().saves.push({date:$("s_date").value || new Date().toISOString().slice(0,10), amt, memo:$("s_memo").value.trim()});
+  store.save(); renderSavings(); $("s_amt").value=$("s_memo").value="";
+};
+function renderChip(){
+  const [y,m] = (S().target||"").split("-"), ml = monthsLeft();
+  $("targetChip").textContent = y ? `🎯 목표 ${y}년 ${Number(m)}월 · 약 ${ml}개월 남음` : "🎯 목표 시기 미정";
+}
+
+function renderRoad(){
+  const all = ROADMAP.flatMap(r=>r[2]), done = S().done, n = all.filter(t=>done[t]).length;
+  $("roadBar").style.width = (n/all.length*100)+"%";
+  $("roadList").innerHTML = `<p class="sub" style="margin:0">${n} / ${all.length} 완료</p>` + ROADMAP.map(([ph,when,items])=>`<h3 class="phase">${ph} <small>· ${when}</small></h3>` +
+    items.map(t=>`<label class="check ${done[t]?"done":""}"><input type="checkbox" data-t="${esc(t)}" ${done[t]?"checked":""}><span>${esc(t)}</span></label>`).join("")).join("");
+  $("roadList").querySelectorAll("input").forEach(el=>el.onchange=()=>{ if(el.checked) done[el.dataset.t]=true; else delete done[el.dataset.t]; store.save(); renderRoad(); });
+}
+
+function renderAsk(){
+  $("askList").innerHTML = ASK.map((q,i)=>`<label class="qa"><b>Q${i+1}. ${esc(q)}</b><textarea data-q="${esc(q)}" style="min-height:52px" placeholder="들은 답을 적어 두세요">${esc(S().ask[q])}</textarea></label>`).join("");
+  $("askList").querySelectorAll("textarea").forEach(el=>el.oninput=()=>{ S().ask[el.dataset.q]=el.value; store.save(); });
+}
+
+function renderVideos(){
+  $("videoGroups").innerHTML = VIDEOS.map(([h,list])=>`<h3 style="font-size:.95rem;margin:14px 0 6px">${h}</h3><div class="links">${list.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">▶ ${t}</a>`).join("")}</div>`).join("");
+}
+function renderLinks(){
+  const l = S().links;
+  $("linkList").innerHTML = l.length ? l.map((x,i)=>`<div class="item"><span>🔗</span><div><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title||x.url)}</b> ↗</a>${x.memo?`<small>${esc(x.memo)}</small>`:""}</div><button data-i="${i}" title="삭제">✕</button></div>`).join("")
+    : `<p class="sub" style="margin:6px 0 0">아직 저장한 링크가 없어요.</p>`;
+  $("linkList").querySelectorAll("button").forEach(b=>b.onclick=()=>{ l.splice(b.dataset.i,1); store.save(); renderLinks(); });
+}
+$("addLink").onclick=()=>{
+  const url=$("l_url").value.trim(); if(!/^https?:\/\//.test(url)){ alert("https:// 로 시작하는 링크를 넣어 주세요."); $("l_url").focus(); return; }
+  S().links.push({title:$("l_title").value.trim(), url, memo:$("l_memo").value.trim()}); store.save(); renderLinks();
+  $("l_title").value=$("l_url").value=$("l_memo").value="";
+};
+$("freeNote").oninput=()=>{ S().note=$("freeNote").value; store.save(); };
+
+function renderAll(){ renderRoutes(); renderBudget(); renderSavings(); renderRoad(); renderAsk(); renderLinks(); $("freeNote").value = S().note||""; }
+renderLines(); renderBasics(); renderVideos();
+initTheme($("themeBtn"));
+initTabs();
+renderAll();
+store.initSync();
+</script>
+</body>
+</html>
